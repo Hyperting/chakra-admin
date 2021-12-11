@@ -1,3 +1,8 @@
+input PaginationInput {
+  limit: Int
+  offset: Int
+}
+
 type Company {
   id: ID
   name: String @fake(type: companyName)
@@ -12,6 +17,23 @@ input CreateCompany {
 }
 
 input UpdateCompany {
+  name: String
+  industry: String
+  employees: [ID]
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+input CompanySortInput {
+  id: SortDirection
+  name: SortDirection
+}
+
+input CompanyFilterInput {
+  id: ID
   name: String
   industry: String
   employees: [ID]
@@ -42,11 +64,20 @@ input UpdateEmployee {
   companyId: ID
 }
 
+type CompanyListResponse {
+  data: [Company!]
+  total: Int
+}
+
 type Query {
   employee(id: ID): Employee
   employees: [Employee!]
   company(id: ID): Company
-  companies: [Company!]
+  companies(
+    sort: CompanySortInput
+    filters: CompanyFilterInput
+    pagination: PaginationInput
+  ): CompanyListResponse!
 }
 
 type Mutation {
