@@ -3,9 +3,6 @@ import { chakra } from '@chakra-ui/system'
 import { Text, Image, Box, Container } from '@chakra-ui/react'
 import { LoginForm } from './LoginForm'
 
-import logo from '../../assets/images/logo.png'
-import undraw_compose from '../../assets/images/undraw_compose.png'
-
 type Props = {
   applicationImageUrl?: string
   applicationIcon?: string
@@ -42,7 +39,7 @@ export const Login: FC<Props> = ({ applicationIcon, applicationImageUrl }) => {
             w={{ base: '37px', md: '73px' }}
             h={{ base: '37px', md: '73px' }}
             objectFit="contain"
-            src={logo}
+            // src={logo}
           />
           <Text textStyle="h1" mt={{ base: 2.5, md: 5 }} mb={{ base: 1, md: 2.5 }}>
             A regola d’arte
@@ -55,7 +52,7 @@ export const Login: FC<Props> = ({ applicationIcon, applicationImageUrl }) => {
             w={{ base: '211px', md: '423px' }}
             h={{ base: '139px', md: '279px' }}
             objectFit="contain"
-            src={undraw_compose}
+            // src={undraw_compose}
           />
         </chakra.div>
       </chakra.div>

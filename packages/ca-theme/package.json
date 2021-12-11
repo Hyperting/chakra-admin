@@ -1,0 +1,25 @@
+{
+  "name": "ca-theme",
+  "version": "0.0.1-rc.4",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "start": "rollup -c -w"
+  },
+  "author": "Hyperting S.r.l.",
+  "license": "MIT",
+  "peerDependencies": {
+    "@chakra-ui/react": ">= 1.0.0"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "registry": "http://localhost:4873"
+  }
+}

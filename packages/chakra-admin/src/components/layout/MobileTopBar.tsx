@@ -13,8 +13,6 @@ import {
 } from '@chakra-ui/react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaArrowLeft, FaFlag } from 'react-icons/fa'
-import { useNavigatorOnline } from '@oieduardorabelo/use-navigator-online'
-import { AnimatePresence, motion } from 'framer-motion'
 import { UserMobileButton } from '../buttons/UserMobileButton'
 import { DrawerCloseButton } from '../modal/DrawerCloseButton'
 import { DrawerHeader } from '../modal/DrawerHeader'
@@ -108,7 +106,7 @@ export const MobileTopBar: FC<Props> = () => {
             <DrawerCloseButton aria-label="Chiudi" drawerPlacement="left" icon={<FaArrowLeft />} />
             <DrawerHeader title="Menu" />
             <DrawerBody px={0}>
-              <NavMenu onItemClick={onClose} fullWidthItems />
+              <NavMenu onItemClick={onClose} />
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>

@@ -1,0 +1,59 @@
+type Company {
+  id: ID
+  name: String @fake(type: companyName)
+  industry: String @examples(values: ["IT", "Manufacturing", "Medicine", "Media"])
+  employees: [Employee!] @listLength(min: 5, max: 10)
+}
+
+input CreateCompany {
+  name: String!
+  industry: String
+  employees: [ID]
+}
+
+input UpdateCompany {
+  name: String
+  industry: String
+  employees: [ID]
+}
+
+type Employee {
+  id: ID
+  firstName: String @fake(type: firstName, locale: en_US)
+  lastName: String @fake(type: lastName, locale: en_US)
+  address: String @fake(type: streetAddress, options: { useFullAddress: true })
+  subordinates: [Employee!] @listLength(min: 0, max: 3)
+  company: Company
+}
+
+input CreateEmployee {
+  firstName: String!
+  lastName: String
+  address: String
+  subordinates: [ID]
+  companyId: ID
+}
+
+input UpdateEmployee {
+  firstName: String
+  lastName: String
+  address: String
+  subordinates: [ID]
+  companyId: ID
+}
+
+type Query {
+  employee(id: ID): Employee
+  employees: [Employee!]
+  company(id: ID): Company
+  companies: [Company!]
+}
+
+type Mutation {
+  createCompany(data: CreateCompany!): Company
+  updateCompany(id: ID!, data: UpdateCompany!): Company
+  deleteCompany(id: ID!): Boolean
+  createEmployee(data: CreateEmployee!): Employee
+  updateEmployee(id: ID!, data: UpdateEmployee!): Employee
+  deleteEmployee(id: ID!): Boolean
+}

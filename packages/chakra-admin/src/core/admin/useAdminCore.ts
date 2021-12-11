@@ -4,7 +4,6 @@ import Container from 'typedi'
 import * as H from 'history'
 import { AdminCoreProps } from '../../components/admin/AdminCore'
 import { AuthProvider } from '../auth/AuthProvider'
-import { ARegolaDArteAuthProvider } from '../auth/ARegolaDArteAuthProvider'
 import { TOKEN_AUTH_PROVIDER, useSetAuthProvider } from '../auth/useAuthProvider'
 
 type RouteState = {
@@ -20,7 +19,7 @@ type RouteState = {
  */
 export const useAdminCore = ({
   children,
-  authProvider = ARegolaDArteAuthProvider,
+  authProvider,
 }: AdminCoreProps): {
   childrenCount: number
   initialized: boolean

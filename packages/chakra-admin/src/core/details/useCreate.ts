@@ -33,7 +33,7 @@ export const useCreate = ({ mutation, resource }: CreateProps): UseCreateResult 
           throw new Error(result.error?.message)
         }
         return result
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error During Creation submit', error)
         notify({
           status: 'error',

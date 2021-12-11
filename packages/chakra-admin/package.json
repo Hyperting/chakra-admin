@@ -1,6 +1,6 @@
 {
   "name": "chakra-admin",
-  "version": "0.0.0",
+  "version": "0.0.1-rc.4",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -17,19 +17,26 @@
   "license": "MIT",
   "peerDependencies": {
     "@chakra-ui/react": ">= 1.0.0",
+    "@chakra-ui/icons": ">= 1.0.0",
     "framer-motion": ">= 4",
+    "graphql": "^16.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
+    "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
     "urql": "^2.0.5"
   },
   "dependencies": {
+    "@oieduardorabelo/use-navigator-online": "^6.1.0",
     "react-hook-form": "^7.21.2",
+    "react-table": "^7.7.0",
     "recoil": "^0.5.2",
-    "typedi": "^0.10.0"
+    "typedi": "^0.10.0",
+    "use-route-as-state": "^5.1.1",
+    "ca-theme": "^0.0.1-rc.4"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "http://localhost:4873"
   }
 }

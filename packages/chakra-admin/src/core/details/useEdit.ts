@@ -43,7 +43,7 @@ export const useEdit = ({ mutation, resource, query, id }: EditProps): UseEditRe
           throw new Error(result.error?.message)
         }
         return result
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error During Edit submit', error)
         notify({
           status: 'error',

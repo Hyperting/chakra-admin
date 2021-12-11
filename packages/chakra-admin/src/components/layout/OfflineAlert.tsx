@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
 import { useNavigatorOnline } from '@oieduardorabelo/use-navigator-online'
 import { AnimatePresence } from 'framer-motion'
-import { MotionBox, MotionBoxProps } from '../base/motion'
+import { MotionBox } from '../base/motion'
+import { BoxProps } from '@chakra-ui/react'
 
 type Props = {
   //
-} & MotionBoxProps
+} & BoxProps
 
 export const OfflineAlert: FC<Props> = (props) => {
   const { isOffline } = useNavigatorOnline()
@@ -26,7 +27,7 @@ export const OfflineAlert: FC<Props> = (props) => {
           animate="open"
           exit="close"
           initial="close"
-          transition={{ duration: 0.1 }}
+          {...({ transition: { duration: 0.1 } } as any)}
           // style={{ originY: 1 }}
           variants={{
             open: { y: 0, height: 'auto' },
