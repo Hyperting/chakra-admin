@@ -39,7 +39,7 @@ cd example
 yarn start:all
 ```
 
-## Show changes in the example project
+## Update chakra-admin in the example project
 
 In order to show the changes made in the `packages` directory in the example project, you can run from the root of the project:
 
