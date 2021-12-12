@@ -5,6 +5,16 @@ This project was bootstrapped with
 
 In the project directory, you can run:
 
+### `yarn start:all`
+Runs the app in development mode and the GraphQL Faker Server used by the admin panel.
+
+Api configuration can be changed from: `./example-api.graphql`, read more on [GraphQL Faker Github](https://github.com/APIs-guru/graphql-faker).
+
+### `yarn start:api`
+Runs the GraphQL Faker Server used by the admin panel.
+
+Api configuration can be changed from: `./example-api.graphql`, read more on [GraphQL Faker Github](https://github.com/APIs-guru/graphql-faker).
+
 ### `yarn start`
 
 Runs the app in the development mode.<br /> Open
