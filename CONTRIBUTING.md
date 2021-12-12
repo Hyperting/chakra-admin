@@ -32,10 +32,11 @@ yarn bootstrap
 yarn build
 ```
 
-5. Start Storybook:
+5. Start the example project:
 
 ```bash
-yarn storybook
+cd example
+yarn start:all
 ```
 
 ## Project Commands
@@ -46,7 +47,7 @@ Here's a list of the commands provided by this project:
 
 `yarn build`: build all the packages
 
-`yarn storybook`: run Storybook for components development
+`yarn storybook`: run Storybook for components development (WIP: currently not working)
 
 ## Commit convention
 
