@@ -7,9 +7,16 @@ This project was bootstrapped with
 Install project dependencies from the root folder of `chakra-admin`, then start the [Create React App](https://github.com/facebook/create-react-app) and the [GraphQL Faker Server](https://github.com/APIs-guru/graphql-faker):
 
 ```bash
+# go to the root folder of chakra-admin
 cd chakra-admin/
+
+# install all the dependencies
 yarn bootstrap
+
+# go to the example folder
 cd example/
+
+# start the create-react-app project and the graphql-faker server
 yarn start:all
 ```
 
