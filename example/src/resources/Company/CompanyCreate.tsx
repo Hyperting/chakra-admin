@@ -2,8 +2,8 @@ import React, { FC } from 'react'
 import { Create, BaseForm, Input } from 'chakra-admin'
 
 const MUTATION_CREATE_COMPANY = /* GraphQL */ `
-  mutation CreateCompany($input: CreateCompany!) {
-    createCompany(input: $input) {
+  mutation CreateCompany($data: CreateCompanyInput!) {
+    createCompany(data: $data) {
       id
       name
     }
@@ -14,10 +14,8 @@ export const CompanyCreate: FC = (props) => {
   return (
     <Create mutation={MUTATION_CREATE_COMPANY} {...props}>
       <BaseForm>
-        <Input placeholder="E-mail" source="email" />
-        <Input placeholder="Password" source="password" type="password" />
-        <Input placeholder="Nome" source="firstName" />
-        <Input placeholder="Cognome" source="lastName" />
+        <Input placeholder="Name" source="name" />
+        <Input placeholder="Industry" source="industry" />
       </BaseForm>
     </Create>
   )

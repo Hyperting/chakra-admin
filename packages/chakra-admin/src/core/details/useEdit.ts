@@ -38,6 +38,11 @@ export const useEdit = ({ mutation, resource, query, id }: EditProps): UseEditRe
       try {
         const result = await executeMutation({ id, data: values })
         if (result.data && !result.error) {
+          notify({
+            status: 'success',
+            title: `${resource} updated.`,
+            isClosable: true,
+          })
           history.goBack()
         } else {
           throw new Error(result.error?.message)

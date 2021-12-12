@@ -10,13 +10,13 @@ type Company {
   employees: [Employee!] @listLength(min: 5, max: 10)
 }
 
-input CreateCompany {
+input CreateCompanyInput {
   name: String!
   industry: String
   employees: [ID]
 }
 
-input UpdateCompany {
+input UpdateCompanyInput {
   name: String
   industry: String
   employees: [ID]
@@ -48,7 +48,7 @@ type Employee {
   company: Company
 }
 
-input CreateEmployee {
+input CreateEmployeeInput {
   firstName: String!
   lastName: String
   address: String
@@ -56,7 +56,7 @@ input CreateEmployee {
   companyId: ID
 }
 
-input UpdateEmployee {
+input UpdateEmployeeInput {
   firstName: String
   lastName: String
   address: String
@@ -81,10 +81,10 @@ type Query {
 }
 
 type Mutation {
-  createCompany(data: CreateCompany!): Company
-  updateCompany(id: ID!, data: UpdateCompany!): Company
+  createCompany(data: CreateCompanyInput!): Company
+  updateCompany(id: ID!, data: UpdateCompanyInput!): Company
   deleteCompany(id: ID!): Boolean
-  createEmployee(data: CreateEmployee!): Employee
-  updateEmployee(id: ID!, data: UpdateEmployee!): Employee
+  createEmployee(data: CreateEmployeeInput!): Employee
+  updateEmployee(id: ID!, data: UpdateEmployeeInput!): Employee
   deleteEmployee(id: ID!): Boolean
 }

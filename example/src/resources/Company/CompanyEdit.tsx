@@ -11,8 +11,8 @@ const QUERY_GET_COMPANY = /* GraphQL */ `
 `
 
 const MUTATION_UPDATE_COMPANY = /* GraphQL */ `
-  mutation UpdateCompany($id: ID!, $input: CompanyInput!) {
-    updateCompany(id: $id, input: $input) {
+  mutation UpdateCompany($id: ID!, $data: UpdateCompanyInput!) {
+    updateCompany(id: $id, data: $data) {
       id
       name
     }
@@ -23,7 +23,8 @@ export const CompanyEdit: FC = (props) => {
   return (
     <Edit query={QUERY_GET_COMPANY} mutation={MUTATION_UPDATE_COMPANY} {...props}>
       <BaseForm>
-        <Input placeholder="Nome" source="name" />
+        <Input placeholder="Name" source="name" />
+        <Input placeholder="Industry" source="industry" />
       </BaseForm>
     </Edit>
   )
