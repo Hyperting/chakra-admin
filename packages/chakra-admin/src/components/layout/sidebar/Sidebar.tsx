@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react'
-import { Box, Icon } from '@chakra-ui/react'
+import { Box, BoxProps, Icon } from '@chakra-ui/react'
 import { MotionBox } from '../../base/motion'
 import { ToggleSizeButton } from './ToggleSizeButton'
 import { SidebarTitle } from './SidebarTitle'
@@ -8,10 +8,11 @@ import { MenuCollapse } from './MenuCollapse'
 import { NavMenu } from './NavMenu'
 
 type Props = {
-  //
-}
+  title?: string
+  icon?: React.ElementType
+} & BoxProps
 
-export const Sidebar: FC<Props> = ({ ...rest }) => {
+export const Sidebar: FC<Props> = ({ title, icon, ...rest }) => {
   const [compressed, setCompressed] = useState<boolean>(false)
 
   const handleToggleSize = useCallback(() => {
@@ -33,7 +34,7 @@ export const Sidebar: FC<Props> = ({ ...rest }) => {
       <MotionBox bgColor="white" initial={false} animate={{ width: compressed ? 18 : 280 }}>
         {!compressed && (
           <Box overflowX="hidden" w="280px" minW="280px" pt={6}>
-            <SidebarTitle icon={<Icon color="red.600" w={30} h={26} />} title="A Regola d'Arte" />
+            <SidebarTitle icon={<Icon as={icon} color="red.600" w={30} h={26} />} title={title} />
             <MenuSearch placeholder="Cerca..." mb={5} />
             <Box h="100%" minH="100%" overflowY="auto">
               <MenuCollapse>
