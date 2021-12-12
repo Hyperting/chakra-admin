@@ -39,6 +39,23 @@ cd example
 yarn start:all
 ```
 
+## Show changes in the example project
+
+In order to show the changes made in the `packages` directory in the example project, you can run from the root of the project:
+
+```bash
+# go to the chakra-admin project
+cd chakra-admin
+
+# build all packages
+yarn build
+
+# install updated packages
+yarn bootstrap
+```
+
+You can now use your new or changed components in the example project.
+
 ## Project Commands
 
 Here's a list of the commands provided by this project:
