@@ -41,7 +41,7 @@ yarn start:all
 
 ## Update chakra-admin in the example project
 
-In order to show the changes made in the `packages` directory in the example project, you can run from the root of the project:
+In order to show the changes made in the `packages` directory inside the example project, you have to run:
 
 ```bash
 # go to the chakra-admin project
