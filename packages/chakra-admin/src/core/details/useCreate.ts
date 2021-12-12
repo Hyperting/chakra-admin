@@ -25,7 +25,7 @@ export const useCreate = ({ mutation, resource }: CreateProps): UseCreateResult 
         if (result.data && !result.error) {
           notify({
             status: 'success',
-            title: `${resource} creato correttamente`,
+            title: `${resource} created.`,
             isClosable: true,
           })
           history.goBack()
