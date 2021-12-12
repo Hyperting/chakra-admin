@@ -3,7 +3,7 @@ import { Container } from 'typedi'
 import { ClassType } from '../ClassType'
 import { AuthProvider } from './AuthProvider'
 
-export const TOKEN_AUTH_PROVIDER = 'donalaspesa_AuthProvider'
+export const TOKEN_AUTH_PROVIDER = 'chakra-admin_AuthProvider'
 
 type SetAuthProviderFunction = (newValue: ClassType<AuthProvider> | undefined) => void
 
