@@ -4,7 +4,7 @@
 
 ## Getting started
 
-To get setup and run the project, read the [CONTRIBUTING](CONTRIBUTING.md) file.
+To setup and run the project, read the [CONTRIBUTING](CONTRIBUTING.md) file.
 
 ## License
 
