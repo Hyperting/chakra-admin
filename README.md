@@ -4,7 +4,7 @@
 
 ## Getting started
 
-To setup and run the project, read the [CONTRIBUTING](CONTRIBUTING.md) file.
+To setup and run the project, read the [CONTRIBUTING](https://github.com/Hyperting/chakra-admin/blob/main/CONTRIBUTING.md) file.
 
 ## License
 

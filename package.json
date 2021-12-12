@@ -85,7 +85,7 @@
     "build-storybook": "build-storybook",
     "bootstrap": "lerna bootstrap --use-workspaces",
     "clean": "lerna run clean",
-    "build": "lerna run build --include-dependencies --stream --ignore example",
+    "build": "lerna run build --include-dependencies --stream --ignore example && npm run copy-readme",
     "release": "release-it",
     "release-rc": "release-it --preRelease=rc",
     "deploy": "yarn build && yarn release",
@@ -93,7 +93,8 @@
     "test:unit": "jest",
     "test-watch:unit": "jest --watch",
     "test-watch": "yarn test-watch:unit",
-    "test": "yarn test:unit"
+    "test": "yarn test:unit",
+    "copy-readme": "cpy ./README.md ./packages/chakra-admin"
   },
   "release-it": {
     "plugins": {
