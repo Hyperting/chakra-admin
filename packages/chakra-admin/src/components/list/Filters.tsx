@@ -12,8 +12,8 @@ import {
   Icon,
   useBreakpointValue,
   useDisclosure,
+  chakra,
 } from '@chakra-ui/react'
-import { chakra } from '@chakra-ui/system'
 import { FaArrowRight } from 'react-icons/fa'
 import { MdFilterList } from 'react-icons/md'
 import { ListProps } from '../../core/list/ListProps'

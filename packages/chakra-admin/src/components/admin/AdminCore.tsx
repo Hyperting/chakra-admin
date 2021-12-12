@@ -8,8 +8,8 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-} from '@chakra-ui/modal'
-import { Button } from '@chakra-ui/button'
+  Button,
+} from '@chakra-ui/react'
 import { AuthProvider } from '../../core/auth/AuthProvider'
 import { ClassType } from '../../core/ClassType'
 import { Layout } from '../layout/Layout'

@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react'
-import { chakra } from '@chakra-ui/system'
 import {
   Alert,
   AlertIcon,
@@ -11,6 +10,7 @@ import {
   InputRightElement,
   Stack,
   Text,
+  chakra,
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'

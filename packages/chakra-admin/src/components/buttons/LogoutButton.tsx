@@ -1,5 +1,4 @@
-import { ButtonProps } from '@chakra-ui/button'
-import { Button, useToast } from '@chakra-ui/react'
+import { Button, useToast, ButtonProps } from '@chakra-ui/react'
 import React, { FC, useCallback, useState } from 'react'
 import { useAuthProvider } from '../../core/auth/useAuthProvider'
 

@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
-import { Input, InputGroup, InputGroupProps, InputRightElement } from '@chakra-ui/input'
+import { Input, InputGroup, InputGroupProps, InputRightElement, Icon } from '@chakra-ui/react'
 import { IoIosSearch } from 'react-icons/io'
-import Icon from '@chakra-ui/icon'
 
 export type MenuSearchInputProps = {
   placeholder?: string

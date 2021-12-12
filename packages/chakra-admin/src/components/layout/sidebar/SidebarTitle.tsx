@@ -1,5 +1,5 @@
-import { Box, BoxProps, Heading } from '@chakra-ui/layout'
 import React, { FC } from 'react'
+import { Box, BoxProps, Heading } from '@chakra-ui/react'
 
 type Props = {
   icon: React.ReactNode

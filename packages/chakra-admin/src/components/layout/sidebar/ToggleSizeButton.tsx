@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { IconButton, IconButtonProps } from '@chakra-ui/button'
+import { IconButton, IconButtonProps } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 
 type Props = {

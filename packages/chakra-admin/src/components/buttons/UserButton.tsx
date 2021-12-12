@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 import React, { FC } from 'react'
-import { Button, Icon, Skeleton, Text, useDisclosure } from '@chakra-ui/react'
-import { chakra } from '@chakra-ui/system'
+import { Button, Icon, Skeleton, Text, useDisclosure, chakra } from '@chakra-ui/react'
 import { FiMoreVertical } from 'react-icons/fi'
 import { UserSettingsDrawer } from '../layout/UserSettingsDrawer'
 import { ShadowedBox } from '../layout/ShadowedBox'

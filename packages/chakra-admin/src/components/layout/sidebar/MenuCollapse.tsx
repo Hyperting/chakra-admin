@@ -1,7 +1,5 @@
 import React, { FC } from 'react'
-import Icon from '@chakra-ui/icon'
-import { Box, BoxProps } from '@chakra-ui/layout'
-import { Button, Collapse, IconButton, Text, useDisclosure } from '@chakra-ui/react'
+import { Button, Collapse, Icon, Text, useDisclosure, Box, BoxProps } from '@chakra-ui/react'
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
 import { BiPlus } from 'react-icons/bi'
 

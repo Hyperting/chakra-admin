@@ -1,8 +1,7 @@
-import { Button, ButtonProps } from '@chakra-ui/button'
-import Icon from '@chakra-ui/icon'
 import React, { FC, useMemo } from 'react'
 import { Link, LinkProps } from 'react-router-dom'
 import { BsPlus } from 'react-icons/bs'
+import { Button, ButtonProps, Icon } from '@chakra-ui/react'
 import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
 

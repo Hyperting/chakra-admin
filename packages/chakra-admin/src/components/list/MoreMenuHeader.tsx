@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/system'
+import { chakra } from '@chakra-ui/react'
 import React, { FC } from 'react'
 
 type Props = {

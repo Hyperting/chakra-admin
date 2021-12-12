@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
-import { chakra } from '@chakra-ui/system'
-import { Text, Image, Box, Container } from '@chakra-ui/react'
+import { Text, Image, Box, Container, chakra } from '@chakra-ui/react'
 import { LoginForm } from './LoginForm'
 
 type Props = {

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Box } from '@chakra-ui/layout'
+import { Box } from '@chakra-ui/react'
 import { MenuSearchInput, MenuSearchInputProps } from './MenuSearchInput'
 
 type Props = {

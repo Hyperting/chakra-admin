@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { chakra } from '@chakra-ui/system'
 import {
   Text,
   IconButton,
@@ -8,8 +7,7 @@ import {
   useDisclosure,
   DrawerContent,
   Skeleton,
-  Slide,
-  Collapse,
+  chakra,
 } from '@chakra-ui/react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaArrowLeft, FaFlag } from 'react-icons/fa'

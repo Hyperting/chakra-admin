@@ -1,6 +1,5 @@
 import React, { Children, cloneElement, useEffect, useMemo } from 'react'
 import { Column, TableInstance, usePagination, useSortBy, useTable } from 'react-table'
-import { chakra } from '@chakra-ui/system'
 import { DataTableProps } from '../../components/list/DataTable'
 import { SortDirection } from './SortType'
 import { MoreMenuHeader } from '../../components/list/MoreMenuHeader'

@@ -1,5 +1,4 @@
-import { chakra } from '@chakra-ui/system'
-import { IconButton, Text } from '@chakra-ui/react'
+import { IconButton, Text, chakra } from '@chakra-ui/react'
 import React, { FC } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Row } from 'react-table'

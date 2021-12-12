@@ -1,5 +1,3 @@
-import { IconButton } from '@chakra-ui/button'
-import Icon from '@chakra-ui/icon'
 import {
   Button,
   Menu,
@@ -15,6 +13,8 @@ import {
   ModalOverlay,
   useDisclosure,
   useToast,
+  Icon,
+  IconButton,
 } from '@chakra-ui/react'
 import { DocumentNode } from 'graphql'
 import React, { FC, useCallback, useState } from 'react'
