@@ -1,5 +1,17 @@
+# chakra-admin Example
+
 This project was bootstrapped with
 [Create React App](https://github.com/facebook/create-react-app).
+## Install dependencies and run the project
+
+Install project dependencies from the root folder of `chakra-admin`, then start the [Create React App](https://github.com/facebook/create-react-app) and the [GraphQL Faker Server](https://github.com/APIs-guru/graphql-faker):
+
+```bash
+cd chakra-admin/
+yarn bootstrap
+cd example/
+yarn start:all
+```
 
 ## Available Scripts
 
