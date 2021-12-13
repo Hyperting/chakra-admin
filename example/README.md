@@ -11,6 +11,7 @@ Install project dependencies from the root folder of `chakra-admin`, then start 
 cd chakra-admin/
 
 # install all the dependencies
+yarn
 yarn bootstrap
 
 # go to the example folder

@@ -20,9 +20,10 @@ git clone https://github.com/<your_github_username>/chakra-admin.git
 cd chakra-admin
 ```
 
-3. Bootstrap all dependencies and cross dependencies by running:
+3. Install and Bootstrap all dependencies and cross dependencies by running:
 
 ```bash
+yarn
 yarn bootstrap
 ```
 
