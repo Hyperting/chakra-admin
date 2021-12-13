@@ -27,7 +27,7 @@
     "web-vitals": "^0.2.2"
   },
   "scripts": {
-    "start:all": "concurrently \"yarn start:api-mock\" \"yarn start\"",
+    "start:all": "concurrently \"yarn start:api\" \"yarn start\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
