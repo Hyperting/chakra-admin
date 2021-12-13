@@ -31,6 +31,7 @@ yarn bootstrap
 
 ```bash
 yarn build
+yarn bootstrap
 ```
 
 5. Start the example project:
