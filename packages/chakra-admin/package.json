@@ -15,6 +15,11 @@
   },
   "author": "Hyperting S.r.l.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyperting/chakra-admin.git",
+    "directory": "packages/chakra-admin"
+  },
   "peerDependencies": {
     "@chakra-ui/react": ">= 1.0.0",
     "@chakra-ui/icons": ">= 1.0.0",
@@ -36,6 +41,9 @@
     "typedi": "^0.10.0",
     "use-route-as-state": "^5.1.1",
     "ca-theme": "^0.0.1-rc.9"
+  },
+  "devDependencies": {
+    "ca-test-utils": "^0.0.1-rc.9"
   },
   "publishConfig": {
     "registry": "http://localhost:4873"

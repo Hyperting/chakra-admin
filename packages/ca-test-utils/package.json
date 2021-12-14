@@ -1,0 +1,23 @@
+{
+  "name": "ca-test-utils",
+  "version": "0.0.1-rc.9",
+  "description": "Testing utilities for Chakra Admin",
+  "author": "Hyperting S.r.l.",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyperting/chakra-admin.git",
+    "directory": "packages/test-utils"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.6"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.7.3",
+    "@testing-library/react": "^12.1.2"
+  },
+  "devDependencies": {
+    "react": "^17.0.2"
+  }
+}

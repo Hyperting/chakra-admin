@@ -60,13 +60,10 @@ export const useAdminCore = ({
   }, [])
 
   useEffect(() => {
-    // console.log("controllo se l'utente è loggato prima")
     if (initialized && authProvider && history && authProviderInstance) {
-      // console.log("controllo se l'utente è loggato e pare che possa farlo")
       authProviderInstance
         .checkAuth()
         .then(() => {
-          console.log('sembro loggato')
           // nothing to do
         })
         .catch(() => {
