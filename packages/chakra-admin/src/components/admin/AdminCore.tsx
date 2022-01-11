@@ -133,10 +133,6 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
           />
         </Route>
       </Routes>
-      <pre>
-        {(Children.toArray(props.children)[0] as any)?.props?.overrideName ||
-          (Children.toArray(props.children)[0] as any)?.props?.name}
-      </pre>
 
       {background && (
         <Routes>
