@@ -1,6 +1,6 @@
 {
   "name": "ca-test-utils",
-  "version": "0.0.1-rc.9",
+  "version": "0.0.1-rc.11",
   "description": "Testing utilities for Chakra Admin",
   "author": "Hyperting S.r.l.",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "directory": "packages/test-utils"
   },
   "peerDependencies": {
-    "react": ">=16.8.6"
+    "react": ">= 16.8.6"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.7.3",
@@ -19,5 +19,8 @@
   },
   "devDependencies": {
     "react": "^17.0.2"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:4873"
   }
 }

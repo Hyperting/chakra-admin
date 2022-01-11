@@ -4,7 +4,6 @@ import React, { cloneElement, FC, isValidElement } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
-import { useHistory } from 'react-router'
 import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
 import { Pagination } from './Pagination'
@@ -38,7 +37,6 @@ export const DataTable: FC<DataTableProps> = (props) => {
     setPageSize,
     state: { pageIndex, pageSize },
   } = useDataTable(props)
-  const history = useHistory()
 
   return (
     <chakra.div pr={{ base: 0, lg: '64px' }}>

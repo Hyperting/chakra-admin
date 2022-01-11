@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { Client } from 'urql'
 import { AdminCore, AdminCoreProps } from './AdminCore'
@@ -13,6 +13,9 @@ export const Admin: FC<Props> = ({ makeClient, ...props }) => {
       <ClientProvider makeClient={makeClient}>
         <Router>
           <AdminCore {...props} />
+          {/* <Routes>
+            <Route path="/" element={<>ciao</>} />
+          </Routes> */}
         </Router>
       </ClientProvider>
     </RecoilRoot>

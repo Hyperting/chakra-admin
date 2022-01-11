@@ -3,4 +3,5 @@ export interface RouteAvailability {
   hasEdit?: boolean
   hasCreate?: boolean
   hasShow?: boolean
+  hasList?: boolean
 }

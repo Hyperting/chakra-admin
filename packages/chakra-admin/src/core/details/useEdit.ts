@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react'
 import { useCallback } from 'react'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import {
   OperationContext,
   OperationResult,
@@ -30,7 +30,7 @@ export const useEdit = ({ mutation, resource, query, id }: EditProps): UseEditRe
     pause: !id,
   })
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const notify = useToast()
 
   const onSubmit = useCallback(
@@ -43,7 +43,7 @@ export const useEdit = ({ mutation, resource, query, id }: EditProps): UseEditRe
             title: `${resource} updated.`,
             isClosable: true,
           })
-          history.goBack()
+          navigate(-1)
         } else {
           throw new Error(result.error?.message)
         }
@@ -57,7 +57,7 @@ export const useEdit = ({ mutation, resource, query, id }: EditProps): UseEditRe
         })
       }
     },
-    [executeMutation, history, id, notify, resource]
+    [executeMutation, navigate, id, notify, resource]
   )
 
   return {

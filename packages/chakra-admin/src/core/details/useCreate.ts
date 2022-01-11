@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react'
 import { useCallback } from 'react'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { OperationContext, OperationResult, useMutation, UseMutationState } from 'urql'
 import { CreateProps } from '../../components/details/Create'
 
@@ -15,7 +15,7 @@ export type UseCreateResult = {
 
 export const useCreate = ({ mutation, resource }: CreateProps): UseCreateResult => {
   const [mutationResult, executeMutation] = useMutation(mutation)
-  const history = useHistory()
+  const navigate = useNavigate()
   const notify = useToast()
 
   const onSubmit = useCallback(
@@ -28,7 +28,7 @@ export const useCreate = ({ mutation, resource }: CreateProps): UseCreateResult 
             title: `${resource} created.`,
             isClosable: true,
           })
-          history.goBack()
+          navigate(-1)
         } else {
           throw new Error(result.error?.message)
         }
@@ -43,7 +43,7 @@ export const useCreate = ({ mutation, resource }: CreateProps): UseCreateResult 
         })
       }
     },
-    [executeMutation, history, notify, resource]
+    [executeMutation, navigate, notify, resource]
   )
 
   return {

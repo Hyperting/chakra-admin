@@ -1,7 +1,7 @@
 import { Button, Icon } from '@chakra-ui/react'
 import React, { FC, useCallback } from 'react'
 import { HiArrowNarrowLeft } from 'react-icons/hi'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { PageTitle, PageTitleProps } from '../layout/PageTitle'
 import { ShadowedBox } from '../layout/ShadowedBox'
 
@@ -10,13 +10,13 @@ type Props = PageTitleProps & {
 }
 
 export const CreatePageTitle: FC<Props> = ({ disableGoBack, ...props }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const handleBackClick = useCallback(() => {
     if (disableGoBack) {
       return
     }
-    history.goBack()
-  }, [disableGoBack, history])
+    navigate(-1)
+  }, [disableGoBack, navigate])
 
   return (
     <PageTitle

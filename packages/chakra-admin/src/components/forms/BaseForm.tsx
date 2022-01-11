@@ -1,7 +1,7 @@
 import { Button, chakra } from '@chakra-ui/react'
 import React, { FC, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { UseCreateResult } from '../../core/details/useCreate'
 import { UseEditResult } from '../../core/details/useEdit'
 
@@ -16,10 +16,10 @@ export const BaseForm: FC<Props> = ({
   onSubmit: onSubmitProp = () => {},
   mutationResult,
 }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const handleGoBack = useCallback(() => {
-    history.goBack()
-  }, [history])
+    navigate(-1)
+  }, [navigate])
   const methods = useForm({ defaultValues })
   const { handleSubmit } = methods
 

@@ -1,13 +1,14 @@
 import { Children, useEffect, useMemo, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Container from 'typedi'
-import * as H from 'history'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Location } from 'history'
 import { AdminCoreProps } from '../../components/admin/AdminCore'
 import { AuthProvider } from '../auth/AuthProvider'
 import { TOKEN_AUTH_PROVIDER, useSetAuthProvider } from '../auth/useAuthProvider'
 
 type RouteState = {
-  background?: H.Location<RouteState>
+  background?: Location
 }
 
 /**
@@ -23,18 +24,20 @@ export const useAdminCore = ({
 }: AdminCoreProps): {
   childrenCount: number
   initialized: boolean
-  background?: H.Location<RouteState>
-  location: H.Location<RouteState>
+  background?: Location
+  location: Location
 } => {
   const setAuthProvider = useSetAuthProvider()
   const [authProviderInstance, setAuthProviderInstance] = useState<AuthProvider>()
   const childrenCount = useMemo<number>(() => Children.count(children), [children])
   const [initialized, setInitialized] = useState<boolean>(false)
 
-  const history = useHistory()
-  const location = useLocation<RouteState>()
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  const background = useMemo(() => location?.state?.background, [location?.state])
+  const background = useMemo(() => (location?.state as { background?: Location })?.background, [
+    location?.state,
+  ])
 
   useEffect(() => {
     const initAuthProvider = (): void => {
@@ -60,7 +63,7 @@ export const useAdminCore = ({
   }, [])
 
   useEffect(() => {
-    if (initialized && authProvider && history && authProviderInstance) {
+    if (initialized && authProvider && navigate && authProviderInstance) {
       authProviderInstance
         .checkAuth()
         .then(() => {
@@ -68,12 +71,12 @@ export const useAdminCore = ({
         })
         .catch(() => {
           setTimeout(() => {
-            history.replace('/login')
+            navigate('/login', { replace: true })
           }, 400)
         })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialized, authProviderInstance, history])
+  }, [initialized, authProviderInstance, navigate])
 
   return { childrenCount, initialized, location, background }
 }

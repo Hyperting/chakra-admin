@@ -1,19 +1,15 @@
 import React, { FC } from 'react'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link, useMatch } from 'react-router-dom'
 import { chakra, Button, ButtonProps } from '@chakra-ui/react'
 
 type Props = {
   to: string
   label: string
-  exact?: boolean
   icon?: React.ReactElement
 } & ButtonProps
 
-export const MenuItemLink: FC<Props> = ({ to, exact, label, icon, ...rest }) => {
-  const match = useRouteMatch({
-    exact,
-    path: to,
-  })
+export const MenuItemLink: FC<Props> = ({ to, label, icon, ...rest }) => {
+  const match = useMatch(to)
 
   return (
     <chakra.div as="li" userSelect="none" listStyleType="none">

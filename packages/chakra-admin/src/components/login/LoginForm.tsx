@@ -13,7 +13,7 @@ import {
   chakra,
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { BiHide, BiShow } from 'react-icons/bi'
 import { useAuthProvider } from '../../core/auth/useAuthProvider'
 
@@ -36,7 +36,7 @@ export const LoginForm: FC<Props> = ({
     throw new Error('AuthProvider is not available in LoginForm')
   }
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const [submitting, setSubmitting] = useState<boolean>(false)
   const [error, setError] = useState<boolean>(false)
   const [show, setShow] = useState<boolean>(false)
@@ -48,7 +48,7 @@ export const LoginForm: FC<Props> = ({
       setSubmitting(true)
       setError(false)
       await authProvider.login(credentials)
-      history.replace('/')
+      navigate('/', { replace: true })
     } catch (e) {
       console.error(e)
       setError(true)

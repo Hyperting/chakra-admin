@@ -116,7 +116,8 @@ export const GenericMoreMenuButton: FC<Props> = ({
           {hasEdit && (
             <MenuItem
               as={Link}
-              to={{ pathname: `/${resource}/${id}/edit`, state: { background: location } }}
+              to={`/${resource}/${id}`}
+              state={{ background: location }}
               icon={<Icon as={FaEdit} />}
             >
               Modifica

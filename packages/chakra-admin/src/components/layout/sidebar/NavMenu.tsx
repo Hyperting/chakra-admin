@@ -32,49 +32,42 @@ export const NavMenu: FC<Props> = ({ onItemClick }) => {
         <MenuItemLink
           icon={<Icon as={RiLayoutMasonryLine} fontSize="10px" />}
           to="/"
-          exact
           label="Dashboard"
           onClick={onItemClick}
         />
         <MenuItemLink
           icon={<Icon as={FaUserAlt} fontSize="10px" />}
           to="/"
-          exact
           label="Risorse"
           onClick={onItemClick}
         />
         <MenuItemLink
           icon={<Icon as={FaUserAlt} fontSize="10px" />}
           to="/"
-          exact
           label="Clienti"
           onClick={onItemClick}
         />
         <MenuItemLink
           icon={<Icon as={FaUserAlt} fontSize="10px" />}
           to="/"
-          exact
           label="Fornitori"
           onClick={onItemClick}
         />
         <MenuItemLink
           icon={<Icon as={FaBuilding} fontSize="10px" />}
           to="/"
-          exact
           label="Organizzazioni"
           onClick={onItemClick}
         />
         <MenuItemLink
           icon={<Icon as={FaWarehouse} w="15px" h="13px" />}
           to="/"
-          exact
           label="Magazzino"
           onClick={onItemClick}
         />
         <MenuItemLink
           icon={<Icon as={RiMapPin2Fill} w="14px" h="20px" />}
           to="/"
-          exact
           label="Luoghi"
           onClick={onItemClick}
         />

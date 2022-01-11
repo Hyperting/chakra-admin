@@ -63,8 +63,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
-    "react-router": "^5.2.1",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.2.1",
     "recoil": "^0.5.2",
     "release-it": "^14.11.5",
     "release-it-lerna-changelog": "^3.1.0",
@@ -87,6 +86,7 @@
     "bootstrap": "lerna bootstrap --use-workspaces",
     "clean": "lerna run clean",
     "build": "lerna run build --include-dependencies --stream --ignore example --ignore \"packages/ca-test-utils\" && npm run copy-readme",
+    "start": "lerna run --parallel start --include-dependencies --stream --ignore example --ignore \"packages/ca-test-utils\"",
     "release": "release-it",
     "release-rc": "release-it --preRelease=rc",
     "deploy": "yarn build && yarn release",
@@ -115,5 +115,5 @@
       "release": true
     }
   },
-  "version": "0.0.1-rc.9"
+  "version": "0.0.1-rc.11"
 }

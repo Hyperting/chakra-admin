@@ -25,6 +25,7 @@ export const CreateButton: FC<Props> = ({
   hasEdit,
   hasCreate,
   hasShow,
+  hasList,
   deleteItemMutation,
   defaultSorting,
   currentFilters,

@@ -1,5 +1,6 @@
 import { Box, useBreakpointValue } from '@chakra-ui/react'
 import React, { FC } from 'react'
+import { Outlet } from 'react-router-dom'
 import { OfflineAlert } from './OfflineAlert'
 import { Sidebar } from './sidebar/Sidebar'
 
@@ -17,7 +18,7 @@ export const Layout: FC<Props> = ({ children }) => {
       <OfflineAlert />
       <Sidebar />
       <Box pl="25px" flex="1" bgColor="gray.50">
-        {children}
+        <Outlet />
       </Box>
     </Box>
   )

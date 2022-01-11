@@ -21,4 +21,5 @@ export type ListProps<Data = object, Variables = any> = {
   hasEdit?: boolean
   hasCreate?: boolean
   hasShow?: boolean
+  hasList?: boolean
 }

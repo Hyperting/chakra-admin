@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { OperationContext } from '@urql/core'
 import { useCallback, useEffect, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useQuery, UseQueryArgs, UseQueryState } from 'urql'
-import { useQueryString } from 'use-route-as-state'
 import { ListProps } from './ListProps'
 import { PaginationType } from './PaginationType'
 import { SortType } from './SortType'
@@ -34,7 +35,7 @@ export const useList = <Data = object, Variables = any>({
   query,
   additionalTypenames,
 }: UseListParams): UseListReturn<Data, Variables> => {
-  const [queryState, setQueryState] = useQueryString({
+  const [queryState, setQueryState] = useSearchParams({
     [QP_LIMIT]: `${DEFAULT_LIMIT}`,
     [QP_OFFSET]: '0',
   })
@@ -126,13 +127,13 @@ export const useList = <Data = object, Variables = any>({
 
   const onPaginationChange = useCallback(
     ({ limit, offset }: { limit: number; offset: number }) => {
-      setQueryState((prevState) => ({
-        ...prevState,
+      setQueryState({
+        ...queryState,
         [QP_LIMIT]: `${limit}`,
         [QP_OFFSET]: `${offset}`,
-      }))
+      })
     },
-    [setQueryState]
+    [setQueryState, queryState]
   )
 
   const onSortChange = useCallback(
@@ -143,25 +144,27 @@ export const useList = <Data = object, Variables = any>({
           [QP_SORT_PREFIX + key]: sort[key],
         }
       }, {})
-      setQueryState((prevState) => {
-        const prevStateKeys = Object.keys(prevState)
-        if (prevStateKeys.length > 0) {
-          const filteredPrevState = prevStateKeys.reduce((acc, item) => {
-            if (item.startsWith(QP_SORT_PREFIX)) {
-              return { ...acc }
-            }
-            return {
-              ...acc,
-              [item]: prevState[item],
-            }
-          }, {})
+      setQueryState(
+        ((prevState) => {
+          const prevStateKeys = Object.keys(prevState)
+          if (prevStateKeys.length > 0) {
+            const filteredPrevState = prevStateKeys.reduce((acc, item) => {
+              if (item.startsWith(QP_SORT_PREFIX)) {
+                return { ...acc }
+              }
+              return {
+                ...acc,
+                [item]: prevState[item],
+              }
+            }, {})
 
-          return { ...filteredPrevState, ...newSort }
-        }
-        return { ...newSort }
-      })
+            return { ...filteredPrevState, ...newSort }
+          }
+          return { ...newSort }
+        })(queryState)
+      )
     },
-    [setQueryState]
+    [queryState, setQueryState]
   )
 
   const onFiltersChange = useCallback(
@@ -178,25 +181,27 @@ export const useList = <Data = object, Variables = any>({
           ...acc,
         }
       }, {})
-      setQueryState((prevState) => {
-        const prevStateKeys = Object.keys(prevState)
-        if (prevStateKeys.length > 0) {
-          const filteredPrevState = prevStateKeys.reduce((acc, item) => {
-            if (item.startsWith(QP_FILTERS_PREFIX)) {
-              return { ...acc }
-            }
-            return {
-              ...acc,
-              [item]: prevState[item],
-            }
-          }, {})
+      setQueryState(
+        ((prevState) => {
+          const prevStateKeys = Object.keys(prevState)
+          if (prevStateKeys.length > 0) {
+            const filteredPrevState = prevStateKeys.reduce((acc, item) => {
+              if (item.startsWith(QP_FILTERS_PREFIX)) {
+                return { ...acc }
+              }
+              return {
+                ...acc,
+                [item]: prevState[item],
+              }
+            }, {})
 
-          return { ...filteredPrevState, ...newFilters, offset: '0' }
-        }
-        return { ...newFilters, offset: '0' }
-      })
+            return { ...filteredPrevState, ...newFilters, offset: '0' }
+          }
+          return { ...newFilters, offset: '0' }
+        })(queryState)
+      )
     },
-    [setQueryState]
+    [setQueryState, queryState]
   )
 
   // useEffect(() => {
