@@ -10,8 +10,9 @@ import {
   SortDirection,
   DataTableValue as Field,
 } from 'chakra-admin'
+import { gql } from '@apollo/client'
 
-const QUERY_GET_COMPANIES = /* GraphQL */ `
+const QUERY_GET_COMPANIES = gql`
   query GetCompanies(
     $pagination: PaginationInput
     $sort: CompanySortInput
@@ -27,7 +28,7 @@ const QUERY_GET_COMPANIES = /* GraphQL */ `
   }
 `
 
-const MUTATION_DELETE_COMPANY = /* GraphQL */ `
+const MUTATION_DELETE_COMPANY = gql`
   mutation DeleteCompany($id: ID!) {
     deleteCompany(id: $id)
   }

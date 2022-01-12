@@ -18,13 +18,14 @@ import { Login } from '../login/Login'
 import { useAdminCore } from '../../core/admin/useAdminCore'
 import { Loading } from './Loading'
 import { RouteAvailability } from '../../core/admin/RouteAvailability.js'
+import { GlobalStrategy } from '../../core/admin/Strategy'
 
 export type AdminCoreProps = {
   layoutComponent?: React.ReactNode
   loginComponent?: React.ReactNode
   authProvider?: ClassType<AuthProvider>
+  strategy?: ClassType<GlobalStrategy>
   children?: React.ReactNode
-  customRoutes?: React.ReactNode[]
 }
 
 const ModalLayout: FC = () => {
@@ -34,11 +35,9 @@ const ModalLayout: FC = () => {
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader>Create your account</DrawerHeader>
-
         <DrawerBody>
           <Outlet />
         </DrawerBody>
-
         <DrawerFooter>
           <Button variant="outline" mr={3}>
             Cancel
@@ -51,7 +50,7 @@ const ModalLayout: FC = () => {
 }
 
 export const AdminCore: FC<AdminCoreProps> = (props) => {
-  const { loginComponent = <Login />, layoutComponent = <Layout />, customRoutes } = props
+  const { loginComponent = <Login />, layoutComponent = <Layout />, strategy } = props
 
   if (Children.count(props.children) === 0) {
     throw new Error('Admin has no children')
@@ -70,7 +69,14 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
           <Route path="/login" element={cloneElement(loginComponent, {})} />
         )}
 
-        {customRoutes}
+        {Children.map(props.children, (child: React.ReactNode, index) => {
+          if (isValidElement(child) && child.type === Route) {
+            return cloneElement(child, {
+              key: `route-${index}`,
+            })
+          }
+          return null
+        })}
 
         <Route path="/" element={layoutComponent}>
           {Children.map(props.children, (child: React.ReactNode, index) => {

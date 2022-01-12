@@ -18,7 +18,7 @@ export type DataTableProps = Partial<UseListReturn> &
   }
 
 export const DataTable: FC<DataTableProps> = (props) => {
-  const { fetching, filtersComponent, total, offset, hasEdit, hasShow, resource } = props
+  const { loading, filtersComponent, total, offset, hasEdit, hasShow, resource } = props
 
   const {
     getTableProps,
@@ -56,7 +56,7 @@ export const DataTable: FC<DataTableProps> = (props) => {
           })}
         <Pagination
           page={page}
-          fetching={fetching}
+          fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
           pageOptions={pageOptions}
@@ -107,7 +107,6 @@ export const DataTable: FC<DataTableProps> = (props) => {
           <Tbody {...getTableBodyProps()}>
             {rows.map((row, index) => {
               prepareRow(row)
-              console.log(row.values, 'cia cia')
               return (
                 <Tr {...row.getRowProps()} role="group">
                   {row.cells.map((cell, cellIndex) => (
@@ -140,7 +139,7 @@ export const DataTable: FC<DataTableProps> = (props) => {
       <chakra.div display="flex" justifyContent="flex-end" py={5}>
         <Pagination
           page={page}
-          fetching={fetching}
+          fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
           pageOptions={pageOptions}

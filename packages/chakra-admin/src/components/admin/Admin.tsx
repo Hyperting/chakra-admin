@@ -1,23 +1,46 @@
 import React, { FC } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
-import { Client } from 'urql'
+import { ApolloClient, ApolloProvider } from '@apollo/client'
 import { AdminCore, AdminCoreProps } from './AdminCore'
-import { ClientProvider } from '../UrqlClientProvider'
 
-type Props = AdminCoreProps & { makeClient: () => Client }
+export type AdminProps<TCache> = AdminCoreProps & { client: ApolloClient<TCache> }
 
-export const Admin: FC<Props> = ({ makeClient, ...props }) => {
+/**
+ * Main entry point for the admin panel.
+ *
+ * It initialize the apollo client, the authProvider, the layout of the application and the routes.
+ *
+ * @example
+ *
+ * // basic example
+ *
+ * import { Admin, Resource } from 'chakra-admin'
+ *
+ * const App = () => (
+ *  <Admin makeClient={createGraphqlClient}>
+ *    <Resource name="Company" list={CompanyList} />
+ *  </Admin>
+ * )
+ *
+ * // with custom routes
+ * import { Admin, Resource } from 'chakra-admin'
+ *
+ * const App = () => (
+ * <Admin makeClient={createGraphqlClient}>
+ *  <Resource name="Company" list={CompanyList} />
+ *  <Route path="my-custom-route" element={<>My Custom Route</>} />
+ * </Admin>
+ *
+ */
+export const Admin: FC<AdminProps<any>> = ({ client, ...props }) => {
   return (
     <RecoilRoot>
-      <ClientProvider makeClient={makeClient}>
+      <ApolloProvider client={client}>
         <Router>
           <AdminCore {...props} />
-          {/* <Routes>
-            <Route path="/" element={<>ciao</>} />
-          </Routes> */}
         </Router>
-      </ClientProvider>
+      </ApolloProvider>
     </RecoilRoot>
   )
 }

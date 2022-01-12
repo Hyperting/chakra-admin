@@ -1,33 +1,51 @@
+import {
+  ApolloCache,
+  DefaultContext,
+  FetchResult,
+  MutationFunctionOptions,
+  MutationResult,
+  OperationVariables,
+  QueryResult,
+  useMutation,
+  useQuery,
+} from '@apollo/client'
 import { useToast } from '@chakra-ui/react'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  OperationContext,
-  OperationResult,
-  useMutation,
-  UseMutationState,
-  useQuery,
-  UseQueryState,
-} from 'urql'
 import { EditProps } from '../../components/details/Edit'
 
-export type UseEditResult = {
+export type UseEditResult<
+  TData = any,
+  TVariables = OperationVariables,
+  TContext = DefaultContext,
+  TCache extends ApolloCache<any> = ApolloCache<any>
+> = {
   executeMutation: (
-    variables?: any,
-    context?: Partial<OperationContext> | undefined
-  ) => Promise<OperationResult<object, any>>
-  mutationResult?: UseMutationState<object, any>
-  onSubmit: (values: any) => Promise<UseMutationState<object, any>>
-} & UseQueryState<object, any>
+    options?: MutationFunctionOptions<TData, TVariables, TContext, TCache>
+  ) => Promise<FetchResult<TData>>
+  mutationResult?: MutationResult<TData>
+  onSubmit: (values: any) => Promise<MutationResult<TData>>
+} & QueryResult<TData, TVariables>
 
-export const useEdit = ({ mutation, resource, query, id }: EditProps): UseEditResult => {
-  const [mutationResult, executeMutation] = useMutation(mutation)
-  const [data, refetchDefaultValues] = useQuery({
-    query,
+export const useEdit = <
+  ItemTData = any,
+  ItemTVariables = OperationVariables,
+  EditTData = any,
+  EditTVariables = OperationVariables,
+  TContext = DefaultContext,
+  TCache extends ApolloCache<any> = ApolloCache<any>
+>({
+  mutation,
+  resource,
+  query,
+  id,
+}: EditProps): UseEditResult => {
+  const [executeMutation, mutationResult] = useMutation(mutation)
+  const data = useQuery(query, {
     variables: {
       id,
     },
-    pause: !id,
+    skip: !id,
   })
 
   const navigate = useNavigate()
@@ -36,8 +54,8 @@ export const useEdit = ({ mutation, resource, query, id }: EditProps): UseEditRe
   const onSubmit = useCallback(
     async (values: any): Promise<any> => {
       try {
-        const result = await executeMutation({ id, data: values })
-        if (result.data && !result.error) {
+        const result = await executeMutation({ variables: { id, data: values } })
+        if (result.data && !result.errors) {
           notify({
             status: 'success',
             title: `${resource} updated.`,
@@ -45,7 +63,7 @@ export const useEdit = ({ mutation, resource, query, id }: EditProps): UseEditRe
           })
           navigate(-1)
         } else {
-          throw new Error(result.error?.message)
+          throw new Error('Error updating data')
         }
         return result
       } catch (error: any) {

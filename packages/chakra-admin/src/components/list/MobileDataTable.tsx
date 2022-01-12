@@ -18,7 +18,7 @@ export type MobileDataTableProps = Partial<UseListReturn> &
   }
 
 export const MobileDataTable: FC<MobileDataTableProps> = (props) => {
-  const { fetching, filtersComponent, total, offset } = props
+  const { loading, filtersComponent, total, offset } = props
 
   const {
     getTableProps,
@@ -56,7 +56,7 @@ export const MobileDataTable: FC<MobileDataTableProps> = (props) => {
           })}
         <Pagination
           page={page}
-          fetching={fetching}
+          fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
           pageOptions={pageOptions}
@@ -193,7 +193,7 @@ export const MobileDataTable: FC<MobileDataTableProps> = (props) => {
       <chakra.div display="flex" justifyContent="flex-end" py={5} pr={5}>
         <Pagination
           page={page}
-          fetching={fetching}
+          fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
           pageOptions={pageOptions}

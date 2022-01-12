@@ -1,28 +1,50 @@
+import {
+  ApolloCache,
+  DefaultContext,
+  FetchResult,
+  MutationFunctionOptions,
+  MutationResult,
+  OperationVariables,
+  useMutation,
+} from '@apollo/client'
 import { useToast } from '@chakra-ui/react'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { OperationContext, OperationResult, useMutation, UseMutationState } from 'urql'
 import { CreateProps } from '../../components/details/Create'
 
-export type UseCreateResult = {
+export type UseCreateResult<
+  TData = any,
+  TVariables = OperationVariables,
+  TContext = DefaultContext,
+  TCache extends ApolloCache<any> = ApolloCache<any>
+> = {
   executeMutation: (
-    variables?: any,
-    context?: Partial<OperationContext> | undefined
-  ) => Promise<OperationResult<object, any>>
-  mutationResult?: UseMutationState<object, any>
-  onSubmit: (values: any) => Promise<UseMutationState<object, any>>
+    options?: MutationFunctionOptions<TData, TVariables, TContext, TCache>
+  ) => Promise<FetchResult<TData>>
+  mutationResult?: MutationResult<TData>
+  onSubmit: (values: any) => Promise<MutationResult<TData>>
 }
 
-export const useCreate = ({ mutation, resource }: CreateProps): UseCreateResult => {
-  const [mutationResult, executeMutation] = useMutation(mutation)
+export const useCreate = <
+  TData = any,
+  TVariables = OperationVariables,
+  TContext = DefaultContext,
+  TCache extends ApolloCache<any> = ApolloCache<any>
+>({
+  mutation,
+  resource,
+}: CreateProps): UseCreateResult<TData, TVariables, TContext, TCache> => {
+  const [executeMutation, mutationResult] = useMutation<TData, TVariables, TContext, TCache>(
+    mutation
+  )
   const navigate = useNavigate()
   const notify = useToast()
 
   const onSubmit = useCallback(
     async (values: any): Promise<any> => {
       try {
-        const result = await executeMutation({ data: values })
-        if (result.data && !result.error) {
+        const result = await executeMutation({ variables: values })
+        if (result.data && !result.errors) {
           notify({
             status: 'success',
             title: `${resource} created.`,
@@ -30,7 +52,7 @@ export const useCreate = ({ mutation, resource }: CreateProps): UseCreateResult 
           })
           navigate(-1)
         } else {
-          throw new Error(result.error?.message)
+          throw new Error('Error creating data')
         }
         return result
       } catch (error: any) {

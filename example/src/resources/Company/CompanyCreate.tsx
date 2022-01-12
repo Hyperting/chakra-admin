@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import { Create, BaseForm, Input } from 'chakra-admin'
+import { gql } from '@apollo/client'
 
-const MUTATION_CREATE_COMPANY = /* GraphQL */ `
+const MUTATION_CREATE_COMPANY = gql`
   mutation CreateCompany($data: CreateCompanyInput!) {
     createCompany(data: $data) {
       id

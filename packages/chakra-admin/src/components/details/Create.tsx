@@ -1,14 +1,14 @@
 import React, { Children, FC } from 'react'
 import { chakra } from '@chakra-ui/react'
 import { DocumentNode } from 'graphql'
-import { TypedDocumentNode } from 'urql'
+import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { CreatePageTitle } from './CreatePageTitle'
 import { useCreate } from '../../core/details/useCreate'
 
-export type CreateProps<Data = object, Variables = any> = {
+export type CreateProps<TData = any, TVariables = OperationVariables> = {
   resource?: string
   titleComponent?: React.ReactNode
-  mutation: string | DocumentNode | TypedDocumentNode<Data, Variables>
+  mutation: DocumentNode | TypedDocumentNode<TData, TVariables>
   filtersComponent?: React.ReactNode
 }
 

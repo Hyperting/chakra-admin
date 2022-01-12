@@ -1,10 +1,6 @@
-import { createClient, dedupExchange, fetchExchange } from 'urql'
-import { retryExchange } from '@urql/exchange-retry'
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-export const createGraphqlClient = () =>
-  createClient({
-    // url: 'http://localhost:9002/graphql',
-    url: '/graphql',
-    exchanges: [dedupExchange, retryExchange({}), fetchExchange],
-    requestPolicy: 'cache-and-network',
+export const client = new ApolloClient({
+    uri: '/graphql',
+    cache: new InMemoryCache(),
   })

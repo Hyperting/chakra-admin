@@ -4,6 +4,7 @@ import { DataTableProps } from '../../components/list/DataTable'
 import { SortDirection } from './SortType'
 import { MoreMenuHeader } from '../../components/list/MoreMenuHeader'
 import { GenericMoreMenuButton } from '../../components/buttons/GenericMoreMenuButton'
+import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 
 export type UseDataTableReturn = {
   foundedColumns: Column<object>[]
@@ -12,7 +13,7 @@ export type UseDataTableReturn = {
 export const useDataTable = ({
   data,
   pageCount: maxOffset,
-  fetching,
+  loading,
   error,
   onPaginationChange,
   onSortChange,
@@ -32,7 +33,9 @@ export const useDataTable = ({
   hasDelete,
   hasShow,
   resource,
+  queryResult,
 }: DataTableProps): UseDataTableReturn => {
+  const strategy = useGlobalStrategy()
   const foundedColumns: Column<object>[] = useMemo(
     () =>
       Children.map(children, (child: React.ReactNode, index) => {
@@ -98,10 +101,7 @@ export const useDataTable = ({
       },
       pageCount: maxOffset,
       // disableSortBy: false,
-      data:
-        data && Object.keys(data).length > 0 && (data as any)[Object.keys(data)[0]]
-          ? (data as any)[Object.keys(data)[0]].data
-          : [],
+      data: strategy?.list.getList(queryResult!) || [],
     },
     useSortBy,
     usePagination,
@@ -138,7 +138,7 @@ export const useDataTable = ({
   } = tableInstance
 
   useEffect(() => {
-    if (!fetching) {
+    if (!loading) {
       onPaginationChange!({
         limit: pageSize,
         offset: pageIndex,

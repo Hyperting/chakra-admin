@@ -1,22 +1,27 @@
 import React, { Children, FC } from 'react'
 import { chakra } from '@chakra-ui/react'
 import { DocumentNode } from 'graphql'
-import { TypedDocumentNode } from 'urql'
+import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { CreatePageTitle } from './CreatePageTitle'
 import { useEdit } from '../../core/details/useEdit'
 
-export type EditProps<Data = object, Variables = any> = {
+export type EditProps<
+  ItemTData = any,
+  ItemTVariables = OperationVariables,
+  EditTData = any,
+  EditTVariables = OperationVariables
+> = {
   resource?: string
   id?: string
   titleComponent?: React.ReactNode
-  mutation: string | DocumentNode | TypedDocumentNode<Data, Variables>
-  query: string | DocumentNode | TypedDocumentNode<Data, Variables>
+  mutation: DocumentNode | TypedDocumentNode<EditTData, EditTVariables>
+  query: DocumentNode | TypedDocumentNode<ItemTData, ItemTVariables>
   filtersComponent?: React.ReactNode
 }
 
 export const Edit: FC<EditProps> = (props) => {
   const { children, resource, titleComponent, mutation, id } = props
-  const { onSubmit, executeMutation, mutationResult, fetching, data, error } = useEdit(props)
+  const { onSubmit, executeMutation, mutationResult, loading, data, error } = useEdit(props)
 
   return (
     <chakra.div>
@@ -31,7 +36,7 @@ export const Edit: FC<EditProps> = (props) => {
       >
         {titleComponent || <CreatePageTitle label={`Edit ${resource}`} />}
       </chakra.div>
-      {fetching ? (
+      {loading ? (
         <>Loading</>
       ) : (
         Children.map(children, (child: any) => {

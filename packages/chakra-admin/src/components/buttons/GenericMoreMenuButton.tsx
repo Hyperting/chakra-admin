@@ -1,3 +1,4 @@
+import { OperationVariables, TypedDocumentNode, useApolloClient } from '@apollo/client'
 import {
   Button,
   Menu,
@@ -21,11 +22,10 @@ import React, { FC, useCallback, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { FiMoreVertical } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
-import { Client, TypedDocumentNode, useClient } from 'urql'
 import { RouteAvailability } from '../../core/admin/RouteAvailability.js'
 
-type Props<Data = object, Variables = any> = {
-  deleteItemMutation?: string | DocumentNode | TypedDocumentNode<Data, Variables>
+type Props<Data = any, Variables = OperationVariables> = {
+  deleteItemMutation?: DocumentNode | TypedDocumentNode<Data, Variables>
   onDelete?: (id: string) => void
   onDeleteCompleted?: () => void
   id?: string
@@ -53,7 +53,7 @@ export const GenericMoreMenuButton: FC<Props> = ({
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const location = useLocation()
-  const client = useClient()
+  const client = useApolloClient()
   const notify = useToast()
   const [fetching, setFetching] = useState<boolean>(false)
 
@@ -63,8 +63,11 @@ export const GenericMoreMenuButton: FC<Props> = ({
     } else {
       try {
         setFetching(true)
-        const result = await client.mutation(deleteItemMutation!, { id }).toPromise()
-        if (result.error && result.error.graphQLErrors.length > 0) {
+        const result = await client.mutate({
+          mutation: deleteItemMutation!,
+          variables: { id },
+        })
+        if (result.errors && result.errors.length > 0) {
           throw new Error(`Error deleting resource with id:${id}`)
         } else {
           notify({

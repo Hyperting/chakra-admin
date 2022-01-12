@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import { Edit, BaseForm, Input } from 'chakra-admin'
+import { gql } from '@apollo/client'
 
-const QUERY_GET_COMPANY = /* GraphQL */ `
+const QUERY_GET_COMPANY = gql`
   query GetCompany($id: ID!) {
     company(id: $id) {
       id
@@ -10,7 +11,7 @@ const QUERY_GET_COMPANY = /* GraphQL */ `
   }
 `
 
-const MUTATION_UPDATE_COMPANY = /* GraphQL */ `
+const MUTATION_UPDATE_COMPANY = gql`
   mutation UpdateCompany($id: ID!, $data: UpdateCompanyInput!) {
     updateCompany(id: $id, data: $data) {
       id

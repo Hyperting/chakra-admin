@@ -1,19 +1,32 @@
 import React from 'react'
 import { DocumentNode } from 'graphql'
-import { TypedDocumentNode } from 'urql'
+import {
+  MutationHookOptions,
+  OperationVariables,
+  QueryHookOptions,
+  TypedDocumentNode,
+} from '@apollo/client'
 import { SortType } from './SortType'
+import { ListStrategy } from '../admin/Strategy'
 
-export type ListProps<Data = object, Variables = any> = {
+export type ListProps<
+  ListTData = any,
+  ListTVariables = OperationVariables,
+  DeleteTData = any,
+  DeleteTVariables = OperationVariables
+> = {
   resource?: string
   basePath?: string
   defaultSorting?: SortType<any>
-  additionalTypenames?: string[] | undefined
   titleComponent?: React.ReactNode
   filtersComponent?: React.ReactNode
   toolbarComponent?: React.ReactNode
   listComponent?: React.ReactNode
-  query: string | DocumentNode | TypedDocumentNode<Data, Variables>
-  deleteItemMutation?: string | DocumentNode | TypedDocumentNode<Data, Variables>
+  query: DocumentNode | TypedDocumentNode<ListTData, ListTVariables>
+  queryOptions?: QueryHookOptions<ListTData, ListTVariables>
+  listStrategy?: Partial<ListStrategy>
+  deleteItemMutation?: DocumentNode | TypedDocumentNode<DeleteTData, DeleteTVariables>
+  deleteItemMutationOptions?: MutationHookOptions<DeleteTData, DeleteTVariables>
   showMoreMenu?: boolean
   showMoreMenuEdit?: boolean
   showMoreMenuDelete?: boolean

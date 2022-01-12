@@ -64,8 +64,8 @@ export const BaseForm: FC<Props> = ({
       </chakra.div>
       <chakra.div>
         <Button
-          disabled={mutationResult?.fetching}
-          isLoading={mutationResult?.fetching}
+          disabled={mutationResult?.loading}
+          isLoading={mutationResult?.loading}
           type="submit"
           colorScheme="red"
         >
