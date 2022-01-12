@@ -101,7 +101,6 @@ export const useList = <
   }, [params])
 
   const result = useQuery<ListTData, ListTVariables>(query, {
-    fetchPolicy: 'network-only',
     variables: strategy?.list?.getVariables({
       filters: currentFilters,
       pagination: {
