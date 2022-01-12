@@ -205,7 +205,6 @@ export const useList = <
   )
 
   // useEffect(() => {
-  //   console.log('useEffect', limit, offset, Object.keys(params))
   //   if (!limit && !offset && Object.keys(params).length === 0) {
   //     setParams({
   //       ...params,

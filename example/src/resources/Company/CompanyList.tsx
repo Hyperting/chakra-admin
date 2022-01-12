@@ -46,13 +46,13 @@ export const CompanyList: FC = (props) => {
       {...props}
       query={QUERY_GET_COMPANIES}
       deleteItemMutation={MUTATION_DELETE_COMPANY}
-      titleComponent={<PageTitle icon={FaUser} label="Companies" />}
       filtersComponent={<CompanyFilters />}
       defaultSorting={{ name: SortDirection.ASC }}
-      listComponent={<DataTable />}
     >
-      <Field source="id" label="ID" />
-      <Field source="name" label="Name" />
+      <DataTable>
+        <Field source="id" label="ID" />
+        <Field source="name" label="Name" />
+      </DataTable>
     </List>
   )
 }

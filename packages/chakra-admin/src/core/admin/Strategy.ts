@@ -47,7 +47,13 @@ export interface CreateStrategy<
   getVariables: (values: TFormValues) => TVariables
 }
 
-export interface EditStrategy<TFormValues = Record<string, any>, TVariables = OperationVariables> {
+export interface EditStrategy<
+  TData = any,
+  TFormValues = Record<string, any>,
+  TVariables = OperationVariables,
+  TItem = Record<string, any>
+> {
+  getItem: (queryResult: QueryResult<TData, TVariables>) => TItem
   getVariables: (data: TFormValues) => TVariables
 }
 
@@ -95,9 +101,19 @@ export class DefaultShowStrategy implements ShowStrategy {
   }
 }
 
-export class DefaultFormStrategy implements CreateStrategy, EditStrategy {
+export class DefaultCreateStrategy implements CreateStrategy {
   getVariables: CreateStrategy['getVariables'] = (values) => {
     return { ...values }
+  }
+}
+
+export class DefaultEditStrategy implements EditStrategy {
+  getVariables: EditStrategy['getVariables'] = (values) => {
+    return { ...values }
+  }
+
+  getItem: EditStrategy['getItem'] = (queryResult) => {
+    return queryResult.data
   }
 }
 
@@ -112,9 +128,9 @@ export class DefaultStrategy implements GlobalStrategy {
 
   show = new DefaultShowStrategy()
 
-  create = new DefaultFormStrategy()
+  create = new DefaultCreateStrategy()
 
-  edit = new DefaultFormStrategy()
+  edit = new DefaultEditStrategy()
 
   delete = new DefaultDeleteStrategy()
 }

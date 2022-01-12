@@ -1,7 +1,7 @@
 import { OperationVariables, QueryResult } from "@apollo/client"
-import { DefaultListStrategy, DefaultStrategy, ListGetVariablesParams } from "chakra-admin"
+import { CreateStrategy, DefaultListStrategy, DefaultStrategy, ListGetVariablesParams } from "chakra-admin"
 
-export class ListStrategy extends DefaultListStrategy {
+export class ExampleListStrategy extends DefaultListStrategy {
   getList({ data }: QueryResult<any, OperationVariables>): Record<string, any>[] {
     return data && Object.keys(data).length > 0 && (data as any)[Object.keys(data)[0]]
     ? (data as any)[Object.keys(data)[0]].data
@@ -32,6 +32,15 @@ export class ListStrategy extends DefaultListStrategy {
   }
 }
 
+export class ExampleCreateStrategy implements CreateStrategy {
+  getVariables(values: Record<string, any>): OperationVariables {
+    return {
+      data: {...values}
+    }
+  }
+}
+
 export class ExampleStrategy extends DefaultStrategy {
-  list = new ListStrategy()
+  list = new ExampleListStrategy()
+  create = new ExampleCreateStrategy()
 }

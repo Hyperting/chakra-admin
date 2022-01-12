@@ -16,7 +16,6 @@ export const CreateButton: FC<Props> = ({
   titleComponent,
   filtersComponent,
   toolbarComponent,
-  listComponent,
   query,
   showMoreMenu,
   showMoreMenuEdit,
@@ -51,6 +50,7 @@ export const CreateButton: FC<Props> = ({
   networkStatus,
   to: toProp,
   queryResult,
+  children,
   ...rest
 }) => {
   const to = useMemo(() => toProp || `${basePath}${resource}/create`, [basePath, resource, toProp])
@@ -62,7 +62,7 @@ export const CreateButton: FC<Props> = ({
 
   return (
     <Button as={Link} to={to} colorScheme="red" rightIcon={<Icon as={BsPlus} />} {...rest}>
-      {label}
+      {children || label}
     </Button>
   )
 }

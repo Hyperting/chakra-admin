@@ -1,5 +1,5 @@
 import { chakra } from '@chakra-ui/react'
-import React, { cloneElement, FC, isValidElement, useMemo } from 'react'
+import React, { Children, cloneElement, FC, isValidElement, useMemo } from 'react'
 import { ListProps } from '../../core/list/ListProps'
 import { useList } from '../../core/list/useList'
 import { DataTable } from './DataTable'
@@ -10,9 +10,10 @@ export const List: FC<ListProps> = (props) => {
   const {
     titleComponent,
     toolbarComponent = <ListToolbar />,
-    listComponent = <DataTable />,
+    children,
     resource,
     showMoreMenu = true,
+    ...rest
   } = props
   const listData = useList(props)
 
@@ -20,9 +21,9 @@ export const List: FC<ListProps> = (props) => {
     () => ({
       resource,
       showMoreMenu,
-      ...props,
+      ...rest,
     }),
-    [props, resource, showMoreMenu]
+    [resource, rest, showMoreMenu]
   )
 
   return (
@@ -47,8 +48,8 @@ export const List: FC<ListProps> = (props) => {
             (toolbarComponent as any).props.children
           )}
       </chakra.div>
-      {isValidElement(listComponent) &&
-        cloneElement(listComponent, {
+      {isValidElement(children) &&
+        cloneElement(Children.only(children), {
           ...childrenProps,
           ...listData,
           showMoreMenu,

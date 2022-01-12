@@ -11,6 +11,7 @@ import { useToast } from '@chakra-ui/react'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CreateProps } from '../../components/details/Create'
+import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 
 export type UseCreateResult<
   TData = any,
@@ -39,11 +40,19 @@ export const useCreate = <
   )
   const navigate = useNavigate()
   const notify = useToast()
+  const strategy = useGlobalStrategy()
 
   const onSubmit = useCallback(
     async (values: any): Promise<any> => {
       try {
-        const result = await executeMutation({ variables: values })
+        const variables = strategy?.create.getVariables(values)
+        if (!variables) {
+          throw new Error('No variables found in CreateStrategy')
+        }
+
+        const result = await executeMutation({
+          variables: variables as TVariables,
+        })
         if (result.data && !result.errors) {
           notify({
             status: 'success',
@@ -65,7 +74,7 @@ export const useCreate = <
         })
       }
     },
-    [executeMutation, navigate, notify, resource]
+    [executeMutation, navigate, notify, resource, strategy?.create]
   )
 
   return {

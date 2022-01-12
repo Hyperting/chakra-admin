@@ -21,7 +21,6 @@ export type ListProps<
   titleComponent?: React.ReactNode
   filtersComponent?: React.ReactNode
   toolbarComponent?: React.ReactNode
-  listComponent?: React.ReactNode
   query: DocumentNode | TypedDocumentNode<ListTData, ListTVariables>
   queryOptions?: QueryHookOptions<ListTData, ListTVariables>
   listStrategy?: Partial<ListStrategy>

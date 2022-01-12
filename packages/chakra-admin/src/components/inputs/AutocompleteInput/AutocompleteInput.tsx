@@ -124,7 +124,6 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
 
     useEffect(() => {
       const fetchData = async () => {
-        console.log('fetch Data')
         try {
           setFetching(true)
           const { data, error } = await client
@@ -167,7 +166,6 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
         }
       }
 
-      // console.log('value cambiato', value)
       if (value) {
         fetchData()
       } else if (typeof value === 'string' && value === '0') {
