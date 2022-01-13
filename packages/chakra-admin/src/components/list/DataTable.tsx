@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-key */
-import React, { cloneElement, FC, isValidElement } from 'react'
+import React, { cloneElement, FC, isValidElement, useCallback } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { chakra, Table, Tbody, Td, Th, Thead, Tr, useCallbackRef } from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
+import { useNavigate } from 'react-router-dom'
 import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
 import { Pagination } from './Pagination'
@@ -37,6 +38,19 @@ export const DataTable: FC<DataTableProps> = (props) => {
     setPageSize,
     state: { pageIndex, pageSize },
   } = useDataTable(props)
+
+  const navigate = useNavigate()
+
+  const handleRowClick = useCallback(
+    (row: any) => () => {
+      if (hasShow) {
+        navigate(`${row.original.id}/show`)
+      } else {
+        navigate(`${row.original.id}`)
+      }
+    },
+    [hasShow, navigate]
+  )
 
   return (
     <chakra.div pr={{ base: 0, lg: '64px' }}>
@@ -108,7 +122,7 @@ export const DataTable: FC<DataTableProps> = (props) => {
             {rows.map((row, index) => {
               prepareRow(row)
               return (
-                <Tr {...row.getRowProps()} role="group">
+                <Tr {...row.getRowProps()} role="group" onClick={handleRowClick(row)}>
                   {row.cells.map((cell, cellIndex) => (
                     <Td
                       {...cell.getCellProps()}

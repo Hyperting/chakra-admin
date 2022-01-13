@@ -1,14 +1,13 @@
 import React, { Children, FC } from 'react'
-import { chakra } from '@chakra-ui/react'
+import { Box, BoxProps, chakra } from '@chakra-ui/react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { deepMap } from 'react-children-utilities'
 import { CreatePageTitle } from './CreatePageTitle'
-import { useEdit } from '../../core/details/useEdit'
-import { ChakraLayoutComponents } from '../../core/react'
-import { ca } from '../../core/react/system'
+import { useShow } from '../../core/details/useShow'
+import { ca, ChakraLayoutComponents } from '../../core/react/system'
 
-export type EditProps<
+export type ShowProps<
   ItemTData = any,
   ItemTVariables = OperationVariables,
   EditTData = any,
@@ -17,14 +16,16 @@ export type EditProps<
   resource?: string
   id?: string
   titleComponent?: React.ReactNode
-  mutation: DocumentNode | TypedDocumentNode<EditTData, EditTVariables>
+  mutation?: DocumentNode | TypedDocumentNode<EditTData, EditTVariables>
   query: DocumentNode | TypedDocumentNode<ItemTData, ItemTVariables>
   filtersComponent?: React.ReactNode
 }
 
-export const Edit: FC<EditProps> = (props) => {
+const CABox = ca<BoxProps>(Box)
+
+export const Show: FC<ShowProps> = (props) => {
   const { children, resource, titleComponent, mutation, id } = props
-  const { onSubmit, executeMutation, mutationResult, loading, item, data, error } = useEdit(props)
+  const { onSubmit, executeMutation, mutationResult, loading, item, data, error } = useShow(props)
 
   return (
     <chakra.div>
@@ -37,7 +38,7 @@ export const Edit: FC<EditProps> = (props) => {
         pl={{ base: 5, lg: 0 }}
         justifyContent="space-between"
       >
-        {titleComponent || <CreatePageTitle label={`Edit ${resource}`} />}
+        {titleComponent || <CreatePageTitle label={`Show ${resource}`} />}
       </chakra.div>
       {loading ? (
         <>Loading</>
@@ -80,24 +81,6 @@ export const Edit: FC<EditProps> = (props) => {
             })
           }
         })
-        // Children.map(children, (child: any) => {
-        //   return React.cloneElement(child, {
-        //     ...{
-        //       ...child.props,
-        //       id,
-        //       mutation,
-        //       onSubmit,
-        //       executeMutation,
-        //       mutationResult,
-        //       defaultValues: item,
-        //       item,
-        //       record: item,
-        //       data,
-        //       error,
-        //       loading,
-        //     },
-        //   })
-        // })
       )}
     </chakra.div>
   )

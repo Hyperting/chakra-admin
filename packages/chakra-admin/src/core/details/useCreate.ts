@@ -45,7 +45,7 @@ export const useCreate = <
   const onSubmit = useCallback(
     async (values: any): Promise<any> => {
       try {
-        const variables = strategy?.create.getVariables(values)
+        const variables = strategy?.create.getMutationVariables(values)
         if (!variables) {
           throw new Error('No variables found in CreateStrategy')
         }

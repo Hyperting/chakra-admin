@@ -27,9 +27,16 @@
   },
   "include": [
     "packages",
-    "website"
+    "scripts",
   ],
   "exclude": [
-      "node_modules"
-  ]
+    "node_modules"
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "resolveJsonModule": true,
+      "noImplicitAny": false
+    }
+  }
 }

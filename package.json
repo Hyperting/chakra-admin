@@ -4,7 +4,8 @@
   "workspaces": {
     "packages": [
       "packages/*",
-      "example"
+      "example",
+      "website"
     ]
   },
   "repository": {
@@ -12,6 +13,7 @@
     "url": "https://github.com/Hyperting/chakra-admin.git"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.7",
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
@@ -26,6 +28,7 @@
     "@storybook/addon-essentials": "^6.3.8",
     "@storybook/addon-links": "^6.3.8",
     "@storybook/react": "^6.3.8",
+    "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@types/enzyme": "^3.10.10",
     "@types/jest": "^27.0.2",
@@ -72,10 +75,11 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^27.0.7",
-    "typescript": "^4.3.5",
-    "@apollo/client": "^3.5.7"
+    "ts-morph": "^13.0.2",
+    "ts-node": "^10.4.0",
+    "ts-transformer-keys": "^0.4.3",
+    "typescript": "^4.3.5"
   },
-  "devDependencies": {},
   "resolutions": {
     "**/react": "17.0.1",
     "**/react-dom": "17.0.1"
@@ -86,14 +90,14 @@
     "bootstrap": "lerna bootstrap --use-workspaces",
     "clean": "lerna run clean",
     "build": "lerna run build --include-dependencies --stream --ignore example --ignore \"packages/ca-test-utils\" && npm run copy-readme",
-    "start": "lerna run --parallel start --include-dependencies --stream --ignore example --ignore \"packages/ca-test-utils\"",
+    "start": "lerna run --parallel start --include-dependencies --stream --ignore website --ignore example --ignore \"packages/ca-test-utils\"",
     "release": "release-it",
     "release-rc": "release-it --preRelease=rc",
     "deploy": "yarn build && yarn release",
     "deploy-rc": "yarn build && yarn release-rc",
     "test:unit": "jest",
-    "test-watch:unit": "jest --watch",
-    "test-watch": "yarn test-watch:unit",
+    "test:watch:unit": "jest --watch",
+    "test:watch": "yarn test:watch:unit",
     "test": "yarn test:unit",
     "copy-readme": "cpy ./README.md ./packages/chakra-admin"
   },

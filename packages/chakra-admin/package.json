@@ -21,24 +21,26 @@
     "directory": "packages/chakra-admin"
   },
   "peerDependencies": {
-    "@chakra-ui/react": ">= 1.0.0",
+    "@apollo/client": ">= 3.5.7",
     "@chakra-ui/icons": ">= 1.0.0",
+    "@chakra-ui/react": ">= 1.0.0",
     "@chakra-ui/utils": ">= 1.0.0",
     "framer-motion": ">= 4",
     "graphql": ">= 16.0.0",
     "react": ">= 17.0.2",
     "react-dom": ">= 17.0.2",
     "react-icons": ">= 4.3.1",
-    "react-router-dom": ">= 6.2.1",
-    "@apollo/client": ">= 3.5.7"
+    "react-router-dom": ">= 6.2.1"
   },
   "dependencies": {
     "@oieduardorabelo/use-navigator-online": "^6.1.0",
+    "ca-theme": "^0.0.1-rc.11",
+    "lodash.get": "^4.4.2",
+    "react-children-utilities": "^2.6.3",
     "react-hook-form": "^7.21.2",
     "react-table": "^7.7.0",
     "recoil": "^0.5.2",
-    "typedi": "^0.10.0",
-    "ca-theme": "^0.0.1-rc.11"
+    "typedi": "^0.10.0"
   },
   "devDependencies": {
     "ca-test-utils": "^0.0.1-rc.11"

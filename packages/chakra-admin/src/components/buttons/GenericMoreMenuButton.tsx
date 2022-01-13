@@ -22,7 +22,8 @@ import React, { FC, useCallback, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { FiMoreVertical } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
-import { RouteAvailability } from '../../core/admin/RouteAvailability.js'
+import { RouteAvailability } from '../../core/admin/RouteAvailability'
+import { useGlobalStrategy } from '../../core/admin/useGlobalStrategy'
 
 type Props<Data = any, Variables = OperationVariables> = {
   deleteItemMutation?: DocumentNode | TypedDocumentNode<Data, Variables>
@@ -56,16 +57,22 @@ export const GenericMoreMenuButton: FC<Props> = ({
   const client = useApolloClient()
   const notify = useToast()
   const [fetching, setFetching] = useState<boolean>(false)
+  const strategy = useGlobalStrategy()
 
   const handleDeleteItem = useCallback(async () => {
     if (onDelete) {
       onDelete(id!)
     } else {
       try {
+        const variables = strategy?.delete.getVariables(id!)
+        if (!variables) {
+          throw new Error('Variables not found in DeleteStrategy.getVariables()')
+        }
+
         setFetching(true)
         const result = await client.mutate({
           mutation: deleteItemMutation!,
-          variables: { id },
+          variables,
         })
         if (result.errors && result.errors.length > 0) {
           throw new Error(`Error deleting resource with id:${id}`)
@@ -94,7 +101,16 @@ export const GenericMoreMenuButton: FC<Props> = ({
         setFetching(false)
       }
     }
-  }, [client, deleteItemMutation, id, notify, onClose, onDelete, onDeleteCompleted])
+  }, [
+    client,
+    deleteItemMutation,
+    id,
+    notify,
+    onClose,
+    onDelete,
+    onDeleteCompleted,
+    strategy?.delete,
+  ])
 
   const handleMenuItemDeleteClick = useCallback(() => {
     if (showConfirmDialogOnDelete) {

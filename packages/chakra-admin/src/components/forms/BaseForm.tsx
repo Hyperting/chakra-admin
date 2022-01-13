@@ -1,20 +1,25 @@
-import { Button, chakra } from '@chakra-ui/react'
+import { Button, chakra, ChakraProps } from '@chakra-ui/react'
 import React, { FC, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { deepMap, deepFilter } from 'react-children-utilities'
 import { UseCreateResult } from '../../core/details/useCreate'
 import { UseEditResult } from '../../core/details/useEdit'
+import { ca, ChakraLayoutComponents } from '../../core/react/system'
 
-type Props = {
+type BaseFormProps = {
   children?: React.ReactNode
   defaultValues?: any
-} & Partial<UseCreateResult | UseEditResult>
+} & Partial<UseCreateResult | UseEditResult> &
+  ChakraProps
 
-export const BaseForm: FC<Props> = ({
+export const BaseForm: FC<BaseFormProps> = ({
   children,
   defaultValues,
   onSubmit: onSubmitProp = () => {},
   mutationResult,
+  executeMutation,
+  ...rest
 }) => {
   const navigate = useNavigate()
   const handleGoBack = useCallback(() => {
@@ -25,29 +30,64 @@ export const BaseForm: FC<Props> = ({
 
   const onSubmit = useCallback(
     (values) => {
-      const foundedFields = React.Children.map(children, (child: any) => {
-        if (child.props.source) {
-          return child.props.source
-        }
+      const { id: valuesId, __typename, ...rest } = values
+      // const foundedFields = deepFilter(children, (child: any) => {
+      //   if (child.props.source) {
+      //     return true
+      //   }
 
-        return undefined
-      })?.filter((item) => !!item)
-
-      const finalData = foundedFields?.reduce((acc, item) => {
-        return {
-          ...acc,
-          [item]: values[item],
-        }
-      }, {})
-      onSubmitProp(finalData)
+      //   return false
+      // })
+      //   ?.map((item) => item && (item as any)?.props && (item as any).props.source)
+      //   ?.filter((item) => !!item)
+      // console.log('values', foundedFields, values)
+      // const finalData = foundedFields?.reduce((acc, item) => {
+      //   return {
+      //     ...acc,
+      //     [item]: values[item],
+      //   }
+      // }, {})
+      onSubmitProp(rest)
     },
-    [children, onSubmitProp]
+    [onSubmitProp]
   )
 
   return (
     <chakra.form onSubmit={handleSubmit(onSubmit)}>
       <chakra.div>
-        {React.Children.map(children, (child: any) => {
+        {deepMap(children, (child: any) => {
+          const isLayout = ChakraLayoutComponents.includes(child.type.name)
+
+          if (isLayout) {
+            return React.createElement(
+              ca[child.type.name],
+              {
+                ...{
+                  ...child.props,
+                  onSubmit,
+                  executeMutation,
+                  mutationResult,
+                  ...rest,
+                },
+              },
+              child.props?.children
+            )
+          } else {
+            const { children, ...restProps } = child.props
+            return child.props.source
+              ? React.createElement(child.type, {
+                  ...{
+                    ...restProps,
+                    register: methods.register,
+                    control: methods.control,
+                    name: child.props.source,
+                    key: child.props.source,
+                  },
+                })
+              : child
+          }
+        })}
+        {/* {React.Children.map(children, (child: any) => {
           const { children, ...restProps } = child.props
           return child.props.source
             ? React.createElement(child.type, {
@@ -60,7 +100,7 @@ export const BaseForm: FC<Props> = ({
                 },
               })
             : child
-        })}
+        })} */}
       </chakra.div>
       <chakra.div>
         <Button

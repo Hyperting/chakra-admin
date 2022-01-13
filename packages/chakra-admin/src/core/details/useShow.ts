@@ -13,9 +13,9 @@ import { useToast } from '@chakra-ui/react'
 import { useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalStrategy } from '..'
-import { EditProps } from '../../components/details/Edit'
+import { ShowProps } from '../../components/details/Show'
 
-export type UseEditResult<
+export type UseShowResult<
   TData = any,
   TVariables = OperationVariables,
   TItem = Record<string, any>,
@@ -30,34 +30,33 @@ export type UseEditResult<
   item?: TItem
 } & QueryResult<TData, TVariables>
 
-export const useEdit = <
+export const useShow = <
   ItemTData = any,
   ItemTVariables = OperationVariables,
-  EditTData = any,
-  EditTVariables = OperationVariables
+  ShowTData = any,
+  ShowTVariables = OperationVariables
 >({
   mutation,
   resource,
   query,
   id,
-}: EditProps<ItemTData, ItemTVariables, EditTData, EditTVariables>): UseEditResult => {
+}: ShowProps<ItemTData, ItemTVariables, ShowTData, ShowTVariables>): UseShowResult => {
   const strategy = useGlobalStrategy()
-  const queryVariables = useMemo(() => (id ? strategy?.edit.getItemVariables(id) : undefined), [
+  const queryVariables = useMemo(() => (id ? strategy?.show.getItemVariables(id) : undefined), [
     id,
-    strategy?.edit,
+    strategy?.show,
   ])
 
-  const [executeMutation, mutationResult] = useMutation<EditTData, EditTVariables>(mutation)
+  const [executeMutation, mutationResult] = useMutation<ShowTData, ShowTVariables>(mutation as any)
   const data = useQuery<ItemTData, ItemTVariables>(query, {
     variables: queryVariables as ItemTVariables,
     skip: !id,
   })
-  const item = useMemo(() => (data.data ? strategy?.edit.getItem(data) : undefined), [
+  const item = useMemo(() => (data.data ? strategy?.show.getItem(data) : undefined), [
     data,
-    strategy?.edit,
+    strategy?.show,
   ])
 
-  const navigate = useNavigate()
   const notify = useToast()
 
   const onSubmit = useCallback(
@@ -66,26 +65,29 @@ export const useEdit = <
         if (!id) {
           throw new Error('No id found')
         }
-
-        const variables = strategy?.edit.getMutationVariables(id, values)
-        if (!variables) {
-          throw new Error('No variables found in EditStrategy.getMutationVariables()')
+        if (!strategy?.show.getMutationVariables) {
+          throw new Error('No implementation found for ShowStrategy.getMutationVariables')
         }
 
-        const result = await executeMutation({ variables: variables as EditTVariables })
+        const variables = strategy.show.getMutationVariables(id, values)
+        if (!variables) {
+          throw new Error('No variables found in ShowStrategy.getMutationVariables()')
+        }
+
+        const result = await executeMutation({ variables: variables as ShowTVariables })
         if (result.data && !result.errors) {
           notify({
             status: 'success',
             title: `${resource} updated.`,
             isClosable: true,
           })
-          navigate(-1)
+          data.refetch()
         } else {
           throw new Error('Error updating data')
         }
         return result
       } catch (error: any) {
-        console.error('Error During Edit submit', error)
+        console.error('Error During Show submit', error)
         notify({
           status: 'error',
           title: `Errore durante la modifica della risorsa ${resource}`,
@@ -93,7 +95,7 @@ export const useEdit = <
         })
       }
     },
-    [strategy?.edit, id, executeMutation, notify, resource, navigate]
+    [id, strategy?.show, executeMutation, notify, resource, data]
   )
 
   return {

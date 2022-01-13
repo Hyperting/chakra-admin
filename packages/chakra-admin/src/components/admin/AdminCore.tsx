@@ -1,5 +1,5 @@
 import React, { Children, cloneElement, createElement, FC, isValidElement } from 'react'
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom'
 import {
   Drawer,
   DrawerBody,
@@ -47,6 +47,13 @@ const ModalLayout: FC = () => {
       </DrawerContent>
     </Drawer>
   )
+}
+
+const WithIdParam: FC = ({ children }) => {
+  const { id } = useParams()
+  return cloneElement(Children.only(children) as React.ReactElement, {
+    id,
+  })
 }
 
 export const AdminCore: FC<AdminCoreProps> = (props) => {
@@ -111,13 +118,21 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                     {crud.hasEdit && (
                       <Route
                         path=":id"
-                        element={createElement(child.props.edit, { ...resourceProps })}
+                        element={
+                          <WithIdParam>
+                            {createElement(child.props.edit, { ...resourceProps })}
+                          </WithIdParam>
+                        }
                       />
                     )}
                     {crud.hasShow && (
                       <Route
                         path=":id/show"
-                        element={createElement(child.props.show, { ...resourceProps })}
+                        element={
+                          <WithIdParam>
+                            {createElement(child.props.show, { ...resourceProps })}
+                          </WithIdParam>
+                        }
                       />
                     )}
                   </Route>
@@ -171,13 +186,21 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                     {crud.hasEdit && (
                       <Route
                         path=":id"
-                        element={createElement(child.props.edit, { ...resourceProps })}
+                        element={
+                          <WithIdParam>
+                            {createElement(child.props.edit, { ...resourceProps })}
+                          </WithIdParam>
+                        }
                       />
                     )}
                     {crud.hasShow && (
                       <Route
                         path=":id/show"
-                        element={createElement(child.props.show, { ...resourceProps })}
+                        element={
+                          <WithIdParam>
+                            {createElement(child.props.show, { ...resourceProps })}
+                          </WithIdParam>
+                        }
                       />
                     )}
                   </Route>

@@ -33,18 +33,21 @@ export interface ListStrategy<
 
 export interface ShowStrategy<
   TData = any,
+  TFormValues = Record<string, any>,
   TVariables = OperationVariables,
   TItem = Record<string, any>
 > {
-  getVariables: (id: string | number) => TVariables
+  getId: (item: TItem) => string
   getItem: (queryResult: QueryResult<TData, TVariables>) => TItem
+  getItemVariables: (id: string) => TVariables
+  getMutationVariables?: (id: string, values: TFormValues) => TVariables
 }
 
 export interface CreateStrategy<
   TFormValues = Record<string, any>,
   TVariables = OperationVariables
 > {
-  getVariables: (values: TFormValues) => TVariables
+  getMutationVariables: (values: TFormValues) => TVariables
 }
 
 export interface EditStrategy<
@@ -53,11 +56,14 @@ export interface EditStrategy<
   TVariables = OperationVariables,
   TItem = Record<string, any>
 > {
+  getId: (item: TItem) => string
   getItem: (queryResult: QueryResult<TData, TVariables>) => TItem
-  getVariables: (data: TFormValues) => TVariables
+  getItemVariables: (id: string) => TVariables
+  getMutationVariables: (id: string, values: TFormValues) => TVariables
 }
 
-export interface DeleteStrategy<TVariables = OperationVariables> {
+export interface DeleteStrategy<TVariables = OperationVariables, TItem = Record<string, any>> {
+  getId: (item: TItem) => string
   getVariables: (id: string) => TVariables
 }
 
@@ -92,32 +98,46 @@ export class DefaultListStrategy implements ListStrategy {
 }
 
 export class DefaultShowStrategy implements ShowStrategy {
+  getId: ShowStrategy['getId'] = ({ id }) => id
+
   getItem: ShowStrategy['getItem'] = (queryResult) => {
     return queryResult.data
   }
 
-  getVariables: ShowStrategy['getVariables'] = (id) => {
+  getItemVariables: ShowStrategy['getItemVariables'] = (id) => {
     return { id }
+  }
+
+  getMutationVariables: ShowStrategy['getMutationVariables'] = (id, values) => {
+    return { id, ...values }
   }
 }
 
 export class DefaultCreateStrategy implements CreateStrategy {
-  getVariables: CreateStrategy['getVariables'] = (values) => {
+  getMutationVariables: CreateStrategy['getMutationVariables'] = (values) => {
     return { ...values }
   }
 }
 
 export class DefaultEditStrategy implements EditStrategy {
-  getVariables: EditStrategy['getVariables'] = (values) => {
-    return { ...values }
+  getId: EditStrategy['getId'] = ({ id }) => id
+
+  getMutationVariables: EditStrategy['getMutationVariables'] = (id, values) => {
+    return { id, ...values }
   }
 
   getItem: EditStrategy['getItem'] = (queryResult) => {
     return queryResult.data
   }
+
+  getItemVariables: EditStrategy['getItemVariables'] = (id) => {
+    return { id }
+  }
 }
 
 export class DefaultDeleteStrategy implements DeleteStrategy {
+  getId: DeleteStrategy['getId'] = ({ id }) => id
+
   getVariables: DeleteStrategy['getVariables'] = (id) => {
     return { id }
   }
