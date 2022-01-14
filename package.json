@@ -89,7 +89,7 @@
     "build-storybook": "build-storybook",
     "bootstrap": "lerna bootstrap --use-workspaces",
     "clean": "lerna run clean",
-    "build": "lerna run build --include-dependencies --stream --ignore example --ignore \"packages/ca-test-utils\" && npm run copy-readme",
+    "build": "lerna run build --include-dependencies --stream --ignore example --ignore website --ignore \"packages/ca-test-utils\" && npm run copy-readme",
     "start": "lerna run --parallel start --include-dependencies --stream --ignore website --ignore example --ignore \"packages/ca-test-utils\"",
     "release": "release-it",
     "release-rc": "release-it --preRelease=rc",
@@ -121,5 +121,5 @@
       "release": true
     }
   },
-  "version": "0.0.1-dev.0"
+  "version": "0.0.1-dev.1"
 }
