@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-key */
 import React, { cloneElement, FC, isValidElement, useCallback } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { chakra, Table, Tbody, Td, Th, Thead, Tr, useCallbackRef } from '@chakra-ui/react'
+import { chakra, Heading, Table, Tbody, Td, Th, Thead, Tr, useCallbackRef } from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
 import { useNavigate } from 'react-router-dom'
 import { ListProps } from '../../core/list/ListProps'
@@ -42,7 +42,12 @@ export const DataTable: FC<DataTableProps> = (props) => {
   const navigate = useNavigate()
 
   const handleRowClick = useCallback(
-    (row: any) => () => {
+    (row: any) => (event: React.MouseEventHandler<HTMLTableRowElement>) => {
+      console.log((event as any).currentTarget, (event as any).target, 'row')
+      if ((event as any).target !== (event as any).currentTarget) {
+        return
+      }
+
       if (hasShow) {
         navigate(`${row.original.id}/show`)
       } else {
@@ -122,7 +127,7 @@ export const DataTable: FC<DataTableProps> = (props) => {
             {rows.map((row, index) => {
               prepareRow(row)
               return (
-                <Tr {...row.getRowProps()} role="group" onClick={handleRowClick(row)}>
+                <Tr {...row.getRowProps()} role="group">
                   {row.cells.map((cell, cellIndex) => (
                     <Td
                       {...cell.getCellProps()}
@@ -132,6 +137,7 @@ export const DataTable: FC<DataTableProps> = (props) => {
                         cursor: 'pointer',
                       }}
                       fontSize="sm"
+                      onClick={handleRowClick(row)}
                       // onClick={(e) => {
                       //   e.preventDefault()
                       //   if (hasShow) {

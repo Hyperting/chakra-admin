@@ -43,11 +43,11 @@ export const Edit: FC<EditProps> = (props) => {
         <>Loading</>
       ) : (
         deepMap(children, (child: any) => {
-          const isLayout = ChakraLayoutComponents.includes(child.type.name)
+          const isLayout = ChakraLayoutComponents.includes(child.type.displayName)
 
           if (isLayout) {
             return React.createElement(
-              ca[child.type.name],
+              ca[child.type.displayName],
               {
                 ...{
                   ...child.props,
@@ -80,24 +80,6 @@ export const Edit: FC<EditProps> = (props) => {
             })
           }
         })
-        // Children.map(children, (child: any) => {
-        //   return React.cloneElement(child, {
-        //     ...{
-        //       ...child.props,
-        //       id,
-        //       mutation,
-        //       onSubmit,
-        //       executeMutation,
-        //       mutationResult,
-        //       defaultValues: item,
-        //       item,
-        //       record: item,
-        //       data,
-        //       error,
-        //       loading,
-        //     },
-        //   })
-        // })
       )}
     </chakra.div>
   )

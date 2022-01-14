@@ -1,5 +1,5 @@
-import React, { Children, FC } from 'react'
-import { Box, BoxProps, chakra } from '@chakra-ui/react'
+import React, { FC } from 'react'
+import { chakra } from '@chakra-ui/react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { deepMap } from 'react-children-utilities'
@@ -20,8 +20,6 @@ export type ShowProps<
   query: DocumentNode | TypedDocumentNode<ItemTData, ItemTVariables>
   filtersComponent?: React.ReactNode
 }
-
-const CABox = ca<BoxProps>(Box)
 
 export const Show: FC<ShowProps> = (props) => {
   const { children, resource, titleComponent, mutation, id } = props
@@ -44,11 +42,11 @@ export const Show: FC<ShowProps> = (props) => {
         <>Loading</>
       ) : (
         deepMap(children, (child: any) => {
-          const isLayout = ChakraLayoutComponents.includes(child.type.name)
+          const isLayout = ChakraLayoutComponents.includes(child.type.displayName)
 
           if (isLayout) {
             return React.createElement(
-              ca[child.type.name],
+              ca[child.type.displayName],
               {
                 ...{
                   ...child.props,

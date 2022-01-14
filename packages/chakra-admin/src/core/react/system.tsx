@@ -23,39 +23,84 @@ import {
   Input,
   Textarea,
   FormControl,
+  HStack,
+  VStack,
+  AspectRatio,
+  WrapItem,
+  Square,
+  Circle,
+  GridItem,
+  Portal,
+  Kbd,
+  List,
+  OrderedList,
+  UnorderedList,
 } from '@chakra-ui/react'
 import { keys } from 'ts-transformer-keys/index'
 import get from 'lodash.get'
 
 export const ChakraLayoutComponents = [
+  AspectRatio,
   Box,
   Center,
+  Square,
+  Circle,
   Container,
   Flex,
   Grid,
+  GridItem,
   SimpleGrid,
   Stack,
+  HStack,
+  VStack,
   Wrap,
+  WrapItem,
   FormControl,
+  SimpleGrid,
+  Portal,
+  List,
+  OrderedList,
+  UnorderedList,
 ]
 
-export const ChakraDisplayComponents = [Badge, Code, Tag, Progress, Text, Heading]
-
-export const ChakraFormComponents = [Checkbox, Editable, Input, Textarea]
-
 const ChakraLayoutComponentNames = [
+  'AspectRatio',
   'Box',
   'Center',
+  'Square',
+  'Circle',
   'Container',
   'Flex',
   'Grid',
+  'GridItem',
   'SimpleGrid',
   'Stack',
+  'HStack',
+  'VStack',
   'Wrap',
+  'WrapItem',
   'FormControl',
+  'SimpleGrid',
+  'Portal',
+  'List',
+  'OrderedList',
+  'UnorderedList',
 ] as const
 
-type NeededUnionType = typeof ChakraLayoutComponentNames[number]
+export const ChakraDisplayComponents = [Badge, Code, Kbd, Tag, Progress, Text, Heading]
+
+const ChakraDisplayComponentNames = [
+  'Badge',
+  'Code',
+  'Kbd',
+  'Tag',
+  'Progress',
+  'Text',
+  'Heading',
+] as const
+
+type LayoutComponentsKey = typeof ChakraLayoutComponentNames[number]
+type DisplayComponentsKey = typeof ChakraDisplayComponentNames[number]
 
 const chakraProps = keys<ChakraProps>()
 
@@ -78,7 +123,7 @@ export type CAFactory = <P = {}, T = ChakraComponent<'div', P>>(
 ) => FC<P & { [x: string]: any }>
 
 export type CAComponents = {
-  [Component in NeededUnionType]: any
+  [Component in LayoutComponentsKey]: any
 }
 
 function _ca<P = {}, T = ChakraComponent<'div', P>>(component: T): FC<P & { [x: string]: any }> {
@@ -87,12 +132,10 @@ function _ca<P = {}, T = ChakraComponent<'div', P>>(component: T): FC<P & { [x: 
       component as any,
       props,
       Children.toArray(children).map((child) => {
-        console.log(child, record, props, 'child')
         return cloneElement(child as any, {
           ...filterChakraProps(props || {}),
           ...((child as any).props || {}),
           record,
-          // ...props,
         })
       })
     )
@@ -109,7 +152,6 @@ export function caField<P = {}, T = ChakraComponent<'div', P>>(
 ): FC<P & { [x: string]: any }> {
   return ({ record, source, ...props }) => {
     const value = useMemo(() => get(record || {}, source, undefined), [record, source])
-    console.log(value, record, source, props, 'ciao')
     if (options.targetProp === 'children' || !options.targetProp) {
       return createElement(component as any, { ...props }, value)
     } else {

@@ -31,9 +31,9 @@ export const Input: FC<InputProps> = ({
       label={label}
       _placeholder={{ color: 'blackAlpha.500' }}
       {...rest}
-      // value={register ? undefined : value || ''}
-      {...register!(source)}
-      // onChange={register ? undefined : handleChange}
+      {...(register ? register(source) : {})}
+      value={register ? undefined : value || ''}
+      onChange={register ? undefined : handleChange}
     />
   )
 }

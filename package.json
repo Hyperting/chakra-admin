@@ -20,7 +20,7 @@
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.6.7",
     "@chakra-ui/utils": "^1.9.1",
-    "@emotion/react": "^11.4.0",
+    "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.3.0",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",

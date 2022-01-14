@@ -56,11 +56,11 @@ export const BaseForm: FC<BaseFormProps> = ({
     <chakra.form onSubmit={handleSubmit(onSubmit)}>
       <chakra.div>
         {deepMap(children, (child: any) => {
-          const isLayout = ChakraLayoutComponents.includes(child.type.name)
+          const isLayout = ChakraLayoutComponents.includes(child.type.displayName)
 
           if (isLayout) {
             return React.createElement(
-              ca[child.type.name],
+              ca[child.type.displayName],
               {
                 ...{
                   ...child.props,

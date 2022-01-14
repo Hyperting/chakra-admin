@@ -25,7 +25,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { RouteAvailability } from '../../core/admin/RouteAvailability'
 import { useGlobalStrategy } from '../../core/admin/useGlobalStrategy'
 
-type Props<Data = any, Variables = OperationVariables> = {
+export type GenericMoreMenuButtonProps<Data = any, Variables = OperationVariables> = {
   deleteItemMutation?: DocumentNode | TypedDocumentNode<Data, Variables>
   onDelete?: (id: string) => void
   onDeleteCompleted?: () => void
@@ -38,7 +38,7 @@ type Props<Data = any, Variables = OperationVariables> = {
   resource?: string
 } & RouteAvailability
 
-export const GenericMoreMenuButton: FC<Props> = ({
+export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
   deleteItemMutation,
   onDelete,
   onDeleteCompleted,
