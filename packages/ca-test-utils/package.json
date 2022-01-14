@@ -1,6 +1,6 @@
 {
   "name": "ca-test-utils",
-  "version": "0.0.1-rc.11",
+  "version": "0.0.1-dev.0",
   "description": "Testing utilities for Chakra Admin",
   "author": "Hyperting S.r.l.",
   "license": "MIT",
@@ -21,6 +21,6 @@
     "react": "^17.0.2"
   },
   "publishConfig": {
-    "registry": "http://localhost:4873"
+    "registry": "https://registry.npmjs.org/"
   }
 }

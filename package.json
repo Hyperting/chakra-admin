@@ -93,8 +93,10 @@
     "start": "lerna run --parallel start --include-dependencies --stream --ignore website --ignore example --ignore \"packages/ca-test-utils\"",
     "release": "release-it",
     "release-rc": "release-it --preRelease=rc",
+    "release-dev": "release-it --preRelease=dev",
     "deploy": "yarn build && yarn release",
     "deploy-rc": "yarn build && yarn release-rc",
+    "deploy-dev": "yarn build && yarn release-dev",
     "test:unit": "jest",
     "test:watch:unit": "jest --watch",
     "test:watch": "yarn test:watch:unit",
@@ -119,5 +121,5 @@
       "release": true
     }
   },
-  "version": "0.0.1-rc.11"
+  "version": "0.0.1-dev.0"
 }
