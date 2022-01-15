@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from 'rollup-plugin-typescript2'
 import keysTransformer from 'ts-transformer-keys/transformer'
+import { yalcPublish } from '../../scripts/rollup-yalc-publish'
 
 const packageJson = require('./package.json')
 
@@ -33,5 +34,6 @@ export default {
         })
       ]
     }),
+    yalcPublish()
   ],
 }
