@@ -1,4 +1,4 @@
-import { Box, useBreakpointValue } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 import { OfflineAlert } from './OfflineAlert'

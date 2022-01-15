@@ -9,16 +9,19 @@ import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
 import { Pagination } from './Pagination'
 import { useDataTable } from '../../core/list/useDataTable'
+import { DataTableValueProps } from './DataTableValue'
 
-export type DataTableProps = Partial<UseListReturn> &
+export type DataTableProps<TItem> = Partial<UseListReturn> &
   Partial<ListProps> & {
-    children?: React.ReactNode
+    children?:
+      | React.ReactElement<DataTableValueProps<TItem>>[]
+      | React.ReactElement<DataTableValueProps<TItem>>
     filtersComponent?: React.ReactNode
     moreMenuHeaderComponent?: Renderer<HeaderProps<any>> | string
     moreMenuComponent?: Renderer<CellProps<any, any>>
   }
-
-export const DataTable: FC<DataTableProps> = (props) => {
+// DataTableFC<DataTableProps>
+export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
   const { loading, filtersComponent, total, offset, hasEdit, hasShow, resource } = props
 
   const {
@@ -37,7 +40,7 @@ export const DataTable: FC<DataTableProps> = (props) => {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize },
-  } = useDataTable(props)
+  } = useDataTable<TItem>(props)
 
   const navigate = useNavigate()
 
@@ -177,3 +180,5 @@ export const DataTable: FC<DataTableProps> = (props) => {
     </chakra.div>
   )
 }
+
+DataTable.displayName = 'DataTable'

@@ -1,4 +1,4 @@
-import { Children, isValidElement, useEffect, useMemo, useState } from 'react'
+import React, { Children, isValidElement, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Container from 'typedi'
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -8,7 +8,7 @@ import { AuthProvider } from '../auth/AuthProvider'
 import { DefaultStrategy } from './Strategy'
 import { TOKEN_AUTH_PROVIDER, useSetAuthProvider } from '../auth/useAuthProvider'
 import { useSetGlobalStrategy } from './useGlobalStrategy'
-import { RegisteredResources, useSetAdminState } from './adminState'
+import { registeredIcons, RegisteredResources, useSetAdminState } from './adminState'
 import { Resource } from '../../components/admin'
 
 type RouteState = {
@@ -59,6 +59,7 @@ export const useAdminCore = ({
               return {
                 ...(acc as any),
                 [name as string]: {
+                  iconName: child.props.icon?.displayName || child.props.icon?.name,
                   hasCreate: !!child.props.create,
                   hasEdit: !!child.props.edit,
                   hasShow: !!child.props.show,
@@ -71,6 +72,17 @@ export const useAdminCore = ({
         },
         initialized: true,
       }))
+
+      // register icons
+      Children.toArray(children).forEach((child) => {
+        if (
+          (child as React.ReactElement).props.icon?.displayName ||
+          (child as React.ReactElement).props.icon?.name
+        ) {
+          const { icon } = (child as React.ReactElement).props
+          registeredIcons[icon.displayName || icon.name] = icon
+        }
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children])

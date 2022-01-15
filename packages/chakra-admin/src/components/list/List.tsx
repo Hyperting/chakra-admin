@@ -1,8 +1,8 @@
 import { chakra } from '@chakra-ui/react'
 import React, { Children, cloneElement, FC, isValidElement, useMemo } from 'react'
+import { registeredIcons, useAdminStateValue } from '../../core/admin/adminState'
 import { ListProps } from '../../core/list/ListProps'
 import { useList } from '../../core/list/useList'
-import { DataTable } from './DataTable'
 import { PageTitle } from '../layout/PageTitle'
 import { ListToolbar } from './ListToolbar'
 
@@ -16,6 +16,7 @@ export const List: FC<ListProps> = (props) => {
     ...rest
   } = props
   const listData = useList(props)
+  const { registeredResources, initialized } = useAdminStateValue()
 
   const childrenProps = useMemo(
     () => ({
@@ -37,7 +38,18 @@ export const List: FC<ListProps> = (props) => {
         pl={{ base: 5, lg: 0 }}
         justifyContent="space-between"
       >
-        {titleComponent || <PageTitle label={resource} />}
+        {titleComponent || (
+          <PageTitle
+            label={resource}
+            icon={
+              resource &&
+              registeredResources[resource]?.iconName &&
+              registeredIcons[registeredResources[resource]?.iconName]
+                ? (registeredIcons[registeredResources[resource]?.iconName] as any)
+                : undefined
+            }
+          />
+        )}
         {isValidElement(toolbarComponent) &&
           cloneElement(
             toolbarComponent,

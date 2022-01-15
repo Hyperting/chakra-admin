@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   atom,
   useRecoilState,
@@ -9,8 +10,10 @@ import { RouteAvailability } from './RouteAvailability'
 
 export const ADMIN_STATE_KEY = 'adminState'
 
+export const registeredIcons: Record<string, React.ReactNode> = {}
+
 export interface RegisteredResources {
-  [key: string]: RouteAvailability
+  [key: string]: RouteAvailability & { iconName: string }
 }
 
 export interface AdminState {

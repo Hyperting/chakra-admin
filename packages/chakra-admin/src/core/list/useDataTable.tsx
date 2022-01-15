@@ -10,7 +10,7 @@ export type UseDataTableReturn = {
   foundedColumns: Column<object>[]
 } & TableInstance<object>
 
-export const useDataTable = ({
+export function useDataTable<TItem = Record<string, any>>({
   data,
   pageCount: maxOffset,
   loading,
@@ -34,7 +34,7 @@ export const useDataTable = ({
   hasShow,
   resource,
   queryResult,
-}: DataTableProps): UseDataTableReturn => {
+}: DataTableProps<TItem>): UseDataTableReturn {
   const strategy = useGlobalStrategy()
   const foundedColumns: Column<object>[] = useMemo(
     () =>

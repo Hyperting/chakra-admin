@@ -1,6 +1,7 @@
+import { Icon } from '@chakra-ui/react'
 import React, { FC, useMemo } from 'react'
 import { NavMenuProps } from '.'
-import { useAdminStateValue } from '../../../core/admin/adminState'
+import { registeredIcons, useAdminStateValue } from '../../../core/admin/adminState'
 import { MenuItemLink } from './MenuItemLink'
 import { NavMenu } from './NavMenu'
 
@@ -21,7 +22,15 @@ export const ResourcesNavMenu: FC<NavMenuProps> = (props) => {
         <MenuItemLink
           key={`resource-menu-item-${resourceName}`}
           // TODO: add resource icon
-          // icon={<Icon as={RiLayoutMasonryLine} fontSize="10px" />}
+          icon={
+            registeredResources[resourceName]?.iconName &&
+            registeredIcons[registeredResources[resourceName]?.iconName] ? (
+              <Icon
+                as={registeredIcons[registeredResources[resourceName]?.iconName] as any}
+                fontSize="10px"
+              />
+            ) : undefined
+          }
           to={`/${resourceName}`}
           label={resourceName}
         />
