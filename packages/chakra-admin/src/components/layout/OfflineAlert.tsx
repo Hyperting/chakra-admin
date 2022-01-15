@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { useNavigatorOnline } from '@oieduardorabelo/use-navigator-online'
-import { AnimatePresence } from 'framer-motion/dist/framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { BoxProps } from '@chakra-ui/react'
 import { MotionBox } from '../base/motion'
 
