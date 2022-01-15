@@ -1,35 +1,27 @@
-import React, { FC, useMemo } from 'react'
-import { chakra, Icon, Stack, Text } from '@chakra-ui/react'
-import { FaUserAlt, FaBuilding, FaWarehouse } from 'react-icons/fa'
-import { ImProfile } from 'react-icons/im'
-import { RiLayoutMasonryLine, RiMapPin2Fill } from 'react-icons/ri'
-import { MdGroups } from 'react-icons/md'
+import React, { Children, FC, ReactElement } from 'react'
+import { chakra, Stack } from '@chakra-ui/react'
 import { MenuItemLink } from './MenuItemLink'
-import { useAuthUser } from '../../../core/auth/useAuthUser'
-import { Loading } from '../../admin/Loading'
 
-type Props = {
+export type NavMenuProps = {
   onItemClick?: () => void
 }
-export const NavMenu: FC<Props> = ({ onItemClick }) => {
-  const { initialized, user } = useAuthUser()
-
-  const isBackofficeLimited = useMemo(() => {
-    if (user && user.roles && user.roles.length > 0 && user.roles[0].params) {
-      return user.roles[0].params.backofficeIsLimited
-    }
-    return true
-  }, [user])
-
-  if (!initialized) {
-    // add me a Skeleton
-    return null
-  }
-
+export const NavMenu: FC<NavMenuProps> = ({ onItemClick, children }) => {
   return (
     <chakra.div as="nav" role="nav" w="100%">
       <Stack as="ul">
-        <MenuItemLink
+        {Children.map(children, (child) => {
+          if (!child) {
+            return null
+          }
+
+          if ((child as ReactElement).type === MenuItemLink) {
+            return React.cloneElement(child as ReactElement, {
+              onClick: onItemClick,
+            })
+          }
+          return null
+        })}
+        {/* <MenuItemLink
           icon={<Icon as={RiLayoutMasonryLine} fontSize="10px" />}
           to="/"
           label="Dashboard"
@@ -86,7 +78,7 @@ export const NavMenu: FC<Props> = ({ onItemClick }) => {
             label="Ruoli"
             onClick={onItemClick}
           />
-        )}
+        )} */}
       </Stack>
     </chakra.div>
   )

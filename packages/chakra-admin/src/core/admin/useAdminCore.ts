@@ -1,4 +1,4 @@
-import { Children, useEffect, useMemo, useState } from 'react'
+import { Children, isValidElement, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Container from 'typedi'
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -8,6 +8,8 @@ import { AuthProvider } from '../auth/AuthProvider'
 import { DefaultStrategy } from './Strategy'
 import { TOKEN_AUTH_PROVIDER, useSetAuthProvider } from '../auth/useAuthProvider'
 import { useSetGlobalStrategy } from './useGlobalStrategy'
+import { RegisteredResources, useSetAdminState } from './adminState'
+import { Resource } from '../../components/admin'
 
 type RouteState = {
   background?: Location
@@ -31,6 +33,7 @@ export const useAdminCore = ({
   background?: Location
   location: Location
 } => {
+  const setAdminState = useSetAdminState()
   const setAuthProvider = useSetAuthProvider()
   const setGlobalStrategy = useSetGlobalStrategy()
   const [authProviderInstance, setAuthProviderInstance] = useState<AuthProvider>()
@@ -43,6 +46,34 @@ export const useAdminCore = ({
   const background = useMemo(() => (location?.state as { background?: Location })?.background, [
     location?.state,
   ])
+
+  useEffect(() => {
+    if (childrenCount > 0) {
+      setAdminState((state) => ({
+        ...state,
+        registeredResources: {
+          ...state.registeredResources,
+          ...(Children.toArray(children).reduce((acc, child) => {
+            if (isValidElement(child) && child.type === Resource && child.props.name) {
+              const { name } = child.props
+              return {
+                ...(acc as any),
+                [name as string]: {
+                  hasCreate: !!child.props.create,
+                  hasEdit: !!child.props.edit,
+                  hasShow: !!child.props.show,
+                  hasList: !!child.props.list,
+                },
+              }
+            }
+            return acc
+          }, {}) as RegisteredResources),
+        },
+        initialized: true,
+      }))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [children])
 
   useEffect(() => {
     const initAuthProvider = (): void => {

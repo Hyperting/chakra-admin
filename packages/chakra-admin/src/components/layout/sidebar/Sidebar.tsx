@@ -5,41 +5,43 @@ import { ToggleSizeButton } from './ToggleSizeButton'
 import { SidebarTitle } from './SidebarTitle'
 import { MenuSearch } from './MenuSearch'
 import { MenuCollapse } from './MenuCollapse'
-import { NavMenu } from './NavMenu'
+import { ResourcesNavMenu } from './ResourcesNavMenu'
 
 type Props = {
   title?: string
   icon?: React.ElementType
 } & BoxProps
 
-export const Sidebar: FC<Props> = ({ title, icon, ...rest }) => {
-  const [compressed, setCompressed] = useState<boolean>(false)
+export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
+  const [collapsed, setCollapsed] = useState<boolean>(false)
 
   const handleToggleSize = useCallback(() => {
-    setCompressed(!compressed)
-  }, [compressed])
+    setCollapsed(!collapsed)
+  }, [collapsed])
 
   return (
     <Box
       pos="relative"
       boxShadow="0px 3px 12px 1px rgba(37, 31, 30, 0.05);"
-      onClick={compressed ? handleToggleSize : undefined}
-      cursor={compressed ? 'pointer' : 'default'}
+      onClick={collapsed ? handleToggleSize : undefined}
+      cursor={collapsed ? 'pointer' : 'default'}
       bgColor="white"
-      _hover={compressed ? { opacity: 0.7 } : undefined}
+      _hover={collapsed ? { opacity: 0.7 } : undefined}
       {...rest}
     >
-      <ToggleSizeButton isCompressed={compressed} onClick={handleToggleSize} />
+      <ToggleSizeButton isCompressed={collapsed} onClick={handleToggleSize} />
 
-      <MotionBox bgColor="white" initial={false} animate={{ width: compressed ? 18 : 280 }}>
-        {!compressed && (
+      <MotionBox bgColor="white" initial={false} animate={{ width: collapsed ? 18 : 280 }}>
+        {!collapsed && (
           <Box overflowX="hidden" w="280px" minW="280px" pt={6}>
             <SidebarTitle icon={<Icon as={icon} color="red.600" w={30} h={26} />} title={title} />
             <MenuSearch placeholder="Cerca..." mb={5} />
             <Box h="100%" minH="100%" overflowY="auto">
-              <MenuCollapse>
-                <NavMenu />
-              </MenuCollapse>
+              {children || (
+                <MenuCollapse>
+                  <ResourcesNavMenu />
+                </MenuCollapse>
+              )}
             </Box>
           </Box>
         )}
