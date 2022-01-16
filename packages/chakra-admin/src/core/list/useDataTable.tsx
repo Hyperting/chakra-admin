@@ -1,10 +1,11 @@
-import React, { Children, cloneElement, useEffect, useMemo } from 'react'
+import React, { Children, cloneElement, ReactElement, useEffect, useMemo } from 'react'
 import { Column, TableInstance, usePagination, useSortBy, useTable } from 'react-table'
 import { DataTableProps } from '../../components/list/DataTable'
 import { SortDirection } from './SortType'
 import { MoreMenuHeader } from '../../components/list/MoreMenuHeader'
 import { GenericMoreMenuButton } from '../../components/buttons/GenericMoreMenuButton'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
+import { DataTableValue } from '../..'
 
 export type UseDataTableReturn = {
   foundedColumns: Column<object>[]
@@ -43,18 +44,29 @@ export function useDataTable<TItem = Record<string, any>>({
           const childProps = (child as any).props
           const newColumn: any = {
             Header: childProps.label || childProps.source,
-            accessor: childProps.source,
-            isNumeric: childProps.isNumeric,
+            accessor: childProps?.source,
+            isNumeric: childProps?.isNumeric,
             disableSortBy: typeof childProps.sortable === 'boolean' ? !childProps.sortable : false,
+            id: `data-table-column-${childProps?.source || ''}${index}`,
           }
 
-          if (childProps.render) {
-            newColumn.Cell = childProps.render
+          if ((child as ReactElement).type === DataTableValue) {
+            if (childProps.render) {
+              newColumn.Cell = (cellData: any) =>
+                childProps.render({ ...data, ...childProps, record: cellData?.cell?.row?.original })
+            }
+          } else {
+            newColumn.Cell = (cellData: any) => {
+              return cloneElement(child as any, {
+                record: cellData?.cell?.row?.original,
+              })
+            }
           }
           return newColumn
         }
         return undefined
       })?.filter((item) => !!item) || [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [children]
   )
 

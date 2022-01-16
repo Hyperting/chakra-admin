@@ -10,6 +10,8 @@ import {
   Flex,
   AvatarProps,
   Avatar,
+  Image,
+  ImageProps,
 } from '@chakra-ui/react'
 import { cleanup } from '@testing-library/react'
 import { ca, caField } from '../../../../src/core/react/system'
@@ -28,7 +30,6 @@ describe('ca factory function', () => {
       </CABox>
     )
 
-    console.log(getByTestId('props-printer').textContent, 'innerText')
     expect(getByTestId('props-printer')).toHaveTextContent('"test":"1"')
     expect(getByTestId('props-printer')).toHaveTextContent(/^(?:(?!"p":"10px").)*$/)
   })
@@ -49,7 +50,6 @@ describe('ca factory function', () => {
       </CABox>
     )
 
-    console.log(getByTestId('props-printer').textContent, 'innerText')
     expect(getByTestId('props-printer')).toHaveTextContent('"test":"1"')
     expect(getByTestId('props-printer')).toHaveTextContent(/^(?:(?!"p":"10px").)*$/)
   })
@@ -57,28 +57,34 @@ describe('ca factory function', () => {
 
 describe('caField factory function', () => {
   it('should create a field element that show the value as a child', () => {
+    type RecordType = {
+      name: string
+      lastName: string
+      userPicture: string
+    }
+
     const CABox = ca<BoxProps>(Box)
     const CAFlex = ca<FlexProps>(Flex)
     const CAText = caField<TextProps>(Text)
-    const CAAvatar = caField<AvatarProps>(Avatar, { targetProp: 'src' })
+    const CAImage = caField<ImageProps>(Image, { targetProp: 'src' })
 
     const { getByTestId } = render(
       <CABox
         record={{ name: 'Segun', lastName: 'Adebayo', userPicture: 'https://bit.ly/sage-adebayo' }}
       >
         <CAFlex>
-          <CAAvatar data-testid="userPicture" source="userPicture" />
+          <CAImage<RecordType> data-testid="userPicture" source="userPicture" />
           <CAFlex>
-            <CAText data-testid="name" source="name" />
-            <CAText data-testid="lastName" source="lastName" />
+            <CAText<RecordType> data-testid="name" source="name" />
+            <CAText<RecordType> data-testid="lastName" source="lastName" />
           </CAFlex>
         </CAFlex>
       </CABox>
     )
 
-    expect(getByTestId('userPicture')).toHaveTextContent('https://bit.ly/sage-adebayo')
-    expect(getByTestId('name')).toHaveTextContent('Marco')
-    expect(getByTestId('lastName')).toHaveTextContent('Rossi')
+    expect(getByTestId('userPicture')).toHaveAttribute('src', 'https://bit.ly/sage-adebayo')
+    expect(getByTestId('name')).toHaveTextContent('Segun')
+    expect(getByTestId('lastName')).toHaveTextContent('Adebayo')
   })
 })
 

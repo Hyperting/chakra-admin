@@ -1,6 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { Children, cloneElement, createElement, FC, useMemo } from 'react'
+import React, {
+  Children,
+  cloneElement,
+  createElement,
+  FC,
+  JSXElementConstructor,
+  ReactElement,
+  useMemo,
+} from 'react'
 import {
   Box,
   Center,
@@ -35,6 +43,7 @@ import {
   List,
   OrderedList,
   UnorderedList,
+  As,
 } from '@chakra-ui/react'
 import { keys } from 'ts-transformer-keys/index'
 import get from 'lodash.get'
@@ -104,7 +113,7 @@ type DisplayComponentsKey = typeof ChakraDisplayComponentNames[number]
 
 const chakraProps = keys<ChakraProps>()
 
-function filterChakraProps<P = {}>(props: P): P {
+export function filterChakraProps<P = {}>(props: P): P {
   return Object.keys(props).reduce((acc, key) => {
     if (chakraProps.includes((key as unknown) as keyof ChakraProps)) {
       return acc
@@ -117,7 +126,7 @@ function filterChakraProps<P = {}>(props: P): P {
   }, {}) as P
 }
 
-export type CAFactory = <P = {}, T = ChakraComponent<'div', P>>(
+export type CAFactory = <P = {}, T = ChakraComponent<any, P>>(
   component: T,
   options?: CAFieldOptions
 ) => FC<P & { [x: string]: any }>
@@ -126,7 +135,7 @@ export type CAComponents = {
   [Component in LayoutComponentsKey]: any
 }
 
-function _ca<P = {}, T = ChakraComponent<'div', P>>(component: T): FC<P & { [x: string]: any }> {
+function _ca<P = {}, T = React.ReactNode>(component: T): FC<P & { [x: string]: any }> {
   return ({ children, record, ...props }) => {
     return createElement(
       component as any,
@@ -146,11 +155,20 @@ export type CAFieldOptions = {
   targetProp?: string
 }
 
-export function caField<P = {}, T = ChakraComponent<'div', P>>(
+export type CAFieldProps<TItem = Record<string, any>> = {
+  source: keyof TItem
+  record?: TItem
+}
+
+export function caField<P = {}, TItem = Record<string, any>, T = As<any>>(
   component: T,
   options: CAFieldOptions = { targetProp: 'children' }
-): FC<P & { [x: string]: any }> {
-  return ({ record, source, ...props }) => {
+) {
+  function CaFieldImpl<TItemField = TItem>({
+    record,
+    source,
+    ...props
+  }: Partial<P & CAFieldProps<TItemField>>) {
     const value = useMemo(() => get(record || {}, source, undefined), [record, source])
     if (options.targetProp === 'children' || !options.targetProp) {
       return createElement(component as any, { ...props }, value)
@@ -158,6 +176,10 @@ export function caField<P = {}, T = ChakraComponent<'div', P>>(
       return createElement(component as any, { ...props, [options.targetProp]: value })
     }
   }
+
+  CaFieldImpl.displayName = `CA(${(component as any).displayName || (component as any).name})`
+
+  return CaFieldImpl
 }
 
 export const ca = (_ca as unknown) as CAFactory & CAComponents
