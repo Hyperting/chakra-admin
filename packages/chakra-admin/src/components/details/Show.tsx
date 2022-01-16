@@ -38,7 +38,7 @@ export const Show: FC<ShowProps> = (props) => {
         pl={{ base: 5, lg: 0 }}
         justifyContent="space-between"
       >
-        {titleComponent || <CreatePageTitle label={getResourceLabel(resource)} />}
+        {titleComponent || <CreatePageTitle label={getResourceLabel(resource || '')} />}
       </chakra.div>
       {loading ? (
         <>Loading</>

@@ -35,7 +35,10 @@ export const Create: FC<CreateProps> = (props) => {
       >
         {titleComponent || (
           <CreatePageTitle
-            label={t('ca.actions.create', { count: 1, resource: getResourceLabel(resource, 1) })}
+            label={t('ca.actions.create', {
+              count: 1,
+              resource: getResourceLabel(resource || '', 1),
+            })}
           />
         )}
       </chakra.div>
