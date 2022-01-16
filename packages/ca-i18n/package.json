@@ -1,5 +1,5 @@
 {
-  "name": "ca-theme",
+  "name": "ca-i18n",
   "version": "0.0.1-dev.2",
   "description": "",
   "main": "lib/index.js",
@@ -18,12 +18,25 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hyperting/chakra-admin.git",
-    "directory": "packages/ca-theme"
+    "directory": "packages/ca-18n"
   },
   "peerDependencies": {
-    "@chakra-ui/react": ">= 1.0.0"
+    "react": ">= 17.0.2",
+    "react-dom": ">= 17.0.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "i18next": "^21.6.6",
+    "react-i18next": "^11.15.3",
+    "i18next-browser-languagedetector": "^6.1.2",
+    "i18next-polyglot": "^0.1.0",
+    "i18next-chained-backend": "^3.0.2",
+    "i18next-http-backend": "^1.2.6",
+    "i18next-resources-to-backend": "^1.0.0",
+    "luxon": "^2.3.0"
+  },
+  "devDependencies": {
+    "ca-test-utils": "^0.0.1-dev.2"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   }

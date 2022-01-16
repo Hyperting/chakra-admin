@@ -6,6 +6,7 @@ import { deepMap } from 'react-children-utilities'
 import { CreatePageTitle } from './CreatePageTitle'
 import { useShow } from '../../core/details/useShow'
 import { ca, ChakraLayoutComponents } from '../../core/react/system'
+import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 
 export type ShowProps<
   ItemTData = any,
@@ -24,6 +25,7 @@ export type ShowProps<
 export const Show: FC<ShowProps> = (props) => {
   const { children, resource, titleComponent, mutation, id } = props
   const { onSubmit, executeMutation, mutationResult, loading, item, data, error } = useShow(props)
+  const getResourceLabel = useGetResourceLabel()
 
   return (
     <chakra.div>
@@ -36,7 +38,7 @@ export const Show: FC<ShowProps> = (props) => {
         pl={{ base: 5, lg: 0 }}
         justifyContent="space-between"
       >
-        {titleComponent || <CreatePageTitle label={`Show ${resource}`} />}
+        {titleComponent || <CreatePageTitle label={getResourceLabel(resource)} />}
       </chakra.div>
       {loading ? (
         <>Loading</>

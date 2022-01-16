@@ -2,7 +2,7 @@ import { Button, chakra, ChakraProps } from '@chakra-ui/react'
 import React, { FC, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { deepMap, deepFilter } from 'react-children-utilities'
+import { deepMap } from 'react-children-utilities'
 import { UseCreateResult } from '../../core/details/useCreate'
 import { UseEditResult } from '../../core/details/useEdit'
 import { ca, ChakraLayoutComponents } from '../../core/react/system'
@@ -87,20 +87,6 @@ export const BaseForm: FC<BaseFormProps> = ({
               : child
           }
         })}
-        {/* {React.Children.map(children, (child: any) => {
-          const { children, ...restProps } = child.props
-          return child.props.source
-            ? React.createElement(child.type, {
-                ...{
-                  ...restProps,
-                  register: methods.register,
-                  control: methods.control,
-                  name: child.props.source,
-                  key: child.props.source,
-                },
-              })
-            : child
-        })} */}
       </chakra.div>
       <chakra.div>
         <Button

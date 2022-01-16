@@ -1,13 +1,11 @@
 import React, { FC } from 'react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
+import { CAFieldProps } from '../../core/react/system'
 
 export type DataTableValueProps<TItem> = {
-  source: keyof TItem
-  sortable?: boolean
   isNumeric?: boolean
   render?: Renderer<CellProps<any, any>>
-  label?: Renderer<HeaderProps<any>> | string
-}
+} & CAFieldProps<TItem>
 
 export function DataTableValue<TItem = Record<string, any>>(
   props: DataTableValueProps<TItem>

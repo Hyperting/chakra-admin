@@ -44,6 +44,9 @@ import {
   OrderedList,
   UnorderedList,
   As,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from '@chakra-ui/react'
 import { keys } from 'ts-transformer-keys/index'
 import get from 'lodash.get'
@@ -69,6 +72,9 @@ export const ChakraLayoutComponents = [
   Portal,
   List,
   OrderedList,
+  Tabs,
+  TabPanels,
+  TabPanel,
   UnorderedList,
 ]
 
@@ -93,6 +99,9 @@ const ChakraLayoutComponentNames = [
   'Portal',
   'List',
   'OrderedList',
+  'Tabs',
+  'TabPanels',
+  'TabPanel',
   'UnorderedList',
 ] as const
 
@@ -158,6 +167,8 @@ export type CAFieldOptions = {
 export type CAFieldProps<TItem = Record<string, any>> = {
   source: keyof TItem
   record?: TItem
+  sortable?: boolean
+  label?: string
 }
 
 export function caField<P = {}, TItem = Record<string, any>, T = As<any>>(

@@ -44,12 +44,20 @@ export function useDataTable<TItem = Record<string, any>>({
           const childProps = (child as any).props
           const newColumn: any = {
             Header: childProps.label || childProps.source,
-            accessor: childProps?.source,
+            accessor: childProps?.source || index,
             isNumeric: childProps?.isNumeric,
             disableSortBy: typeof childProps.sortable === 'boolean' ? !childProps.sortable : false,
-            id: `data-table-column-${childProps?.source || ''}${index}`,
+            id: !childProps?.source
+              ? `data-table-column-${childProps?.source || ''}${index}`
+              : undefined,
           }
 
+          console.log(
+            'sono qua di sicuro',
+            childProps?.source || index,
+            (child as ReactElement).type,
+            (child as ReactElement).type === DataTableValue
+          )
           if ((child as ReactElement).type === DataTableValue) {
             if (childProps.render) {
               newColumn.Cell = (cellData: any) =>
@@ -57,6 +65,7 @@ export function useDataTable<TItem = Record<string, any>>({
             }
           } else {
             newColumn.Cell = (cellData: any) => {
+              console.log('sono qua')
               return cloneElement(child as any, {
                 record: cellData?.cell?.row?.original,
               })

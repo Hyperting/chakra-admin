@@ -1,6 +1,8 @@
 import { chakra } from '@chakra-ui/react'
+import { useTranslate } from 'ca-i18n'
 import React, { Children, cloneElement, FC, isValidElement, useMemo } from 'react'
 import { registeredIcons, useAdminStateValue } from '../../core/admin/adminState'
+import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { ListProps } from '../../core/list/ListProps'
 import { useList } from '../../core/list/useList'
 import { PageTitle } from '../layout/PageTitle'
@@ -17,6 +19,9 @@ export const List: FC<ListProps> = (props) => {
   } = props
   const listData = useList(props)
   const { registeredResources, initialized } = useAdminStateValue()
+
+  const t = useTranslate()
+  const getResourceLabel = useGetResourceLabel()
 
   const childrenProps = useMemo(
     () => ({
@@ -40,7 +45,7 @@ export const List: FC<ListProps> = (props) => {
       >
         {titleComponent || (
           <PageTitle
-            label={resource}
+            label={resource ? getResourceLabel(resource) : 'List'}
             icon={
               resource &&
               registeredResources[resource]?.iconName &&

@@ -46,7 +46,6 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
 
   const handleRowClick = useCallback(
     (row: any) => (event: React.MouseEventHandler<HTMLTableRowElement>) => {
-      console.log((event as any).currentTarget, (event as any).target, 'row')
       if ((event as any).target !== (event as any).currentTarget) {
         return
       }

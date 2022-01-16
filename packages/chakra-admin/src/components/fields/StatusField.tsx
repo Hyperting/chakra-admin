@@ -9,7 +9,7 @@ export type StatusOptions = {
   statusColor?: ColorProps['color']
   textColorScheme?: ThemingProps<'Text'>['colorScheme']
   textColor?: ColorProps['color']
-  label?: React.ReactNode | ((props: CAFieldProps) => React.ReactNode)
+  label?: React.ReactNode
 }
 
 export type StatusFieldProps<TItem> = {
@@ -36,8 +36,6 @@ export function StatusField<TItem = Record<string, any>>({
   const statusOptions = useMemo(() => {
     return statuses[value] || {}
   }, [statuses, value])
-
-  console.log(value, statusOptions)
 
   return (
     <Box display="inline-flex" alignItems="baseline" {...rest}>

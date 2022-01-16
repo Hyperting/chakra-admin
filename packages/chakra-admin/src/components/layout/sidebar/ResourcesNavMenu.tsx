@@ -2,11 +2,13 @@ import { Icon } from '@chakra-ui/react'
 import React, { FC, useMemo } from 'react'
 import { NavMenuProps } from '.'
 import { registeredIcons, useAdminStateValue } from '../../../core/admin/adminState'
+import { useGetResourceLabel } from '../../../core/admin/useGetResourceLabel'
 import { MenuItemLink } from './MenuItemLink'
 import { NavMenu } from './NavMenu'
 
 export const ResourcesNavMenu: FC<NavMenuProps> = (props) => {
   const { registeredResources, initialized } = useAdminStateValue()
+  const getResourceLabel = useGetResourceLabel()
 
   const registeredResourcesKeys = useMemo(() => Object.keys(registeredResources).sort(), [
     registeredResources,
@@ -32,7 +34,7 @@ export const ResourcesNavMenu: FC<NavMenuProps> = (props) => {
             ) : undefined
           }
           to={`/${resourceName}`}
-          label={resourceName}
+          label={getResourceLabel(resourceName)}
         />
       ))}
     </NavMenu>

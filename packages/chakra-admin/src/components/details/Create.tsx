@@ -3,9 +3,11 @@ import { chakra } from '@chakra-ui/react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { deepMap } from 'react-children-utilities'
+import { useTranslate } from 'ca-i18n'
 import { CreatePageTitle } from './CreatePageTitle'
 import { useCreate } from '../../core/details/useCreate'
 import { ca, ChakraLayoutComponents } from '../../core/react/system'
+import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 
 export type CreateProps<TData = any, TVariables = OperationVariables> = {
   resource?: string
@@ -17,6 +19,8 @@ export type CreateProps<TData = any, TVariables = OperationVariables> = {
 export const Create: FC<CreateProps> = (props) => {
   const { children, resource, titleComponent, mutation } = props
   const { onSubmit, executeMutation, mutationResult } = useCreate(props)
+  const t = useTranslate()
+  const getResourceLabel = useGetResourceLabel()
 
   return (
     <chakra.div>
@@ -29,13 +33,16 @@ export const Create: FC<CreateProps> = (props) => {
         pl={{ base: 5, lg: 0 }}
         justifyContent="space-between"
       >
-        {titleComponent || <CreatePageTitle label={`Create ${resource}`} />}
+        {titleComponent || (
+          <CreatePageTitle
+            label={t('ca.actions.create', { count: 1, resource: getResourceLabel(resource, 1) })}
+          />
+        )}
       </chakra.div>
       {deepMap(children, (child: any) => {
         const isLayout = ChakraLayoutComponents.includes(child.type.displayName)
 
         if (isLayout) {
-          console.log('sono un layout', child.type.name, child.type.displayName)
           return React.createElement(
             ca[child.type.displayName],
             {
@@ -48,7 +55,6 @@ export const Create: FC<CreateProps> = (props) => {
             child.props?.children
           )
         } else {
-          console.log('NON sono un layout', child.type.name, child.type.displayName)
           return React.cloneElement(child, {
             ...{
               ...child.props,
