@@ -8,6 +8,7 @@ import {
 } from '@apollo/client'
 import { SortType } from './SortType'
 import { ListStrategy } from '../admin/Strategy'
+import { PageContentProps } from '../../components/details/PageContent'
 
 export type ListProps<
   ListTData = any,
@@ -18,7 +19,6 @@ export type ListProps<
   resource?: string
   basePath?: string
   defaultSorting?: SortType<any>
-  titleComponent?: React.ReactNode
   filtersComponent?: React.ReactNode
   toolbarComponent?: React.ReactNode
   query: DocumentNode | TypedDocumentNode<ListTData, ListTVariables>
@@ -34,4 +34,4 @@ export type ListProps<
   hasCreate?: boolean
   hasShow?: boolean
   hasList?: boolean
-}
+} & Pick<PageContentProps, 'title'>

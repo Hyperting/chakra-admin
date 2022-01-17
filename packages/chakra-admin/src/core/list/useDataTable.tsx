@@ -1,11 +1,13 @@
 import React, { Children, cloneElement, ReactElement, useEffect, useMemo } from 'react'
 import { Column, TableInstance, usePagination, useSortBy, useTable } from 'react-table'
+import { humanize } from 'inflection'
+import { useTranslate } from 'ca-i18n'
 import { DataTableProps } from '../../components/list/DataTable'
 import { SortDirection } from './SortType'
 import { MoreMenuHeader } from '../../components/list/MoreMenuHeader'
 import { GenericMoreMenuButton } from '../../components/buttons/GenericMoreMenuButton'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
-import { DataTableValue } from '../..'
+import { DataTableValue } from '../../components/list/DataTableValue'
 
 export type UseDataTableReturn = {
   foundedColumns: Column<object>[]
@@ -36,6 +38,7 @@ export function useDataTable<TItem = Record<string, any>>({
   resource,
   queryResult,
 }: DataTableProps<TItem>): UseDataTableReturn {
+  const t = useTranslate()
   const strategy = useGlobalStrategy()
   const foundedColumns: Column<object>[] = useMemo(
     () =>
@@ -43,7 +46,11 @@ export function useDataTable<TItem = Record<string, any>>({
         if (child && (child as any).type && (child as any).props && (child as any).props.source) {
           const childProps = (child as any).props
           const newColumn: any = {
-            Header: childProps.label || childProps.source,
+            Header:
+              childProps.label ||
+              t(`resources.${resource}.fields.${childProps.source}`, {
+                defaultValue: humanize(childProps.source),
+              }),
             accessor: childProps?.source || index,
             isNumeric: childProps?.isNumeric,
             disableSortBy: typeof childProps.sortable === 'boolean' ? !childProps.sortable : false,
@@ -52,12 +59,6 @@ export function useDataTable<TItem = Record<string, any>>({
               : undefined,
           }
 
-          console.log(
-            'sono qua di sicuro',
-            childProps?.source || index,
-            (child as ReactElement).type,
-            (child as ReactElement).type === DataTableValue
-          )
           if ((child as ReactElement).type === DataTableValue) {
             if (childProps.render) {
               newColumn.Cell = (cellData: any) =>
@@ -65,7 +66,6 @@ export function useDataTable<TItem = Record<string, any>>({
             }
           } else {
             newColumn.Cell = (cellData: any) => {
-              console.log('sono qua')
               return cloneElement(child as any, {
                 record: cellData?.cell?.row?.original,
               })

@@ -1,6 +1,8 @@
+/* eslint-disable no-restricted-globals */
 import { IconButton, Text, chakra } from '@chakra-ui/react'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { Trans } from 'ca-i18n'
 import { Row } from 'react-table'
 
 type Props = {
@@ -29,20 +31,39 @@ export const Pagination: FC<Props> = ({
   nextPage,
   canPreviousPage,
   previousPage,
-  totalRows,
+  totalRows: total,
   offset,
 }) => {
+  const from = useMemo(() => (total === 0 ? 0 : pageIndex * pageSize + 1), [
+    pageIndex,
+    pageSize,
+    total,
+  ])
+  const to = useMemo(() => (pageSize === 0 ? total : Math.min(total, (pageIndex + 1) * pageSize)), [
+    pageIndex,
+    pageSize,
+    total,
+  ])
+
   return (
     <chakra.div display="flex" alignItems="center">
-      <Text fontWeight="bold">
-        {`${totalRows === 0 ? 0 : pageIndex * pageSize + 1}-${
-          pageSize === 0 ? totalRows : Math.min(totalRows, (pageIndex + 1) * pageSize)
-        }`}
-      </Text>
-      <Text ml={1}>di</Text>
-      <Text fontWeight="bold" ml={1}>
-        {totalRows}
-      </Text>
+      <Trans
+        i18nKey="ca.pagination.page_info"
+        components={{
+          strong: <Text fontWeight="bold" mx={1} />,
+        }}
+        values={{
+          from,
+          to,
+          total,
+        }}
+      >
+        <strong>
+          {{ from }}-{{ to }}
+        </strong>
+        of
+        <strong>{{ total }}</strong>
+      </Trans>
 
       <IconButton
         ml={5}

@@ -13,12 +13,12 @@ import {
   useBreakpointValue,
   useDisclosure,
   chakra,
+  DrawerCloseButton,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
 import { MdFilterList } from 'react-icons/md'
 import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
-import { DrawerCloseButton } from '../modal/DrawerCloseButton'
 import { DrawerHeader } from '../modal/DrawerHeader'
 import { Input, InputProps } from '../inputs/Input'
 

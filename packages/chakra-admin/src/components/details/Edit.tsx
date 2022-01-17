@@ -1,12 +1,15 @@
-import React, { Children, FC } from 'react'
-import { chakra } from '@chakra-ui/react'
+import React, { FC } from 'react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { deepMap } from 'react-children-utilities'
-import { CreatePageTitle } from './CreatePageTitle'
+import { useTranslate } from 'ca-i18n'
 import { useEdit } from '../../core/details/useEdit'
 import { ChakraLayoutComponents } from '../../core/react'
 import { ca } from '../../core/react/system'
+import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
+import { DetailsPageTitle } from './DetailsPageTitle'
+import { PageContent, PageContentProps } from './PageContent'
+import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
 
 export type EditProps<
   ItemTData = any,
@@ -16,29 +19,41 @@ export type EditProps<
 > = {
   resource?: string
   id?: string
-  titleComponent?: React.ReactNode
   mutation: DocumentNode | TypedDocumentNode<EditTData, EditTVariables>
   query: DocumentNode | TypedDocumentNode<ItemTData, ItemTVariables>
   filtersComponent?: React.ReactNode
-}
+  renderingInModal?: boolean
+} & Pick<PageContentProps, 'title'>
 
 export const Edit: FC<EditProps> = (props) => {
-  const { children, resource, titleComponent, mutation, id } = props
+  const { children, resource, mutation, renderingInModal, title = <DetailsPageTitle />, id } = props
   const { onSubmit, executeMutation, mutationResult, loading, item, data, error } = useEdit(props)
+  const { registeredResources, initialized } = useAdminStateValue()
+  const t = useTranslate()
+  const getResourceLabel = useGetResourceLabel()
 
   return (
-    <chakra.div>
-      <chakra.div
-        display="flex"
-        w="100%"
-        pt={{ base: 0, lg: '56px' }}
-        pr={{ base: 5, lg: '64px' }}
-        pb={5}
-        pl={{ base: 5, lg: 0 }}
-        justifyContent="space-between"
-      >
-        {titleComponent || <CreatePageTitle label={`Edit ${resource}`} />}
-      </chakra.div>
+    <PageContent
+      renderingInModal={renderingInModal}
+      title={
+        typeof title === 'string'
+          ? title
+          : (React.cloneElement(title, {
+              renderingInModal,
+              label: t('ca.page.edit', {
+                smart_count: 1,
+                name: resource ? getResourceLabel(resource, 1) : '',
+                id,
+              }),
+              icon:
+                resource &&
+                registeredResources[resource]?.iconName &&
+                registeredIcons[registeredResources[resource]?.iconName]
+                  ? (registeredIcons[registeredResources[resource]?.iconName] as any)
+                  : undefined,
+            }) as any)
+      }
+    >
       {loading ? (
         <>Loading</>
       ) : (
@@ -81,6 +96,6 @@ export const Edit: FC<EditProps> = (props) => {
           }
         })
       )}
-    </chakra.div>
+    </PageContent>
   )
 }

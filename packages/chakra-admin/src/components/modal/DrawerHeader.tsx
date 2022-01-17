@@ -8,7 +8,7 @@ type Props = {
 
 export const DrawerHeader: FC<Props> = ({ title, subtitle, children }) => {
   return (
-    <ChakraDrawerHeader pl={14} pr={14} pt={12} pb={0} fontWeight="800" lineHeight="32px">
+    <ChakraDrawerHeader>
       <Text as="h2" fontSize="2xl">
         {title}
       </Text>

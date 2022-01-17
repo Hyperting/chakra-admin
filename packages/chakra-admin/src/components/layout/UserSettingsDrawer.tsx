@@ -1,9 +1,15 @@
-import { Drawer, DrawerContent, DrawerOverlay, DrawerFooter, DrawerProps } from '@chakra-ui/react'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerOverlay,
+  DrawerFooter,
+  DrawerProps,
+  DrawerCloseButton,
+} from '@chakra-ui/react'
 import React, { FC } from 'react'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { LogoutButton } from '../buttons/LogoutButton'
 import { DrawerBody } from '../modal/DrawerBody'
-import { DrawerCloseButton } from '../modal/DrawerCloseButton'
 import { DrawerHeader } from '../modal/DrawerHeader'
 
 type Props = Omit<DrawerProps, 'children'> & {

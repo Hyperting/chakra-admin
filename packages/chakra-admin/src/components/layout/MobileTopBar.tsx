@@ -8,11 +8,11 @@ import {
   DrawerContent,
   Skeleton,
   chakra,
+  DrawerCloseButton,
 } from '@chakra-ui/react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaArrowLeft, FaFlag } from 'react-icons/fa'
 import { UserMobileButton } from '../buttons/UserMobileButton'
-import { DrawerCloseButton } from '../modal/DrawerCloseButton'
 import { DrawerHeader } from '../modal/DrawerHeader'
 import { NavMenu } from './sidebar/NavMenu'
 import { DrawerBody } from '../modal/DrawerBody'

@@ -6,7 +6,7 @@ export const removeListProps = (props: ListProps): any => {
   const {
     resource,
     basePath,
-    titleComponent,
+    title,
     filtersComponent,
     toolbarComponent,
     query,

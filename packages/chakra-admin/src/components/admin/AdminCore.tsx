@@ -19,35 +19,37 @@ import { useAdminCore } from '../../core/admin/useAdminCore'
 import { Loading } from './Loading'
 import { RouteAvailability } from '../../core/admin/RouteAvailability.js'
 import { GlobalStrategy } from '../../core/admin/Strategy'
+import { ModalLayout } from '../modal/ModalLayout'
 
 export type AdminCoreProps = {
   layoutComponent?: React.ReactNode
+  modalComponent?: React.ReactNode
   loginComponent?: React.ReactNode
   authProvider?: ClassType<AuthProvider>
   strategy?: ClassType<GlobalStrategy>
   children?: React.ReactNode
 }
 
-const ModalLayout: FC = () => {
-  return (
-    <Drawer isOpen placement="right" onClose={() => {}}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>Create your account</DrawerHeader>
-        <DrawerBody>
-          <Outlet />
-        </DrawerBody>
-        <DrawerFooter>
-          <Button variant="outline" mr={3}>
-            Cancel
-          </Button>
-          <Button colorScheme="blue">Save</Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
-  )
-}
+// const ModalLayout: FC = () => {
+//   return (
+//     <Drawer isOpen placement="right" onClose={() => {}}>
+//       <DrawerOverlay />
+//       <DrawerContent>
+//         <DrawerCloseButton />
+//         <DrawerHeader>Create your account</DrawerHeader>
+//         <DrawerBody>
+//           <Outlet />
+//         </DrawerBody>
+//         <DrawerFooter>
+//           <Button variant="outline" mr={3}>
+//             Cancel
+//           </Button>
+//           <Button colorScheme="blue">Save</Button>
+//         </DrawerFooter>
+//       </DrawerContent>
+//     </Drawer>
+//   )
+// }
 
 const WithIdParam: FC = ({ children }) => {
   const { id } = useParams()
@@ -57,7 +59,12 @@ const WithIdParam: FC = ({ children }) => {
 }
 
 export const AdminCore: FC<AdminCoreProps> = (props) => {
-  const { loginComponent = <Login />, layoutComponent = <Layout />, strategy } = props
+  const {
+    loginComponent = <Login />,
+    layoutComponent = <Layout />,
+    modalComponent = <ModalLayout />,
+    strategy,
+  } = props
 
   if (Children.count(props.children) === 0) {
     throw new Error('Admin has no children')
@@ -168,6 +175,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
 
               const resourceProps = {
                 resource: child.props.name,
+                renderingInModal: true,
                 ...crud,
               }
 
@@ -175,7 +183,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                 return (
                   <Route
                     path={child.props.overrideName || child.props.name}
-                    element={<ModalLayout />}
+                    element={modalComponent}
                   >
                     {crud.hasCreate && (
                       <Route

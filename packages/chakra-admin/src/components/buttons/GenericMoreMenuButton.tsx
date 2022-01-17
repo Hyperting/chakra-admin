@@ -17,12 +17,15 @@ import {
   Icon,
   IconButton,
 } from '@chakra-ui/react'
+import { useTranslate } from 'ca-i18n'
 import { DocumentNode } from 'graphql'
 import React, { FC, useCallback, useState } from 'react'
+import { BsFillEyeFill } from 'react-icons/bs'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { FiMoreVertical } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import { RouteAvailability } from '../../core/admin/RouteAvailability'
+import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { useGlobalStrategy } from '../../core/admin/useGlobalStrategy'
 
 export type GenericMoreMenuButtonProps<Data = any, Variables = OperationVariables> = {
@@ -36,6 +39,11 @@ export type GenericMoreMenuButtonProps<Data = any, Variables = OperationVariable
   confirmDialogCancelButtonLabel?: string
   confirmDialogConfirmDeleteButtonLabel?: string
   resource?: string
+  openShowAsModal?: boolean
+  openEditAsModal?: boolean
+  hideDelete?: boolean
+  hideEdit?: boolean
+  hideShow?: boolean
 } & RouteAvailability
 
 export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
@@ -51,8 +59,15 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
   resource,
   hasEdit,
   hasShow,
+  openShowAsModal,
+  openEditAsModal,
+  hideShow,
+  hideEdit,
+  hideDelete,
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const t = useTranslate()
+  const getResourceLabel = useGetResourceLabel()
   const location = useLocation()
   const client = useApolloClient()
   const notify = useToast()
@@ -132,23 +147,33 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
           icon={<Icon as={FiMoreVertical} />}
         />
         <MenuList border="0px">
-          {hasEdit && (
+          {hasShow && !hideShow && (
+            <MenuItem
+              as={Link}
+              to={`/${resource}/${id}/show`}
+              state={openShowAsModal ? { background: location } : undefined}
+              icon={<Icon as={BsFillEyeFill} />}
+            >
+              {t('ca.action.show')}
+            </MenuItem>
+          )}
+          {hasEdit && !hideEdit && (
             <MenuItem
               as={Link}
               to={`/${resource}/${id}`}
-              state={{ background: location }}
+              state={openEditAsModal ? { background: location } : undefined}
               icon={<Icon as={FaEdit} />}
             >
-              Modifica
+              {t('ca.action.edit')}
             </MenuItem>
           )}
-          {deleteItemMutation && (
+          {deleteItemMutation && !hideDelete && (
             <MenuItem
               onClick={handleMenuItemDeleteClick}
               color="red.500"
               icon={<Icon color="red.400" as={FaTrash} />}
             >
-              Elimina
+              {t('ca.action.delete')}
             </MenuItem>
           )}
         </MenuList>
@@ -157,13 +182,23 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{confirmDialogTitle}</ModalHeader>
+          <ModalHeader>
+            {t('ca.message.delete_title', {
+              name: resource ? getResourceLabel(resource, 1) : undefined,
+              id,
+            })}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>{confirmDialogBody}</ModalBody>
+          <ModalBody>
+            {t('ca.message.delete_content', {
+              name: resource ? getResourceLabel(resource, 1) : undefined,
+              id,
+            })}
+          </ModalBody>
 
           <ModalFooter>
             <Button disabled={fetching} mr={3} onClick={onClose}>
-              {confirmDialogCancelButtonLabel}
+              {t('ca.action.cancel')}
             </Button>
             <Button
               onClick={handleDeleteItem}
@@ -171,7 +206,10 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
               disabled={fetching}
               colorScheme="red"
             >
-              {confirmDialogConfirmDeleteButtonLabel}
+              {t('ca.action.confirm_delete', {
+                name: resource ? getResourceLabel(resource, 1) : undefined,
+                id,
+              })}
             </Button>
           </ModalFooter>
         </ModalContent>
