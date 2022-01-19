@@ -16,6 +16,12 @@ export const hasComplexChildren = (
     false
   )
 
+export const areComplexChildren = (children: ReactNode): boolean =>
+  Children.toArray(children).reduce(
+    (response: boolean, child: ReactNode): boolean => response || isValidElement(child),
+    false
+  )
+
 export const deepMap = (
   children: ReactNode | ReactNode[],
   deepMapFn: (child: ReactNode, index?: number, children?: readonly ReactNode[]) => ReactNode

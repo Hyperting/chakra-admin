@@ -116,7 +116,7 @@ export function caField<P = {}, TItem = Record<string, any>, T = As<any>>(
             }
           }, {}),
         },
-        ...(type === 'mixed-layout'
+        type === 'mixed-layout'
           ? Children.toArray(children || []).map((child) => {
               return cloneElement(child as any, {
                 ...filterChakraProps(props || {}),
@@ -124,7 +124,7 @@ export function caField<P = {}, TItem = Record<string, any>, T = As<any>>(
                 record,
               })
             })
-          : [])
+          : children
       )
     }
   }

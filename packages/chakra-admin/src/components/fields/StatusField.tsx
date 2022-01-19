@@ -14,24 +14,14 @@ export type StatusOptions = {
 
 export type StatusFieldProps<TItem> = {
   statuses?: Record<string | number, StatusOptions>
-  getStatus?: (props: Partial<CAFieldProps<TItem>>) => string | number
-} & Partial<CAFieldProps<TItem>> &
+} & Partial<CAFieldProps<BoxProps, TItem>> &
   BoxProps
 
 export function StatusField<TItem = Record<string, any>>({
   statuses = {},
-  record,
-  source,
-  getStatus,
   ...rest
 }: StatusFieldProps<TItem>) {
-  const value = useMemo(() => {
-    if (getStatus) {
-      return getStatus({ record, source })
-    }
-
-    return get(record || {}, source)
-  }, [getStatus, record, source])
+  const value = useField(rest as any)
 
   const statusOptions = useMemo(() => {
     return statuses[value] || {}

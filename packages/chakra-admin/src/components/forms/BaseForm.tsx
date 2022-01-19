@@ -66,7 +66,7 @@ export const BaseForm: FC<BaseFormProps> = ({
               {
                 ...{
                   ...child.props,
-                  onSubmit,
+                  // onSubmit,
                   executeMutation,
                   mutationResult,
                   register: methods.register,

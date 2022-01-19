@@ -38,7 +38,8 @@ export function useDataTable<TItem = Record<string, any>>({
   resource,
   queryResult,
 }: DataTableProps<TItem>): UseDataTableReturn {
-  const t = useTranslate()
+  const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
+  const tAll = useTranslate()
   const strategy = useGlobalStrategy()
   const foundedColumns: Column<object>[] = useMemo(
     () =>
@@ -46,17 +47,20 @@ export function useDataTable<TItem = Record<string, any>>({
         if (child && (child as any).type && (child as any).props && (child as any).props.source) {
           const childProps = (child as any).props
           const newColumn: any = {
-            Header:
-              childProps.label ||
-              t(`resources.${resource}.fields.${childProps.source}`, {
-                defaultValue: humanize(childProps.source),
-              }),
-            accessor: childProps?.source || index,
+            Header: childProps.label
+              ? tAll(childProps.label)
+              : typeof childProps.source === 'string'
+              ? t(`${childProps.source}`, {
+                  defaultValue: humanize(childProps.source),
+                })
+              : '',
+            accessor: typeof childProps?.source === 'string' ? childProps?.source : undefined,
             isNumeric: childProps?.isNumeric,
             disableSortBy: typeof childProps.sortable === 'boolean' ? !childProps.sortable : false,
-            id: !childProps?.source
-              ? `data-table-column-${childProps?.source || ''}${index}`
-              : undefined,
+            id:
+              !childProps?.source || typeof childProps.source !== 'string'
+                ? `data-table-column-${childProps?.source || ''}${index}`
+                : `data-table-column-${index}`,
           }
 
           if ((child as ReactElement).type === DataTableValue) {

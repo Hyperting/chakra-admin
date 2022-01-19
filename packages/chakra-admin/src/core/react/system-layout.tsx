@@ -10,7 +10,6 @@ import {
   SimpleGrid,
   Stack,
   Wrap,
-  FormControl,
   HStack,
   VStack,
   AspectRatio,
@@ -31,7 +30,6 @@ import {
   CenterProps,
   ContainerProps,
   FlexProps,
-  FormControlProps,
   GridItemProps,
   GridProps,
   ListProps,
@@ -50,6 +48,7 @@ import {
   StatProps,
 } from '@chakra-ui/react'
 import { filterChakraProps } from './system-utils'
+import { areComplexChildren } from '../details/deep-map'
 
 // fix components without displayName
 const Alert = CUIAlert
@@ -74,7 +73,7 @@ export const CALayoutComponents = {
   VStack: caLayout<StackProps>(VStack),
   Wrap: caLayout<WrapProps>(Wrap),
   WrapItem: caLayout<WrapItemProps>(WrapItem),
-  FormControl: caLayout<FormControlProps>(FormControl),
+  // FormControl: caLayout<FormControlProps>(FormControl),
   Portal: caLayout<PortalProps>(Portal),
   List: caLayout<ListProps>(List),
   OrderedList: caLayout<ListProps>(OrderedList),
@@ -89,13 +88,15 @@ export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string
     return createElement(
       component as any,
       props,
-      Children.toArray(children).map((child) => {
-        return cloneElement(child as any, {
-          ...filterChakraProps(props || {}),
-          ...((child as any).props || {}),
-          record,
-        })
-      })
+      areComplexChildren(children)
+        ? Children.toArray(children).map((child) => {
+            return cloneElement(child as any, {
+              ...filterChakraProps(props || {}),
+              ...((child as any).props || {}),
+              record,
+            })
+          })
+        : children
     )
   }
 

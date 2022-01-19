@@ -52,6 +52,7 @@ export const useCreate = <
 
         const result = await executeMutation({
           variables: variables as TVariables,
+          optimisticResponse: values,
         })
         if (result.data && !result.errors) {
           notify({

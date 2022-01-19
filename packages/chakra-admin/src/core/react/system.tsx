@@ -1,6 +1,6 @@
 import { caLayout, CALayoutComponents } from './system-layout'
 import { caField, CAFieldComponents } from './system-field'
-import { caFormInput, CAFormComponents } from './system-form-input'
+import { caFormInput, CAFormComponents, CAFormControlComponents } from './system-form'
 
 export type CA = {
   layout: typeof caLayout
@@ -21,4 +21,9 @@ export const ca = ({
   ...CALayoutComponents,
   ...CAFieldComponents,
   ...CAFormComponents,
-} as unknown) as CA & typeof CALayoutComponents & typeof CAFieldComponents & typeof CAFormComponents
+  ...CAFormControlComponents,
+} as unknown) as CA &
+  typeof CALayoutComponents &
+  typeof CAFieldComponents &
+  typeof CAFormComponents &
+  typeof CAFormControlComponents
