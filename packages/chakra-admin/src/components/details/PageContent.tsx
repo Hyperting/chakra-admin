@@ -5,7 +5,6 @@ import { PageTitle } from './PageTitle'
 export type PageContentProps = {
   title?: ReactNode
   topToolbar?: ReactNode
-  bottomToolbar?: ReactNode
   renderingInModal?: boolean
 } & BoxProps
 
@@ -14,7 +13,6 @@ export const PageContent: FC<PageContentProps> = ({
   renderingInModal,
   title = <PageTitle />,
   topToolbar,
-  bottomToolbar,
   ...rest
 }) => {
   if (renderingInModal) {
@@ -31,11 +29,10 @@ export const PageContent: FC<PageContentProps> = ({
   }
 
   return (
-    <Box {...rest}>
+    <Box pr={{ base: 5, lg: '64px' }} {...rest}>
       <Flex
         w="100%"
         pt={{ base: 0, lg: 6 }}
-        pr={{ base: 5, lg: '64px' }}
         pb={5}
         pl={{ base: 5, lg: 0 }}
         justifyContent="space-between"
@@ -49,8 +46,6 @@ export const PageContent: FC<PageContentProps> = ({
       </Flex>
 
       {children}
-
-      {bottomToolbar}
     </Box>
   )
 }

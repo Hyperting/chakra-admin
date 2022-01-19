@@ -60,7 +60,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
   )
 
   return (
-    <chakra.div pr={{ base: 0, lg: '64px' }}>
+    <chakra.div>
       <chakra.div
         display="flex"
         w="100%"
@@ -180,4 +180,4 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
   )
 }
 
-DataTable.displayName = 'DataTable'
+DataTable.displayName = 'CADataTable'

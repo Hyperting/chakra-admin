@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { Icon, ThemingProps, Text, ColorProps, BoxProps, Box } from '@chakra-ui/react'
 import { FaCircle } from 'react-icons/fa'
 import get from 'lodash.get'
-import { CAFieldProps, caField } from '../../core/react/system'
+import { CAFieldProps } from '../../core/react/system-field'
 import { useField } from '../../core/fields/useField'
 
 export type StatusOptions = {

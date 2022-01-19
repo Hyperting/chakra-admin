@@ -1,12 +1,17 @@
 import get from 'lodash.get'
 import { useMemo } from 'react'
-import { CAFieldProps } from '../react/system'
+import { CAFieldProps } from '../react/system-field'
 
 export function useField<TItem = Record<string, any>>(props: CAFieldProps<TItem>) {
   const value = useMemo(() => {
-    const value = get(props.record || {}, props.source, undefined)
-    return value
-  }, [props.record, props.source])
+    if (typeof props.source === 'string') {
+      return get(props.record || {}, props.source, undefined)
+    } else if (typeof props.source === 'function') {
+      return props.source(props.record || {})
+    }
+
+    return undefined
+  }, [props])
 
   return value
 }

@@ -1,6 +1,6 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation, UseTranslationOptions } from 'react-i18next'
 
-export const useTranslate = () => {
-  const { t } = useTranslation()
+export const useTranslate = (options?: UseTranslationOptions<any>) => {
+  const { t } = useTranslation(undefined, options)
   return t
 }

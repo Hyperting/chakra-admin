@@ -1,15 +1,19 @@
-import { Button, chakra, ChakraProps } from '@chakra-ui/react'
 import React, { FC, useCallback } from 'react'
+import { chakra, ChakraProps } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { deepMap } from 'react-children-utilities'
+import { deepMap } from '../../core/details/deep-map'
 import { UseCreateResult } from '../../core/details/useCreate'
 import { UseEditResult } from '../../core/details/useEdit'
-import { ca, ChakraLayoutComponents } from '../../core/react/system'
+import { ca } from '../../core/react/system'
+import { CALayoutComponents } from '../../core/react/system-layout'
+import { CancelButton } from '../buttons/CancelButton'
+import { SubmitButton } from '../buttons/SubmitButton'
+import { filterChakraProps } from '../../core/react/system-utils'
 
 type BaseFormProps = {
   children?: React.ReactNode
   defaultValues?: any
+  resource?: string
 } & Partial<UseCreateResult | UseEditResult> &
   ChakraProps
 
@@ -21,10 +25,6 @@ export const BaseForm: FC<BaseFormProps> = ({
   executeMutation,
   ...rest
 }) => {
-  const navigate = useNavigate()
-  const handleGoBack = useCallback(() => {
-    navigate(-1)
-  }, [navigate])
   const methods = useForm({ defaultValues })
   const { handleSubmit } = methods
 
@@ -55,8 +55,10 @@ export const BaseForm: FC<BaseFormProps> = ({
   return (
     <chakra.form onSubmit={handleSubmit(onSubmit)}>
       <chakra.div>
-        {deepMap(children, (child: any) => {
-          const isLayout = ChakraLayoutComponents.includes(child.type.displayName)
+        {deepMap(children, (child: any, index) => {
+          const isLayout =
+            child?.type?.displayName &&
+            Object.keys(CALayoutComponents).includes(child?.type?.displayName)
 
           if (isLayout) {
             return React.createElement(
@@ -67,39 +69,47 @@ export const BaseForm: FC<BaseFormProps> = ({
                   onSubmit,
                   executeMutation,
                   mutationResult,
-                  ...rest,
+                  register: methods.register,
+                  control: methods.control,
+                  ...filterChakraProps(rest),
+                  key: `${child?.type?.displayName || 'FI'}-${index}`,
                 },
               },
               child.props?.children
             )
           } else {
-            const { children, ...restProps } = child.props
-            return child.props.source
-              ? React.createElement(child.type, {
-                  ...{
-                    ...restProps,
-                    register: methods.register,
-                    control: methods.control,
-                    name: child.props.source,
-                    key: child.props.source,
-                  },
-                })
-              : child
+            const { ...restProps } = child.props
+            return React.createElement(child.type, {
+              ...{
+                ...restProps,
+                ...filterChakraProps(rest),
+                register: methods.register,
+                control: methods.control,
+                name: child.props.source,
+                key: `${child?.type?.displayName || 'FI'}-${child.props.source}-${index}`,
+              },
+            })
+            // return child.props.source
+            //   ? React.createElement(child.type, {
+            //       ...{
+            //         ...restProps,
+            //         register: methods.register,
+            //         control: methods.control,
+            //         name: child.props.source,
+            //         key: child.props.source,
+            //       },
+            //     })
+            //   : child
           }
         })}
       </chakra.div>
       <chakra.div>
-        <Button
+        <SubmitButton
           disabled={mutationResult?.loading}
           isLoading={mutationResult?.loading}
           type="submit"
-          colorScheme="red"
-        >
-          Crea
-        </Button>
-        <Button onClick={handleGoBack} variant="outline">
-          Annulla
-        </Button>
+        />
+        <CancelButton />
       </chakra.div>
     </chakra.form>
   )

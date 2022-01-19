@@ -9,5 +9,9 @@ type SubmitButtonProps = {
 export const SubmitButton: FC<SubmitButtonProps> = ({ label, children, ...props }) => {
   const t = useTranslate()
 
-  return <Button {...props}>{children || t('ca.action.submit')}</Button>
+  return (
+    <Button type="submit" {...props}>
+      {children || t('ca.action.submit')}
+    </Button>
+  )
 }

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Edit, BaseForm, Input, caField, ca } from 'chakra-admin'
+import { Edit, BaseForm, Input, ca } from 'chakra-admin'
 import { gql } from '@apollo/client'
 import { Avatar, AvatarProps, Box, TextProps, Text, Flex, FormControl, FormLabel, FormHelperText } from '@chakra-ui/react'
 
@@ -23,8 +23,8 @@ const MUTATION_UPDATE_COMPANY = gql`
   }
 `
 
-const CAText = caField<TextProps>(Text)
-const CAAvatar = caField<AvatarProps>(Avatar, { targetProp: 'name' })
+const CAText = ca.field<TextProps>(Text)
+const CAAvatar = ca.field<AvatarProps>(Avatar, { target: 'name' })
 
 const TestAvatar: FC = ({...props}) => {
   return (

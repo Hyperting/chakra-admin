@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
-import { deepMap } from 'react-children-utilities'
 import { useTranslate } from 'ca-i18n'
+import { deepMap } from '../../core/details/deep-map'
 import { useEdit } from '../../core/details/useEdit'
-import { ChakraLayoutComponents } from '../../core/react'
+import { CALayoutComponents } from '../../core/react/system-layout'
 import { ca } from '../../core/react/system'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
@@ -58,7 +58,7 @@ export const Edit: FC<EditProps> = (props) => {
         <>Loading</>
       ) : (
         deepMap(children, (child: any) => {
-          const isLayout = ChakraLayoutComponents.includes(child.type.displayName)
+          const isLayout = Object.keys(CALayoutComponents).includes(child.type.displayName)
 
           if (isLayout) {
             return React.createElement(
@@ -67,6 +67,7 @@ export const Edit: FC<EditProps> = (props) => {
                 ...{
                   ...child.props,
                   id,
+                  resource,
                   mutation,
                   onSubmit,
                   executeMutation,
@@ -83,6 +84,7 @@ export const Edit: FC<EditProps> = (props) => {
           } else {
             return React.cloneElement(child, {
               id,
+              resource,
               mutation,
               onSubmit,
               executeMutation,

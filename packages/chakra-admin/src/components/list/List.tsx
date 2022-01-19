@@ -1,7 +1,6 @@
 import React, { cloneElement, FC, isValidElement, useMemo } from 'react'
-import { chakra } from '@chakra-ui/react'
 import { useTranslate } from 'ca-i18n'
-import { deepMap } from 'react-children-utilities'
+import { deepMap } from '../../core/details/deep-map'
 import { registeredIcons, useAdminStateValue } from '../../core/admin/adminState'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { ListProps } from '../../core/list/ListProps'
@@ -9,7 +8,8 @@ import { useList } from '../../core/list/useList'
 import { PageContent } from '../details/PageContent'
 import { PageTitle } from '../details/PageTitle'
 import { ListToolbar } from './ListToolbar'
-import { ca, ChakraLayoutComponents } from '../../core/react/system'
+import { ca } from '../../core/react/system'
+import { CALayoutComponents } from '../../core/react/system-layout'
 
 export const List: FC<ListProps> = (props) => {
   const {
@@ -73,7 +73,7 @@ export const List: FC<ListProps> = (props) => {
         } as any)} */}
 
       {deepMap(children, (child: any) => {
-        const isLayout = ChakraLayoutComponents.includes(child.type.displayName)
+        const isLayout = Object.keys(CALayoutComponents).includes(child.type.displayName)
 
         if (isLayout) {
           return React.createElement(

@@ -1,10 +1,11 @@
 import React, { FC } from 'react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
-import { deepMap } from 'react-children-utilities'
 import { useTranslate } from 'ca-i18n'
+import { deepMap } from '../../core/details/deep-map'
 import { useShow } from '../../core/details/useShow'
-import { ca, ChakraLayoutComponents } from '../../core/react/system'
+import { ca } from '../../core/react/system'
+import { CALayoutComponents } from '../../core/react/system-layout'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageContent, PageContentProps } from './PageContent'
@@ -57,7 +58,7 @@ export const Show: FC<ShowProps> = (props) => {
         <>Loading</>
       ) : (
         deepMap(children, (child: any) => {
-          const isLayout = ChakraLayoutComponents.includes(child.type.displayName)
+          const isLayout = Object.keys(CALayoutComponents).includes(child.type.displayName)
 
           if (isLayout) {
             return React.createElement(
@@ -73,8 +74,10 @@ export const Show: FC<ShowProps> = (props) => {
                   defaultValues: item,
                   record: item,
                   loading,
+                  resource,
                   data,
                   error,
+                  ref: (props as any).ref,
                 },
               },
               child.props?.children
@@ -82,13 +85,14 @@ export const Show: FC<ShowProps> = (props) => {
           } else {
             return React.cloneElement(child, {
               id,
-              mutation,
               onSubmit,
+              mutation,
               executeMutation,
               mutationResult,
               defaultValues: item,
               record: item,
               loading,
+              resource,
               data,
               error,
             })

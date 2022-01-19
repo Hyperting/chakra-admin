@@ -9,6 +9,8 @@ import {
   PageTitle,
   SortDirection,
   DataTableValue as Field,
+  ListToolbar,
+  CreateButton,
 } from 'chakra-admin'
 import { gql } from '@apollo/client'
 
@@ -48,6 +50,7 @@ export const CompanyList: FC = (props) => {
       deleteItemMutation={MUTATION_DELETE_COMPANY}
       filtersComponent={<CompanyFilters />}
       defaultSorting={{ name: SortDirection.ASC }}
+      toolbarComponent={<ListToolbar><CreateButton openAsModal /></ListToolbar>}
     >
       <DataTable>
         <Field source="id" label="ID" />
