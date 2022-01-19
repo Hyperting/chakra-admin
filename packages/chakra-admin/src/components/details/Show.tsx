@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { cloneElement, FC, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
@@ -8,7 +8,7 @@ import { ca } from '../../core/react/system'
 import { CALayoutComponents } from '../../core/react/system-layout'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
-import { PageContent, PageContentProps } from './PageContent'
+import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
 
 export type ShowProps<
@@ -21,24 +21,33 @@ export type ShowProps<
   id?: string
   mutation?: DocumentNode | TypedDocumentNode<EditTData, EditTVariables>
   query: DocumentNode | TypedDocumentNode<ItemTData, ItemTVariables>
-  filtersComponent?: React.ReactNode
   renderingInModal?: boolean
-} & Pick<PageContentProps, 'title'>
+  layout?: ReactElement<PageLayoutProps, any>
+} & Pick<PageLayoutProps, 'title'>
 
 export const Show: FC<ShowProps> = (props) => {
-  const { children, resource, mutation, renderingInModal, title = <DetailsPageTitle />, id } = props
+  const {
+    children,
+    resource,
+    mutation,
+    renderingInModal,
+    layout: Layout = <PageLayout />,
+    title = <DetailsPageTitle />,
+    id,
+  } = props
   const { onSubmit, executeMutation, mutationResult, loading, item, data, error } = useShow(props)
   const { registeredResources, initialized } = useAdminStateValue()
   const t = useTranslate()
   const getResourceLabel = useGetResourceLabel()
 
-  return (
-    <PageContent
-      renderingInModal={renderingInModal}
-      title={
+  return cloneElement(
+    Layout,
+    {
+      title:
         typeof title === 'string'
           ? title
-          : (React.cloneElement(title, {
+          : title
+          ? (React.cloneElement(title, {
               renderingInModal,
               label: t('ca.page.show', {
                 smart_count: 1,
@@ -52,8 +61,9 @@ export const Show: FC<ShowProps> = (props) => {
                   ? (registeredIcons[registeredResources[resource]?.iconName] as any)
                   : undefined,
             }) as any)
-      }
-    >
+          : undefined,
+    },
+    <>
       {loading ? (
         <>Loading</>
       ) : (
@@ -99,6 +109,6 @@ export const Show: FC<ShowProps> = (props) => {
           }
         })
       )}
-    </PageContent>
+    </>
   )
 }

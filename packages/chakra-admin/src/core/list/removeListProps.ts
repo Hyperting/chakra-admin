@@ -17,6 +17,7 @@ export const removeListProps = (props: ListProps): any => {
     hasEdit,
     hasCreate,
     hasShow,
+    layout,
     ...rest
   } = props
   return rest

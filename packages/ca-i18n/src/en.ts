@@ -23,6 +23,7 @@ export const en = {
       message: {
         delete_title: 'Delete %{name} #%{id}',
         delete_content: 'Are you sure you want to delete this %{name}?',
+        required_field: 'This field is mandatory',
       },
     },
   },

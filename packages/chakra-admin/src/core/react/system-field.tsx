@@ -27,6 +27,8 @@ import {
   StatLabelProps,
   StatNumber,
   StatNumberProps,
+  Tab,
+  TabProps,
   Tag,
   TagProps,
   Text,
@@ -37,21 +39,22 @@ import { useField } from '../fields/useField'
 import { filterChakraProps } from './system-utils'
 
 export const CAFieldComponents = {
-  AlertTitle: caField<AlertTitleProps>(AlertTitle),
   AlertDescription: caField<AlertDescriptionProps>(AlertDescription),
+  AlertTitle: caField<AlertTitleProps>(AlertTitle),
   Avatar: caField<AvatarProps>(Avatar),
   Badge: caField<BadgeProps>(Badge),
   CircularProgress: caField<CircularProgressProps>(CircularProgress, { target: 'value' }),
   Code: caField<CodeProps>(Code),
-  Kbd: caField<KbdProps>(Kbd),
-  Tag: caField<TagProps>(Tag),
-  Progress: caField<ProgressProps>(Progress, { target: 'value' }),
-  StatLabel: caField<StatLabelProps>(StatLabel, { type: 'mixed-layout' }),
-  StatHelpText: caField<StatHelpTextProps>(StatHelpText, { type: 'mixed-layout' }),
-  StatNumber: caField<StatNumberProps>(StatNumber, { type: 'mixed-layout' }),
-  StatArrow: caField<StatArrowProps>(StatArrow, { target: 'type' }),
-  Text: caField<TextProps>(Text),
   Heading: caField<HeadingProps>(Heading),
+  Kbd: caField<KbdProps>(Kbd),
+  Progress: caField<ProgressProps>(Progress, { target: 'value' }),
+  StatArrow: caField<StatArrowProps>(StatArrow, { target: 'type' }),
+  StatHelpText: caField<StatHelpTextProps>(StatHelpText, { type: 'mixed-layout' }),
+  StatLabel: caField<StatLabelProps>(StatLabel, { type: 'mixed-layout' }),
+  StatNumber: caField<StatNumberProps>(StatNumber, { type: 'mixed-layout' }),
+  Tab: caField<TabProps>(Tab),
+  Tag: caField<TagProps>(Tag),
+  Text: caField<TextProps>(Text),
 }
 
 export type CAFieldOptions<P = Record<string, any>> = {

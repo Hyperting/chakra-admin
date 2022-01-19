@@ -27,7 +27,6 @@ import { filterChakraProps } from './system-utils'
 export const CAFormComponents = {
   Checkbox: caFormInput<CheckboxProps>(Checkbox, { labelTarget: 'children' }),
   Editable: caFormInput<EditableProps>(Editable, { type: 'control-mixed-layout' }),
-  // eslint-disable-next-line prettier/prettier
   Input: caFormInput<InputProps>(Input),
   Switch: caFormInput<SwitchProps>(Switch),
   RadioGroup: caFormInput<RadioGroupProps>(RadioGroup, {
@@ -67,7 +66,6 @@ export function CAFormErrorMessage<TItem = Record<string, any>>(
   props: Partial<CAInputProps<TItem>> & FormErrorMessageProps
 ) {
   const { source, control, children, ...filteredProps } = props as any
-
   const { errors } = useFormState<TItem>({ control, name: source })
 
   return <CUIFormErrorMessage children={children || errors[source]?.message} {...filteredProps} />

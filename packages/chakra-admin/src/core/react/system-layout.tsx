@@ -46,6 +46,8 @@ import {
   StatGroupProps,
   Stat,
   StatProps,
+  TabListProps,
+  TabList,
 } from '@chakra-ui/react'
 import { filterChakraProps } from './system-utils'
 import { areComplexChildren } from '../details/deep-map'
@@ -73,11 +75,11 @@ export const CALayoutComponents = {
   VStack: caLayout<StackProps>(VStack),
   Wrap: caLayout<WrapProps>(Wrap),
   WrapItem: caLayout<WrapItemProps>(WrapItem),
-  // FormControl: caLayout<FormControlProps>(FormControl),
   Portal: caLayout<PortalProps>(Portal),
   List: caLayout<ListProps>(List),
   OrderedList: caLayout<ListProps>(OrderedList),
   Tabs: caLayout<TabsProps>(Tabs),
+  TabList: caLayout<TabListProps>(TabList),
   TabPanels: caLayout<TabPanelsProps>(TabPanels),
   TabPanel: caLayout<TabPanelProps>(TabPanel),
   UnorderedList: caLayout<ListProps>(UnorderedList),

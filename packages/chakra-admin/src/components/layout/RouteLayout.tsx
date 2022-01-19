@@ -4,11 +4,11 @@ import { Outlet } from 'react-router-dom'
 import { OfflineAlert } from './OfflineAlert'
 import { Sidebar } from './sidebar/Sidebar'
 
-export type LayoutProps = {
+export type RouteLayoutProps = {
   sidebar?: React.ReactNode
   showOfflineAlert?: boolean
 }
-export const Layout: FC<LayoutProps> = ({
+export const RouteLayout: FC<RouteLayoutProps> = ({
   sidebar = <Sidebar />,
   showOfflineAlert = true,
   children,

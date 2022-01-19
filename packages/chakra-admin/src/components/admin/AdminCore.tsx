@@ -12,14 +12,14 @@ import {
 } from '@chakra-ui/react'
 import { AuthProvider } from '../../core/auth/AuthProvider'
 import { ClassType } from '../../core/ClassType'
-import { Layout } from '../layout/Layout'
+import { RouteLayout } from '../layout/RouteLayout'
 import { Resource } from './Resource'
 import { Login } from '../login/Login'
 import { useAdminCore } from '../../core/admin/useAdminCore'
 import { Loading } from './Loading'
 import { RouteAvailability } from '../../core/admin/RouteAvailability.js'
 import { GlobalStrategy } from '../../core/admin/Strategy'
-import { ModalLayout } from '../modal/ModalLayout'
+import { ModalRouteLayout } from '../modal/ModalRouteLayout'
 
 export type AdminCoreProps = {
   layoutComponent?: React.ReactNode
@@ -61,8 +61,8 @@ const WithIdParam: FC = ({ children }) => {
 export const AdminCore: FC<AdminCoreProps> = (props) => {
   const {
     loginComponent = <Login />,
-    layoutComponent = <Layout />,
-    modalComponent = <ModalLayout />,
+    layoutComponent = <RouteLayout />,
+    modalComponent = <ModalRouteLayout />,
     strategy,
   } = props
 

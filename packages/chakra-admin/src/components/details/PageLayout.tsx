@@ -2,13 +2,13 @@ import React, { FC, ReactNode } from 'react'
 import { Box, BoxProps, DrawerBody, Flex } from '@chakra-ui/react'
 import { PageTitle } from './PageTitle'
 
-export type PageContentProps = {
+export type PageLayoutProps = {
   title?: ReactNode
   topToolbar?: ReactNode
   renderingInModal?: boolean
 } & BoxProps
 
-export const PageContent: FC<PageContentProps> = ({
+export const PageLayout: FC<PageLayoutProps> = ({
   children,
   renderingInModal,
   title = <PageTitle />,

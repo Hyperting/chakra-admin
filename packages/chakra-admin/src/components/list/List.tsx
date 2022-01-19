@@ -5,7 +5,7 @@ import { registeredIcons, useAdminStateValue } from '../../core/admin/adminState
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { ListProps } from '../../core/list/ListProps'
 import { useList } from '../../core/list/useList'
-import { PageContent } from '../details/PageContent'
+import { PageLayout } from '../details/PageLayout'
 import { PageTitle } from '../details/PageTitle'
 import { ListToolbar } from './ListToolbar'
 import { ca } from '../../core/react/system'
@@ -18,6 +18,7 @@ export const List: FC<ListProps> = (props) => {
     children,
     resource,
     showMoreMenu = true,
+    layout: Layout = <PageLayout />,
     ...rest
   } = props
   const listData = useList(props)
@@ -35,9 +36,10 @@ export const List: FC<ListProps> = (props) => {
     [resource, rest, showMoreMenu]
   )
 
-  return (
-    <PageContent
-      title={
+  return cloneElement(
+    Layout,
+    {
+      title:
         typeof title === 'string'
           ? title
           : (React.cloneElement(title, {
@@ -51,9 +53,8 @@ export const List: FC<ListProps> = (props) => {
                 registeredIcons[registeredResources[resource]?.iconName]
                   ? (registeredIcons[registeredResources[resource]?.iconName] as any)
                   : undefined,
-            }) as any)
-      }
-      topToolbar={
+            }) as any),
+      topToolbar:
         isValidElement(toolbarComponent) &&
         cloneElement(
           toolbarComponent,
@@ -62,16 +63,9 @@ export const List: FC<ListProps> = (props) => {
             ...listData,
           },
           (toolbarComponent as any).props.children
-        )
-      }
-    >
-      {/* {isValidElement(children) &&
-        cloneElement(Children.only(children), {
-          ...childrenProps,
-          ...listData,
-          showMoreMenu,
-        } as any)} */}
-
+        ),
+    },
+    <>
       {deepMap(children, (child: any) => {
         const isLayout = Object.keys(CALayoutComponents).includes(child.type.displayName)
 
@@ -97,6 +91,6 @@ export const List: FC<ListProps> = (props) => {
           })
         }
       })}
-    </PageContent>
+    </>
   )
 }

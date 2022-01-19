@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
 import {
   MutationHookOptions,
@@ -8,7 +8,7 @@ import {
 } from '@apollo/client'
 import { SortType } from './SortType'
 import { ListStrategy } from '../admin/Strategy'
-import { PageContentProps } from '../../components/details/PageContent'
+import { PageLayoutProps } from '../../components/details/PageLayout'
 
 export type ListProps<
   ListTData = any,
@@ -34,4 +34,5 @@ export type ListProps<
   hasCreate?: boolean
   hasShow?: boolean
   hasList?: boolean
-} & Pick<PageContentProps, 'title'>
+  layout?: ReactElement<PageLayoutProps, any>
+} & Pick<PageLayoutProps, 'title'>

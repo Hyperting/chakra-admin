@@ -1,5 +1,5 @@
 export * from './sidebar'
-export * from './Layout'
+export * from './RouteLayout'
 export * from './MobileTopBar'
 export * from './OfflineAlert'
 export * from '../details/PageTitle'

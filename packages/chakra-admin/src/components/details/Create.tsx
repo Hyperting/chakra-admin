@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { cloneElement, FC, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
@@ -8,7 +8,7 @@ import { ca } from '../../core/react/system'
 import { CALayoutComponents } from '../../core/react/system-layout'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
-import { PageContent, PageContentProps } from './PageContent'
+import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
 
 export type CreateProps<TData = any, TVariables = OperationVariables> = {
@@ -16,19 +16,28 @@ export type CreateProps<TData = any, TVariables = OperationVariables> = {
   mutation: DocumentNode | TypedDocumentNode<TData, TVariables>
   filtersComponent?: React.ReactNode
   renderingInModal?: boolean
-} & Pick<PageContentProps, 'title'>
+  layout?: ReactElement<PageLayoutProps, any>
+} & Pick<PageLayoutProps, 'title'>
 
 export const Create: FC<CreateProps> = (props) => {
-  const { children, resource, renderingInModal, title = <DetailsPageTitle />, mutation } = props
+  const {
+    children,
+    resource,
+    renderingInModal,
+    layout: Layout = <PageLayout />,
+    title = <DetailsPageTitle />,
+    mutation,
+  } = props
   const { onSubmit, executeMutation, mutationResult } = useCreate(props)
   const { registeredResources, initialized } = useAdminStateValue()
   const t = useTranslate()
   const getResourceLabel = useGetResourceLabel()
 
-  return (
-    <PageContent
-      renderingInModal={renderingInModal}
-      title={
+  return cloneElement(
+    Layout,
+    {
+      renderingInModal,
+      title:
         typeof title === 'string'
           ? title
           : (React.cloneElement(title, {
@@ -43,9 +52,10 @@ export const Create: FC<CreateProps> = (props) => {
                 registeredIcons[registeredResources[resource]?.iconName]
                   ? (registeredIcons[registeredResources[resource]?.iconName] as any)
                   : undefined,
-            }) as any)
-      }
-    >
+            }) as any),
+    },
+
+    <>
       {deepMap(children, (child: any) => {
         const isLayout = Object.keys(CALayoutComponents).includes(child.type.displayName)
 
@@ -75,6 +85,6 @@ export const Create: FC<CreateProps> = (props) => {
           })
         }
       })}
-    </PageContent>
+    </>
   )
 }
