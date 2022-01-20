@@ -21,7 +21,7 @@ export interface AdminState {
   initialized: boolean
 }
 
-export const authState = atom<AdminState>({
+export const adminState = atom<AdminState>({
   key: ADMIN_STATE_KEY,
   default: {
     registeredResources: {},
@@ -29,7 +29,7 @@ export const authState = atom<AdminState>({
   },
 })
 
-export const useAdminState = () => useRecoilState(authState)
-export const useAdminStateValue = () => useRecoilValue(authState)
-export const useSetAdminState = () => useSetRecoilState(authState)
-export const useResetAdminState = () => useResetRecoilState(authState)
+export const useAdminState = () => useRecoilState(adminState)
+export const useAdminStateValue = () => useRecoilValue(adminState)
+export const useSetAdminState = () => useSetRecoilState(adminState)
+export const useResetAdminState = () => useResetRecoilState(adminState)

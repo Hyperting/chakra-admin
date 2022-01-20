@@ -94,3 +94,5 @@ export const List: FC<ListProps> = (props) => {
     </>
   )
 }
+
+List.displayName = 'CAList'

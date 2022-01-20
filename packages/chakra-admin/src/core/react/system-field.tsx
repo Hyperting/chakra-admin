@@ -63,8 +63,8 @@ export type CAFieldOptions<P = Record<string, any>> = {
 }
 
 export type CAFieldProps<P = {}, TItem = Record<string, any>> = {
-  source?: keyof TItem | ((record: TItem) => TItem)
-  sources?: Partial<Record<keyof P, keyof TItem | ((record: TItem) => TItem)>>
+  source?: keyof TItem | ((record: TItem) => any)
+  sources?: Partial<Record<keyof P, keyof TItem | ((record: TItem) => any)>>
   record?: TItem
   sortable?: boolean
   label?: string

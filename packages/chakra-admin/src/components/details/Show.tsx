@@ -43,6 +43,7 @@ export const Show: FC<ShowProps> = (props) => {
   return cloneElement(
     Layout,
     {
+      renderingInModal,
       title:
         typeof title === 'string'
           ? title
@@ -75,7 +76,6 @@ export const Show: FC<ShowProps> = (props) => {
               ca[child.type.displayName],
               {
                 ...{
-                  ...child.props,
                   id,
                   mutation,
                   onSubmit,
@@ -87,6 +87,7 @@ export const Show: FC<ShowProps> = (props) => {
                   resource,
                   data,
                   error,
+                  ...child.props,
                   ref: (props as any).ref,
                 },
               },
@@ -105,6 +106,7 @@ export const Show: FC<ShowProps> = (props) => {
               resource,
               data,
               error,
+              ...((child as any).props || {}),
             })
           }
         })

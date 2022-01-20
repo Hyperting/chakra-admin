@@ -22,7 +22,7 @@ export type DataTableProps<TItem> = Partial<UseListReturn> &
   }
 // DataTableFC<DataTableProps>
 export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
-  const { loading, filtersComponent, total, offset, hasEdit, hasShow, resource } = props
+  const { loading, filtersComponent, total, offset, resource, hasEdit, hasShow } = props
 
   const {
     getTableProps,
@@ -51,12 +51,12 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
       }
 
       if (hasShow) {
-        navigate(`${row.original.id}/show`)
+        navigate(`/${resource}/${row.original.id}/show`)
       } else {
-        navigate(`${row.original.id}`)
+        navigate(`/${resource}/${row.original.id}`)
       }
     },
-    [hasShow, navigate]
+    [hasShow, navigate, resource]
   )
 
   return (
