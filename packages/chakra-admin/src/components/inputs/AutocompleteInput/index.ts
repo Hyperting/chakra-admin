@@ -1,3 +1,1 @@
-import { AutocompleteInput } from './AutocompleteInput'
-
-export default AutocompleteInput
+export { AutocompleteInput } from './AutocompleteInput'

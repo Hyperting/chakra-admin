@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React, { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
 import {
   Box,
@@ -12,6 +13,9 @@ import {
   useMultiStyleConfig,
   useOutsideClick,
   Text,
+  InputGroup,
+  InputRightElement,
+  Icon,
 } from '@chakra-ui/react'
 import {
   CalendarDate,
@@ -29,6 +33,7 @@ import {
 } from '@uselessdev/datepicker'
 import { format, isValid, startOfWeek, addDays, Locale } from 'date-fns'
 import { useController } from 'react-hook-form'
+import { BsCalendar2EventFill } from 'react-icons/bs'
 import { CAInputProps } from '../../core/react/system-form'
 
 function weekdays(weekdayFormat: string, locale?: Locale) {
@@ -53,8 +58,8 @@ export function CalendarWeek() {
 }
 
 type DateInputProps<TItem> = {
-  // eslint-disable-next-line react/require-default-props
   locale?: Locale
+  placeholder?: string
 } & CAInputProps<TItem> &
   BoxProps
 
@@ -79,6 +84,7 @@ export function DateInput<TItem = Record<string, any>>({
   disabled,
   deps,
   locale,
+  placeholder,
   ...rest
 }: DateInputProps<TItem>) {
   const {
@@ -140,12 +146,15 @@ export function DateInput<TItem = Record<string, any>>({
     >
       <PopoverTrigger>
         <Box onClick={onOpen} ref={initialRef} flex="1" {...rest}>
-          <Input
-            ref={ref}
-            placeholder="MM/dd/yyyy"
-            value={textValue}
-            onChange={handleInputChange}
-          />
+          <InputGroup>
+            <Input
+              ref={ref}
+              placeholder={placeholder}
+              value={textValue}
+              onChange={handleInputChange}
+            />
+            <InputRightElement children={<Icon color="gray.300" as={BsCalendar2EventFill} />} />
+          </InputGroup>
         </Box>
       </PopoverTrigger>
 

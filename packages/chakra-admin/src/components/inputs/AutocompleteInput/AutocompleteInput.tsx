@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 // import {
 //   CUIAutoComplete,
 //   CUIAutoCompleteProps,
@@ -7,9 +7,9 @@ import React, { ChangeEventHandler, FC, useCallback, useEffect, useState } from 
 // } from 'chakra-ui-autocomplete'
 import { UseComboboxStateChange } from 'downshift'
 import { DocumentNode } from 'graphql'
-import { TypedDocumentNode, useClient, useQuery } from 'urql'
 import { chakra, useToast } from '@chakra-ui/react'
 import { Controller } from 'react-hook-form'
+import { useApolloClient } from '@apollo/client'
 import { InputProps } from '../Input'
 import { Item, CUIAutoCompleteProps, CUIAutoComplete } from '../../../chakra-ui-autocomplete'
 
@@ -18,7 +18,7 @@ export type AutocompleteInputProps = InputProps &
     // onChange?: (newValue: Item & { [x: string]: any }) => void
     // value?: Item & { [x: string]: any }
 
-    query: string | DocumentNode | TypedDocumentNode<{}, any>
+    query: DocumentNode
     inputValueToFilters?: (value: string) => Record<string, any>
     emptyLabel?: string
     dataItemToAutocompleteItem?: (
@@ -55,9 +55,10 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
     ])
     const [selectedItem, setSelectedItem] = useState<(Item & { [x: string]: any }) | undefined>()
     const notify = useToast()
-    const client = useClient()
+    const client = useApolloClient()
 
     const handleSelectedItemChange = (changes: UseComboboxStateChange<Item>) => {
+      console.log('selectedItem', changes.selectedItem, changes)
       if (changes.selectedItem && onChange) {
         onChange(changes.selectedItem.value)
         // setSelectedItem(changes.selectedItem)
@@ -71,11 +72,12 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
       async (items: Item[], inputValue: string): Promise<Item[]> => {
         try {
           setFetching(true)
-          const { data, error } = await client
-            .query(query, {
+          const { data, error } = await client.query({
+            query,
+            variables: {
               filters: inputValueToFilters(inputValue),
-            })
-            .toPromise()
+            },
+          })
 
           if (error) {
             throw new Error('Error fetching data')
@@ -111,7 +113,7 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
           notify({
             status: 'error',
             title: "Can't fetch data",
-            description: error.message,
+            description: (error as any)?.message,
           })
         } finally {
           setFetching(false)
@@ -125,13 +127,14 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
       const fetchData = async () => {
         try {
           setFetching(true)
-          const { data, error } = await client
-            .query(query, {
+          const { data, error } = await client.query({
+            query,
+            variables: {
               filters: {
                 ids: [value],
               },
-            })
-            .toPromise()
+            },
+          })
 
           if (error) {
             throw new Error(`Error fetching data: ${error.message}`)
@@ -158,7 +161,7 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
           notify({
             status: 'error',
             title: "Can't fetch data",
-            description: error.message,
+            description: (error as any)?.message,
           })
         } finally {
           setFetching(false)
@@ -177,7 +180,7 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
       const init = async () => {
         try {
           setFetching(true)
-          const { data } = await client.query(query).toPromise()
+          const { data } = await client.query({ query })
 
           if (data) {
             const dataKeys = Object.keys(data)
@@ -203,7 +206,7 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
           notify({
             status: 'error',
             title: "Can't fetch data",
-            description: error.message,
+            description: (error as any)?.message,
           })
         } finally {
           setFetching(false)
@@ -215,25 +218,22 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
     }, [])
 
     return (
-      <chakra.div mt={5}>
-        {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
-        <CUIAutoComplete
-          ref={ref}
-          label={label}
-          optionFilterFunc={handleFilters as any}
-          placeholder={placeholder || ''}
-          // onCreateItem={handleCreateItem}
-          items={items}
-          labelStyleProps={{
-            fontWeight: 'bold',
-          }}
-          selectedItem={selectedItem}
-          onSelectedItemChange={handleSelectedItemChange}
-          disableCreateItem
-          hideToggleButton
-          {...rest}
-        />
-      </chakra.div>
+      <CUIAutoComplete
+        // ref={ref}
+        label={label}
+        optionFilterFunc={handleFilters as any}
+        placeholder={placeholder || ''}
+        // onCreateItem={handleCreateItem}
+        items={items}
+        labelStyleProps={{
+          fontWeight: 'bold',
+        }}
+        selectedItem={selectedItem}
+        onSelectedItemChange={handleSelectedItemChange}
+        disableCreateItem
+        hideToggleButton
+        {...rest}
+      />
     )
   }
 )
@@ -243,7 +243,7 @@ export const AutocompleteControlInput: FC<AutocompleteInputProps> = (props) => {
     return (
       <Controller
         control={props.control}
-        defaultValue={true}
+        // defaultValue={true}
         name={props.source}
         render={({ field }) => <AutocompleteInput {...field} {...props} />}
       />

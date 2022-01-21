@@ -1,3 +1,4 @@
+export * from './AutocompleteInput'
 export * from './BaseInputProps'
 export * from './FilterInputProps'
 export * from './Input'
