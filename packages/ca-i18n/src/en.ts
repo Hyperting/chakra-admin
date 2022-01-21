@@ -17,6 +17,12 @@ export const en = {
         create: 'Create %{name}',
         show: '%{name} #%{id}',
       },
+      input: {
+        single_image: {
+          label: 'Select or drop image',
+          while_dragging: 'Drop the image here',
+        },
+      },
       pagination: {
         page_info: '<strong>%{from}-%{to}</strong> of <strong>%{total}</strong>',
       },

@@ -104,6 +104,7 @@ export type CAInputOptions<P = Record<string, any>> = {
 const RegisterOptionsKeys = keys<RegisterOptions>()
 
 export type CAInputProps<TItem = Record<string, any>> = {
+  // fix source prop
   source: keyof TItem
   label?: string
   resource?: string
@@ -125,7 +126,15 @@ export function caFormInput<P = {}, TItem = Record<string, any>, T = As<any>>(
       )
     }
 
-    const { source, register, control, children, label, ...filteredProps } = props as any
+    const {
+      source,
+      register,
+      unregister,
+      control,
+      children,
+      label,
+      ...filteredProps
+    } = props as any
     const tAll = useTranslate()
     const t = useTranslate({ keyPrefix: `resources.${props.resource}.fields` })
     const labelProps = useMemo(() => {

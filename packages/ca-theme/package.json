@@ -23,7 +23,9 @@
   "peerDependencies": {
     "@chakra-ui/react": ">= 1.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@uselessdev/datepicker": "^2.0.0"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   }

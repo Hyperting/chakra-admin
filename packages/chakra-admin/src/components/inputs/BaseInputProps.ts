@@ -1,6 +1,6 @@
 import { InputProps } from '@chakra-ui/react'
 import React from 'react'
-import { UseFormRegister, Control } from 'react-hook-form'
+import { UseFormRegister, Control, UseFormUnregister } from 'react-hook-form'
 
 export type BaseInputProps = {
   source: string
@@ -9,6 +9,7 @@ export type BaseInputProps = {
   label?: React.ReactNode
   helperText?: React.ReactNode
   register?: UseFormRegister<any>
+  unregister?: UseFormUnregister<any>
   control?: Control
   parse?: <Input = any, Return = any>(inputValue: Input) => Return
   format?: <Input = any, Return = any>(inputValue: Input) => Return

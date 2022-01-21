@@ -44,7 +44,10 @@
     "recoil": "^0.5.2",
     "typedi": "^0.10.0",
     "reflect-metadata": "^0.1.13",
-    "react-dropzone": "^11.5.1"
+    "react-dropzone": "^11.5.1",
+    "date-fns": "^2.25.0",
+    "@uselessdev/datepicker": "^2.0.0",
+    "react-colorful": "^5.5.1"
   },
   "devDependencies": {
     "ca-test-utils": "^0.0.1-dev.3"
