@@ -43,6 +43,11 @@ export const Show: FC<ShowProps> = (props) => {
   return cloneElement(
     Layout,
     {
+      loading,
+      resource,
+      data,
+      error,
+      record: item,
       renderingInModal,
       title:
         typeof title === 'string'
@@ -61,6 +66,11 @@ export const Show: FC<ShowProps> = (props) => {
                 registeredIcons[registeredResources[resource]?.iconName]
                   ? (registeredIcons[registeredResources[resource]?.iconName] as any)
                   : undefined,
+              loading,
+              resource,
+              data,
+              error,
+              record: item,
             }) as any)
           : undefined,
     },

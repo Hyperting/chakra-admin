@@ -18,6 +18,11 @@ export type PageTitleProps = {
   icon?: As<any> | undefined
   boxComponent?: React.ReactNode
   renderingInModal?: boolean
+  loading?: boolean
+  resource?: string
+  data?: any
+  error?: any
+  record?: any
 } & BoxProps
 
 export const PageTitle: FC<PageTitleProps> = ({
@@ -25,6 +30,11 @@ export const PageTitle: FC<PageTitleProps> = ({
   icon,
   boxComponent,
   renderingInModal,
+  loading,
+  resource,
+  data,
+  error,
+  record,
   ...rest
 }) => {
   if (renderingInModal) {

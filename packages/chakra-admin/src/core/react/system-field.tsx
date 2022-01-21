@@ -15,6 +15,8 @@ import {
   CodeProps,
   Heading,
   HeadingProps,
+  Image,
+  ImageProps,
   Kbd,
   KbdProps,
   Progress,
@@ -46,6 +48,7 @@ export const CAFieldComponents = {
   CircularProgress: caField<CircularProgressProps>(CircularProgress, { target: 'value' }),
   Code: caField<CodeProps>(Code),
   Heading: caField<HeadingProps>(Heading),
+  Image: caField<ImageProps>(Image, { target: 'src' }),
   Kbd: caField<KbdProps>(Kbd),
   Progress: caField<ProgressProps>(Progress, { target: 'value' }),
   StatArrow: caField<StatArrowProps>(StatArrow, { target: 'type' }),
@@ -127,6 +130,8 @@ export function caField<P = {}, TItem = Record<string, any>, T = As<any>>(
                 record,
               })
             })
+          : sources.children
+          ? undefined
           : children
       )
     }
