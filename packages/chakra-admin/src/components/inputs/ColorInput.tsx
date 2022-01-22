@@ -101,7 +101,7 @@ export function ColorInput<TItem = Record<string, any>>({
               name={name}
               color={value as string}
               ref={ref}
-              value={value as string}
+              value={(value as string) || ''}
               onChange={onChange}
             />
             <InputRightElement cursor="pointer" children={<Icon as={BsChevronDown} />} />
@@ -117,7 +117,7 @@ export function ColorInput<TItem = Record<string, any>>({
         _focus={{ boxShadow: 'none' }}
         ref={pickerRef}
       >
-        <HexColorPicker onChange={onChange} color={value as string} />
+        <HexColorPicker onChange={onChange} color={(value as string) || ''} />
       </PopoverContent>
     </Popover>
   )

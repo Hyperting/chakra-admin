@@ -44,14 +44,20 @@ export function useDataTable<TItem = Record<string, any>>({
   const foundedColumns: Column<object>[] = useMemo(
     () =>
       Children.map(children, (child: React.ReactNode, index) => {
-        if (child && (child as any).type && (child as any).props && (child as any).props.source) {
+        if (
+          child &&
+          (child as any).type &&
+          (child as any).props &&
+          ((child as any).props.source || (child as any).props.sources)
+        ) {
           const childProps = (child as any).props
           const newColumn: any = {
             Header: childProps.label
-              ? tAll(childProps.label)
+              ? tAll(childProps.label, { smart_count: 1 })
               : typeof childProps.source === 'string'
               ? t(`${childProps.source}`, {
                   defaultValue: humanize(childProps.source),
+                  smart_count: 1,
                 })
               : '',
             accessor: typeof childProps?.source === 'string' ? childProps?.source : undefined,
