@@ -67,29 +67,33 @@ export const List: FC<ListProps> = (props) => {
     },
     <>
       {deepMap(children, (child: any) => {
-        const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
+        // const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
 
-        if (isLayout) {
-          return React.createElement(
-            ca[child.type.displayName],
-            {
-              ...child.props,
-              ...childrenProps,
-              ...listData,
-              showMoreMenu,
-            },
-            child.props?.children
-          )
-        } else {
-          return React.cloneElement(child, {
+        // if (isLayout) {
+        //   return React.createElement(
+        //     ca[child.type.displayName],
+        //     {
+        //       ...child.props,
+        //       ...childrenProps,
+        //       ...listData,
+        //       showMoreMenu,
+        //     },
+        //     child.props?.children
+        //   )
+        // } else {
+        return React.cloneElement(
+          child,
+          {
             ...{
               ...child.props,
               ...childrenProps,
               ...listData,
               showMoreMenu,
             },
-          })
-        }
+          },
+          child.props?.children
+        )
+        // }
       })}
     </>
   )

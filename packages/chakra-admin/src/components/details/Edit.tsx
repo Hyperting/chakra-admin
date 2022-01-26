@@ -68,31 +68,33 @@ export const Edit: FC<EditProps> = (props) => {
         <>Loading</>
       ) : (
         deepMap(children, (child: any) => {
-          const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
+          // const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
 
-          if (isLayout) {
-            return React.createElement(
-              ca[child.type.displayName],
-              {
-                ...{
-                  ...child.props,
-                  id,
-                  resource,
-                  mutation,
-                  onSubmit,
-                  executeMutation,
-                  mutationResult,
-                  defaultValues: item,
-                  record: item,
-                  loading,
-                  data,
-                  error,
-                },
-              },
-              child.props?.children
-            )
-          } else {
-            return React.cloneElement(child, {
+          // if (isLayout) {
+          //   return React.createElement(
+          //     ca[child.type.displayName],
+          //     {
+          //       ...{
+          //         ...child.props,
+          //         id,
+          //         resource,
+          //         mutation,
+          //         onSubmit,
+          //         executeMutation,
+          //         mutationResult,
+          //         defaultValues: item,
+          //         record: item,
+          //         loading,
+          //         data,
+          //         error,
+          //       },
+          //     },
+          //     child.props?.children
+          //   )
+          // } else {
+          return React.cloneElement(
+            child,
+            {
               id,
               resource,
               mutation,
@@ -104,8 +106,10 @@ export const Edit: FC<EditProps> = (props) => {
               loading,
               data,
               error,
-            })
-          }
+            },
+            child.props?.children
+          )
+          // }
         })
       )}
     </>

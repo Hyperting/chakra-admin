@@ -99,33 +99,33 @@ export const Show: FC<ShowProps> = (props) => {
         <>Loading</>
       ) : (
         deepMap(children, (child: any) => {
-          console.log(child.type, Object.values(CALayoutComponents), 'cia0 cao')
-          const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
+          // const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
 
-          if (isLayout) {
-            return React.createElement(
-              ca[child.type.displayName],
-              {
-                ...{
-                  id,
-                  mutation,
-                  onSubmit,
-                  executeMutation,
-                  mutationResult,
-                  defaultValues: item,
-                  record: item,
-                  loading,
-                  resource,
-                  data,
-                  error,
-                  ...child.props,
-                  ref: (props as any).ref,
-                },
-              },
-              child.props?.children
-            )
-          } else {
-            return React.cloneElement(child, {
+          // if (isLayout) {
+          //   return React.createElement(
+          //     ca[child.type.displayName],
+          //     {
+          //       ...{
+          //         id,
+          //         mutation,
+          //         onSubmit,
+          //         executeMutation,
+          //         mutationResult,
+          //         defaultValues: item,
+          //         record: item,
+          //         loading,
+          //         resource,
+          //         data,
+          //         error,
+          //         ...child.props,
+          //       },
+          //     },
+          //     child.props?.children
+          //   )
+          // } else {
+          return React.cloneElement(
+            child,
+            {
               id,
               onSubmit,
               mutation,
@@ -138,8 +138,10 @@ export const Show: FC<ShowProps> = (props) => {
               data,
               error,
               ...((child as any).props || {}),
-            })
-          }
+            },
+            child.props?.children
+          )
+          // }
         })
       )}
     </>

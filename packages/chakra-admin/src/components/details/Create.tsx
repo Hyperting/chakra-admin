@@ -58,23 +58,25 @@ export const Create: FC<CreateProps> = (props) => {
 
     <>
       {deepMap(children, (child: any) => {
-        const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
+        // const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
 
-        if (isLayout) {
-          return React.createElement(
-            ca[child.type.displayName],
-            {
-              ...child.props,
-              mutation,
-              resource,
-              onSubmit,
-              executeMutation,
-              mutationResult,
-            },
-            child.props?.children
-          )
-        } else {
-          return React.cloneElement(child, {
+        // if (isLayout) {
+        //   return React.createElement(
+        //     ca[child.type.displayName],
+        //     {
+        //       ...child.props,
+        //       mutation,
+        //       resource,
+        //       onSubmit,
+        //       executeMutation,
+        //       mutationResult,
+        //     },
+        //     child.props?.children
+        //   )
+        // } else {
+        return React.cloneElement(
+          child,
+          {
             ...{
               ...child.props,
               mutation,
@@ -83,8 +85,10 @@ export const Create: FC<CreateProps> = (props) => {
               executeMutation,
               mutationResult,
             },
-          })
-        }
+          },
+          child.props?.children
+        )
+        // }
       })}
     </>
   )

@@ -35,6 +35,7 @@ export const deepMap = (
       if (
         isValidElement(child) &&
         hasComplexChildren(child) &&
+        child?.type &&
         Object.values(CUILayoutComponents).includes(child.type as any)
       ) {
         // Clone the child that has children and map them too
