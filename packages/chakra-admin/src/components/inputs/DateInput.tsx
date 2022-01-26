@@ -136,6 +136,16 @@ export function DateInput<TItem = Record<string, any>>({
     }
   }, [onChange, textValue])
 
+  useEffect(() => {
+    if (value) {
+      const newDate = new Date(value as string)
+      if (newDate) {
+        setTextValue(format(newDate, 'dd/MM/yyyy'))
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value])
+
   return (
     <Popover
       placement="bottom"

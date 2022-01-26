@@ -45,6 +45,7 @@ export const useList = <
 >({
   query,
   queryOptions,
+  defaultFilters,
 }: UseListParams<ListTData, ListTVariables, DeleteTData, DeleteTVariables>): UseListReturn<
   ListTData,
   ListTVariables
@@ -89,16 +90,21 @@ export const useList = <
     if (qpKeys.length > 0) {
       const foundedFiltersKeys = qpKeys.filter((item) => item.startsWith(QP_FILTERS_PREFIX))
       if (foundedFiltersKeys.length > 0) {
-        return foundedFiltersKeys.reduce((acc, item) => {
-          return {
-            ...acc,
-            [item.substr(QP_FILTERS_PREFIX.length, item.length - 1)]: params[item],
-          }
-        }, {})
+        return {
+          ...(defaultFilters || {}),
+          ...foundedFiltersKeys.reduce((acc, item) => {
+            return {
+              ...acc,
+              [item.substr(QP_FILTERS_PREFIX.length, item.length - 1)]: params[item],
+            }
+          }, {}),
+        }
       }
     }
-    return {}
-  }, [params])
+    return {
+      ...(defaultFilters || {}),
+    }
+  }, [defaultFilters, params])
 
   const result = useQuery<ListTData, ListTVariables>(query, {
     variables: strategy?.list?.getVariables({

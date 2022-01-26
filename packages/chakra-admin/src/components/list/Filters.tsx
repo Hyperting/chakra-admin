@@ -56,6 +56,7 @@ export const Filters: FC<FiltersProps> = ({
   filtersTitle = 'Filtri',
   filtersButtonLabel = 'Filtri',
   removeFiltersButtonLabel = 'Rimuovi i filtri',
+  defaultFilters,
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const isMobile = useBreakpointValue({ base: true, lg: false })
@@ -75,8 +76,11 @@ export const Filters: FC<FiltersProps> = ({
   }, [onFiltersChange])
 
   const activeFiltersCount = useMemo<number>(
-    () => (currentFilters ? Object.keys(currentFilters).length : 0),
-    [currentFilters]
+    () =>
+      currentFilters
+        ? Object.keys(currentFilters || {}).length - Object.keys(defaultFilters || {}).length
+        : 0,
+    [currentFilters, defaultFilters]
   )
 
   const alwaysOnFilters = useMemo(

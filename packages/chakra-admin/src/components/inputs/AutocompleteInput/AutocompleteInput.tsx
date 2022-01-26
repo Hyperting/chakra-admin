@@ -12,13 +12,17 @@ import { Controller } from 'react-hook-form'
 import { useApolloClient } from '@apollo/client'
 import { InputProps } from '../Input'
 import { Item, CUIAutoCompleteProps, CUIAutoComplete } from '../../../chakra-ui-autocomplete'
+import { useCreate } from '../../../core/details/useCreate'
 
 export type AutocompleteInputProps = InputProps &
   Omit<CUIAutoCompleteProps<Item>, 'placeholder' | 'items'> & {
     // onChange?: (newValue: Item & { [x: string]: any }) => void
     // value?: Item & { [x: string]: any }
 
+    showEmptyState?: boolean
     query: DocumentNode
+    createMutation?: DocumentNode
+    inputValueToCreateVariables?: (inputValue: string) => Record<string, any>
     inputValueToFilters?: (value: string) => Record<string, any>
     emptyLabel?: string
     dataItemToAutocompleteItem?: (
@@ -27,38 +31,44 @@ export type AutocompleteInputProps = InputProps &
     ) => Item & { [x: string]: any }
   }
 
-export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
+export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
   any,
   AutocompleteInputProps
 >(
   (
     {
+      resource,
       query,
       onChange,
       value,
       source,
       label,
+      createMutation,
       placeholder,
       emptyLabel = 'All values',
       inputValueToFilters = (q: string) => ({ q }),
       dataItemToAutocompleteItem = (data) => ({ ...data, label: data.id, value: data.id }),
+      showEmptyState = false,
       ...rest
     },
     ref
   ) => {
     const [fetching, setFetching] = useState<boolean>(false)
-    const [items, setItems] = useState<(Item & { [x: string]: any })[]>([
-      {
-        value: '',
-        label: emptyLabel,
-      },
-    ])
+    const [items, setItems] = useState<(Item & { [x: string]: any })[]>(
+      showEmptyState
+        ? [
+            {
+              value: '',
+              label: emptyLabel,
+            },
+          ]
+        : []
+    )
     const [selectedItem, setSelectedItem] = useState<(Item & { [x: string]: any }) | undefined>()
     const notify = useToast()
     const client = useApolloClient()
 
     const handleSelectedItemChange = (changes: UseComboboxStateChange<Item>) => {
-      console.log('selectedItem', changes.selectedItem, changes)
       if (changes.selectedItem && onChange) {
         onChange(changes.selectedItem.value)
         // setSelectedItem(changes.selectedItem)
@@ -87,22 +97,29 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
             data &&
             Object.keys(data).length > 0 &&
             (data as any)[Object.keys(data)[0]] &&
-            (data as any)[Object.keys(data)[0]].data
+            (data as any)[Object.keys(data)[0]].data?.length > 0
           ) {
+            const newData = (data as any)[Object.keys(data)[0]].data.map(dataItemToAutocompleteItem)
+            if (showEmptyState) {
+              return [
+                {
+                  value: '',
+                  label: emptyLabel,
+                },
+                ...newData,
+              ]
+            }
+
+            return newData
+          } else if (showEmptyState) {
             return [
               {
                 value: '',
                 label: emptyLabel,
               },
-              ...(data as any)[Object.keys(data)[0]].data.map(dataItemToAutocompleteItem),
             ]
           } else {
-            return [
-              {
-                value: '',
-                label: emptyLabel,
-              },
-            ]
+            return []
           }
 
           // data && Object.keys(data).length > 0 && (data as any)[Object.keys(data)[0]]
@@ -120,7 +137,15 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
         }
         return []
       },
-      [client, dataItemToAutocompleteItem, emptyLabel, inputValueToFilters, notify, query]
+      [
+        client,
+        dataItemToAutocompleteItem,
+        emptyLabel,
+        inputValueToFilters,
+        notify,
+        query,
+        showEmptyState,
+      ]
     )
 
     useEffect(() => {
@@ -134,6 +159,7 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
                 ids: [value],
               },
             },
+            fetchPolicy: 'network-only',
           })
 
           if (error) {
@@ -152,10 +178,6 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
               setSelectedItem(dataItemToAutocompleteItem(foundedItem, 0))
             }
           }
-
-          // data && Object.keys(data).length > 0 && (data as any)[Object.keys(data)[0]]
-          //   ? (data as any)[Object.keys(data)[0]].data
-          //   : []
         } catch (error) {
           console.error('Error fetching data', error)
           notify({
@@ -223,14 +245,12 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
         label={label}
         optionFilterFunc={handleFilters as any}
         placeholder={placeholder || ''}
-        // onCreateItem={handleCreateItem}
         items={items}
         labelStyleProps={{
           fontWeight: 'bold',
         }}
         selectedItem={selectedItem}
         onSelectedItemChange={handleSelectedItemChange}
-        disableCreateItem
         hideToggleButton
         {...rest}
       />
@@ -238,17 +258,60 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = React.forwardRef<
   }
 )
 
-export const AutocompleteControlInput: FC<AutocompleteInputProps> = (props) => {
+export const AutocompleteWithCreate: FC<AutocompleteInputProps> = ({
+  resource,
+  createMutation,
+  inputValueToCreateVariables = ({ label }: any) => ({ name: label }),
+  ...rest
+}) => {
+  const [creating, setIsCreating] = useState(false)
+  const { onSubmit, executeMutation, mutationResult } = useCreate({
+    resource,
+    mutation: createMutation!,
+    redirect: false,
+  })
+
+  const handleCreateItem = useCallback(
+    (value: any) => {
+      setIsCreating(true)
+      onSubmit(inputValueToCreateVariables(value))
+    },
+    [onSubmit, inputValueToCreateVariables]
+  )
+
+  useEffect(() => {
+    if (mutationResult?.data && creating) {
+      setIsCreating(false)
+      const keys = Object.keys(mutationResult.data)
+      if (keys.length > 0 && (mutationResult.data as any)[keys[0]]) {
+        if (rest?.onChange) {
+          rest?.onChange((mutationResult.data as any)[keys[0]]?.id as any)
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creating, mutationResult?.data])
+
+  return <Autocomplete onCreateItem={handleCreateItem} resource={resource} {...rest} />
+}
+
+export const AutocompleteInput: FC<AutocompleteInputProps> = (props) => {
   if (props.control) {
     return (
       <Controller
         control={props.control}
         // defaultValue={true}
         name={props.source}
-        render={({ field }) => <AutocompleteInput {...field} {...props} />}
+        render={({ field }) => {
+          return props.createMutation ? (
+            <AutocompleteWithCreate {...field} {...props} />
+          ) : (
+            <Autocomplete {...field} {...props} />
+          )
+        }}
       />
     )
   }
 
-  return <AutocompleteInput {...props} />
+  return props.createMutation ? <AutocompleteWithCreate {...props} /> : <Autocomplete {...props} />
 }

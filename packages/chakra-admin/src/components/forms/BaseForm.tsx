@@ -9,6 +9,7 @@ import { CALayoutComponents } from '../../core/react/system-layout'
 import { CancelButton } from '../buttons/CancelButton'
 import { SubmitButton } from '../buttons/SubmitButton'
 import { filterChakraProps } from '../../core/react/system-utils'
+import { Resource } from '..'
 
 type BaseFormProps = {
   children?: React.ReactNode
@@ -23,6 +24,7 @@ export const BaseForm: FC<BaseFormProps> = ({
   onSubmit: onSubmitProp = () => {},
   mutationResult,
   executeMutation,
+  resource,
   ...rest
 }) => {
   const methods = useForm({ defaultValues })
@@ -30,7 +32,6 @@ export const BaseForm: FC<BaseFormProps> = ({
 
   const onSubmit = useCallback(
     (values) => {
-      const { id: valuesId, __typename, ...rest } = values
       // const foundedFields = deepFilter(children, (child: any) => {
       //   if (child.props.source) {
       //     return true
@@ -47,9 +48,9 @@ export const BaseForm: FC<BaseFormProps> = ({
       //     [item]: values[item],
       //   }
       // }, {})
-      onSubmitProp(rest)
+      onSubmitProp({ __typename: resource, ...values })
     },
-    [onSubmitProp]
+    [onSubmitProp, resource]
   )
 
   return (
@@ -73,6 +74,7 @@ export const BaseForm: FC<BaseFormProps> = ({
                   unregister: methods.unregister,
                   control: methods.control,
                   ...filterChakraProps(rest),
+                  resource,
                   key: `${child?.type?.displayName || 'FI'}-${index}`,
                 },
               },
@@ -88,6 +90,7 @@ export const BaseForm: FC<BaseFormProps> = ({
                 unregister: methods.unregister,
                 control: methods.control,
                 name: child.props.source,
+                resource,
                 key: `${child?.type?.displayName || 'FI'}-${child.props.source}-${index}`,
               },
             })

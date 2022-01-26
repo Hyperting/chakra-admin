@@ -60,7 +60,6 @@ export function ColorInput<TItem = Record<string, any>>({
 }: ColorInputProps<TItem>) {
   const t = useTranslate({ keyPrefix: 'ca.input.single_image' })
 
-  console.log(rest, 'rpops')
   const {
     field: { onChange, onBlur, name, value, ref },
     fieldState: { invalid, isTouched, isDirty },

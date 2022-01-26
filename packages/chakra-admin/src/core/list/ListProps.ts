@@ -19,6 +19,7 @@ export type ListProps<
   resource?: string
   basePath?: string
   defaultSorting?: SortType<any>
+  defaultFilters?: Record<string, any>
   filtersComponent?: React.ReactNode
   toolbarComponent?: React.ReactNode
   query: DocumentNode | TypedDocumentNode<ListTData, ListTVariables>

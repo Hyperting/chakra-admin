@@ -1,4 +1,4 @@
-import React, { cloneElement, FC, ReactElement } from 'react'
+import React, { cloneElement, FC, isValidElement, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
@@ -10,6 +10,7 @@ import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
+import { ShowToolbar } from './ShowToolbar'
 
 export type ShowProps<
   ItemTData = any,
@@ -23,6 +24,7 @@ export type ShowProps<
   query: DocumentNode | TypedDocumentNode<ItemTData, ItemTVariables>
   renderingInModal?: boolean
   layout?: ReactElement<PageLayoutProps, any>
+  toolbarComponent?: React.ReactNode
 } & Pick<PageLayoutProps, 'title'>
 
 export const Show: FC<ShowProps> = (props) => {
@@ -33,6 +35,7 @@ export const Show: FC<ShowProps> = (props) => {
     renderingInModal,
     layout: Layout = <PageLayout />,
     title = <DetailsPageTitle />,
+    toolbarComponent = <ShowToolbar />,
     id,
   } = props
   const { onSubmit, executeMutation, mutationResult, loading, item, data, error } = useShow(props)
@@ -49,6 +52,7 @@ export const Show: FC<ShowProps> = (props) => {
       error,
       record: item,
       renderingInModal,
+      id,
       title:
         typeof title === 'string'
           ? title
@@ -71,8 +75,24 @@ export const Show: FC<ShowProps> = (props) => {
               data,
               error,
               record: item,
+              id,
             }) as any)
           : undefined,
+      topToolbar:
+        isValidElement(toolbarComponent) &&
+        cloneElement(
+          toolbarComponent,
+          {
+            loading,
+            resource,
+            data,
+            error,
+            record: item,
+            renderingInModal,
+            id,
+          } as any,
+          (toolbarComponent as any).props.children
+        ),
     },
     <>
       {loading ? (

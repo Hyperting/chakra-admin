@@ -9,7 +9,7 @@ import { ResourcesNavMenu } from './ResourcesNavMenu'
 
 type Props = {
   title?: string
-  icon?: React.ElementType
+  icon?: React.ReactNode
 } & BoxProps
 
 export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
@@ -34,7 +34,7 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
       <MotionBox bgColor="white" initial={false} animate={{ width: collapsed ? 18 : 280 }}>
         {!collapsed && (
           <Box overflowX="hidden" w="280px" minW="280px" pt={6}>
-            <SidebarTitle icon={<Icon as={icon} color="red.600" w={30} h={26} />} title={title} />
+            <SidebarTitle icon={icon} title={title} />
             <MenuSearch placeholder="Cerca..." mb={5} />
             <Box h="100%" minH="100%" overflowY="auto">
               {children || (

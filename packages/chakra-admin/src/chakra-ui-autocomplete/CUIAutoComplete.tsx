@@ -92,6 +92,7 @@ export const CUIAutoComplete = <T extends Item>(
     ...downshiftProps
   } = props
 
+  const initialized = React.useRef(false)
   /* States */
   const [isCreating, setIsCreating] = React.useState(false)
   const [inputValue, setInputValue] = React.useState('')
@@ -181,13 +182,17 @@ export const CUIAutoComplete = <T extends Item>(
   })
 
   React.useEffect(() => {
-    if (inputItems.length === 0 && !disableCreateItem) {
+    if (inputItems.length === 0 && !disableCreateItem && initialized.current) {
       setIsCreating(true)
       // @ts-ignore
       setInputItems([{ label: `${inputValue}`, value: inputValue }])
       setHighlightedIndex(0)
     }
-  }, [inputItems, setIsCreating, setHighlightedIndex, inputValue, disableCreateItem])
+
+    if (!initialized.current) {
+      initialized.current = true
+    }
+  }, [inputItems, setIsCreating, setHighlightedIndex, inputValue, disableCreateItem, isCreating])
 
   useDeepCompareEffect(() => {
     setInputItems(items)

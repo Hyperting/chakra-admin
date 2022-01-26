@@ -1,15 +1,5 @@
 import React, { Children, cloneElement, createElement, FC, isValidElement } from 'react'
-import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom'
-import {
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  Button,
-} from '@chakra-ui/react'
+import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { AuthProvider } from '../../core/auth/AuthProvider'
 import { ClassType } from '../../core/ClassType'
 import { RouteLayout } from '../layout/RouteLayout'

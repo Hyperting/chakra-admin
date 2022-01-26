@@ -34,6 +34,7 @@ export const useCreate = <
 >({
   mutation,
   resource,
+  redirect,
 }: CreateProps): UseCreateResult<TData, TVariables, TContext, TCache> => {
   const [executeMutation, mutationResult] = useMutation<TData, TVariables, TContext, TCache>(
     mutation
@@ -52,7 +53,7 @@ export const useCreate = <
 
         const result = await executeMutation({
           variables: variables as TVariables,
-          optimisticResponse: values,
+          // optimisticResponse: values,
         })
         if (result.data && !result.errors) {
           notify({
@@ -60,7 +61,10 @@ export const useCreate = <
             title: `${resource} created.`,
             isClosable: true,
           })
-          navigate(-1)
+
+          if (typeof redirect === 'boolean' && redirect) {
+            navigate(-1)
+          }
         } else {
           throw new Error('Error creating data')
         }
@@ -75,7 +79,7 @@ export const useCreate = <
         })
       }
     },
-    [executeMutation, navigate, notify, resource, strategy?.create]
+    [executeMutation, navigate, notify, redirect, resource, strategy?.create]
   )
 
   return {

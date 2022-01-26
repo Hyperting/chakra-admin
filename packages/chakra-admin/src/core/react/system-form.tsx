@@ -77,13 +77,6 @@ export function CAFormLabel<TItem = Record<string, any>>(
 ) {
   const { source, control, resource, children, ...filteredProps } = props as any
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
-  console.log(
-    t(source),
-    t(`${source}`, {
-      defaultValue: source ? humanize(source) : '',
-    }),
-    'boooh'
-  )
   const label = useMemo(
     () =>
       t(`${source}`, {
