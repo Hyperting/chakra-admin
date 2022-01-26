@@ -5,7 +5,7 @@ import { useTranslate } from 'ca-i18n'
 import { deepMap } from '../../core/details/deep-map'
 import { useShow } from '../../core/details/useShow'
 import { ca } from '../../core/react/system'
-import { CALayoutComponents } from '../../core/react/system-layout'
+import { CALayoutComponents, CUILayoutComponents } from '../../core/react/system-layout'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
@@ -99,7 +99,8 @@ export const Show: FC<ShowProps> = (props) => {
         <>Loading</>
       ) : (
         deepMap(children, (child: any) => {
-          const isLayout = Object.keys(CALayoutComponents).includes(child.type.displayName)
+          console.log(child.type, Object.values(CALayoutComponents), 'cia0 cao')
+          const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
 
           if (isLayout) {
             return React.createElement(

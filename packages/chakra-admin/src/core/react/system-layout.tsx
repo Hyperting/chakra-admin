@@ -85,6 +85,35 @@ export const CALayoutComponents = {
   UnorderedList: caLayout<ListProps>(UnorderedList),
 }
 
+export const CUILayoutComponents = {
+  Alert,
+  AspectRatio,
+  Box,
+  Center,
+  Square,
+  Circle,
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+  SimpleGrid,
+  Stat,
+  StatGroup,
+  Stack,
+  HStack,
+  VStack,
+  Wrap,
+  WrapItem,
+  Portal,
+  List,
+  OrderedList,
+  Tabs,
+  TabList,
+  TabPanels,
+  TabPanel,
+  UnorderedList,
+}
+
 export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string]: any }> {
   const CALayoutImpl = ({ children, record, ...props }) => {
     return createElement(

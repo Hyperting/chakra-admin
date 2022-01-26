@@ -9,7 +9,7 @@ import { PageLayout } from '../details/PageLayout'
 import { PageTitle } from '../details/PageTitle'
 import { ListToolbar } from './ListToolbar'
 import { ca } from '../../core/react/system'
-import { CALayoutComponents } from '../../core/react/system-layout'
+import { CALayoutComponents, CUILayoutComponents } from '../../core/react/system-layout'
 
 export const List: FC<ListProps> = (props) => {
   const {
@@ -67,7 +67,7 @@ export const List: FC<ListProps> = (props) => {
     },
     <>
       {deepMap(children, (child: any) => {
-        const isLayout = Object.keys(CALayoutComponents).includes(child.type.displayName)
+        const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
 
         if (isLayout) {
           return React.createElement(

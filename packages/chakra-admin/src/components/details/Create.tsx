@@ -5,7 +5,7 @@ import { useTranslate } from 'ca-i18n'
 import { deepMap } from '../../core/details/deep-map'
 import { useCreate } from '../../core/details/useCreate'
 import { ca } from '../../core/react/system'
-import { CALayoutComponents } from '../../core/react/system-layout'
+import { CALayoutComponents, CUILayoutComponents } from '../../core/react/system-layout'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
@@ -58,7 +58,7 @@ export const Create: FC<CreateProps> = (props) => {
 
     <>
       {deepMap(children, (child: any) => {
-        const isLayout = Object.keys(CALayoutComponents).includes(child.type.displayName)
+        const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
 
         if (isLayout) {
           return React.createElement(

@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode, Children, cloneElement, isValidElement } from 'react'
-import { CALayoutComponents } from '../react/system-layout'
+import { CALayoutComponents, CUILayoutComponents } from '../react/system-layout'
 
 export const hasChildren = (
   element: ReactNode
@@ -28,10 +28,14 @@ export const deepMap = (
 ): ReactNode[] =>
   Children.toArray(children).map(
     (child: ReactNode, index: number, mapChildren: readonly ReactNode[]) => {
+      console.log(
+        Object.values(CUILayoutComponents).includes((child as any)?.type as any),
+        '<-- check'
+      )
       if (
         isValidElement(child) &&
         hasComplexChildren(child) &&
-        Object.keys(CALayoutComponents).includes((child.type as any).displayName)
+        Object.values(CUILayoutComponents).includes(child.type as any)
       ) {
         // Clone the child that has children and map them too
         return deepMapFn(
