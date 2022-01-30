@@ -28,10 +28,6 @@ export const deepMap = (
 ): ReactNode[] =>
   Children.toArray(children).map(
     (child: ReactNode, index: number, mapChildren: readonly ReactNode[]) => {
-      console.log(
-        Object.values(CUILayoutComponents).includes((child as any)?.type as any),
-        '<-- check'
-      )
       if (
         isValidElement(child) &&
         hasComplexChildren(child) &&

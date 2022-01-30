@@ -9,7 +9,6 @@ import { CALayoutComponents } from '../../core/react/system-layout'
 import { CancelButton } from '../buttons/CancelButton'
 import { SubmitButton } from '../buttons/SubmitButton'
 import { filterChakraProps } from '../../core/react/system-utils'
-import { Resource } from '..'
 
 type BaseFormProps = {
   children?: React.ReactNode
