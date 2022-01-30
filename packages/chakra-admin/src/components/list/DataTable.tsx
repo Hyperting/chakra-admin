@@ -94,21 +94,27 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
       </chakra.div>
       <chakra.div maxW="100%">
         <Table
-          colorScheme="gray"
-          variant="striped"
-          size="lg"
-          boxShadow="md"
-          backgroundColor="white"
-          borderRadius="6px"
+          w="100%"
+          __css={{
+            borderCollapse: 'separate',
+            borderSpacing: '0 10px',
+          }}
           {...getTableProps()}
         >
           <Thead>
             {headerGroups.map((headerGroup, index) => (
-              <Tr {...headerGroup.getHeaderGroupProps()}>
+              <Tr
+                bgColor="white"
+                my={5}
+                boxShadow="sm"
+                borderRadius="md"
+                {...headerGroup.getHeaderGroupProps()}
+              >
                 {headerGroup.headers.map((column, columnIndex) => (
                   <Th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     isNumeric={(column as any).isNumeric}
+                    borderBottom="none"
                   >
                     {column.render('Header')}
                     <chakra.span pl="4">
@@ -129,15 +135,23 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
             {rows.map((row, index) => {
               prepareRow(row)
               return (
-                <Tr {...row.getRowProps()} role="group">
+                <Tr
+                  bgColor="white"
+                  my={5}
+                  boxShadow="sm"
+                  borderRadius="md"
+                  {...row.getRowProps()}
+                  role="group"
+                >
                   {row.cells.map((cell, cellIndex) => (
                     <Td
                       {...cell.getCellProps()}
                       isNumeric={(cell.column as any).isNumeric}
                       _groupHover={{
-                        backgroundColor: 'red.100',
+                        backgroundColor: 'gray.50',
                         cursor: 'pointer',
                       }}
+                      borderBottom="none"
                       fontSize="sm"
                       onClick={handleRowClick(row)}
                       // onClick={(e) => {

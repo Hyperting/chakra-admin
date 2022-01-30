@@ -1,5 +1,5 @@
-import React, { Children, cloneElement, ReactElement, useEffect, useMemo } from 'react'
-import { Column, TableInstance, usePagination, useSortBy, useTable } from 'react-table'
+import React, { Children, cloneElement, ReactElement, useCallback, useEffect, useMemo } from 'react'
+import { Column, TableInstance, usePagination, useSortBy, useTable, useExpanded } from 'react-table'
 import { humanize } from 'inflection'
 import { useTranslate } from 'ca-i18n'
 import { DataTableProps } from '../../components/list/DataTable'
@@ -120,11 +120,18 @@ export function useDataTable<TItem = Record<string, any>>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultSorting])
 
+  const getSubRows = useCallback((row: any, relativeIndex: number) => {
+    console.log('getSubRows', row, relativeIndex)
+    return []
+  }, [])
+
   const tableInstance = useTable(
     {
       columns: foundedColumns,
       manualPagination: true,
       manualSortBy: true,
+      autoResetExpanded: false,
+      getSubRows,
       initialState: {
         pageIndex: offset,
         pageSize: limit,
@@ -135,6 +142,7 @@ export function useDataTable<TItem = Record<string, any>>({
       data: strategy?.list.getList(queryResult!) || [],
     },
     useSortBy,
+    useExpanded,
     usePagination,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
