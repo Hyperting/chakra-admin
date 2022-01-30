@@ -10,6 +10,7 @@ import {
   en as enLanguage,
 } from 'ca-i18n'
 import { AdminCore, AdminCoreProps } from './AdminCore'
+import { ErrorBoundary } from '../base/error-boundary'
 
 export type AdminProps<TCache> = AdminCoreProps & {
   client: ApolloClient<TCache>
@@ -54,14 +55,16 @@ export const Admin: FC<AdminProps<any>> = ({
   ...props
 }) => {
   return (
-    <RecoilRoot>
-      <ApolloProvider client={client}>
-        <I18nProvider {...(i18nProviderProps as any)} fallback={loadingComponent}>
-          <Router>
-            <AdminCore {...props} />
-          </Router>
-        </I18nProvider>
-      </ApolloProvider>
-    </RecoilRoot>
+    <ErrorBoundary>
+      <RecoilRoot>
+        <ApolloProvider client={client}>
+          <I18nProvider {...(i18nProviderProps as any)} fallback={loadingComponent}>
+            <Router>
+              <AdminCore {...props} />
+            </Router>
+          </I18nProvider>
+        </ApolloProvider>
+      </RecoilRoot>
+    </ErrorBoundary>
   )
 }
