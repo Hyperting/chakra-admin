@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApolloQueryResult, OperationVariables, QueryResult, useQuery } from '@apollo/client'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
+import { useVersionStateValue } from '../admin/versionState'
 import { ListProps } from './ListProps'
 import { PaginationType } from './PaginationType'
 import { SortType } from './SortType'
@@ -50,6 +51,7 @@ export const useList = <
   ListTData,
   ListTVariables
 > => {
+  const version = useVersionStateValue()
   const strategy = useGlobalStrategy()
 
   const [params, setParams] = useSearchParamsAsState({
@@ -209,6 +211,13 @@ export const useList = <
     },
     [setParams, params]
   )
+
+  useEffect(() => {
+    if (result?.refetch) {
+      result.refetch()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [version])
 
   // useEffect(() => {
   //   if (!limit && !offset && Object.keys(params).length === 0) {

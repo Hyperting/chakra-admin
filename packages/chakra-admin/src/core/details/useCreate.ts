@@ -12,6 +12,7 @@ import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CreateProps } from '../../components/details/Create'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
+import { useSetVersionState, useVersion } from '../admin/versionState'
 
 export type UseCreateResult<
   TData = any,
@@ -34,7 +35,7 @@ export const useCreate = <
 >({
   mutation,
   resource,
-  redirect,
+  redirect = true,
 }: CreateProps): UseCreateResult<TData, TVariables, TContext, TCache> => {
   const [executeMutation, mutationResult] = useMutation<TData, TVariables, TContext, TCache>(
     mutation
@@ -42,6 +43,7 @@ export const useCreate = <
   const navigate = useNavigate()
   const notify = useToast()
   const strategy = useGlobalStrategy()
+  const nextVersion = useVersion()
 
   const onSubmit = useCallback(
     async (values: any): Promise<any> => {
@@ -63,8 +65,11 @@ export const useCreate = <
           })
 
           if (typeof redirect === 'boolean' && redirect) {
+            console.log('esistoooo dentrooo', redirect)
             navigate(-1)
           }
+
+          nextVersion()
         } else {
           throw new Error('Error creating data')
         }
@@ -79,7 +84,7 @@ export const useCreate = <
         })
       }
     },
-    [executeMutation, navigate, notify, redirect, resource, strategy?.create]
+    [executeMutation, navigate, nextVersion, notify, redirect, resource, strategy?.create]
   )
 
   return {
