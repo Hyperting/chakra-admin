@@ -19,10 +19,20 @@ export type DataTableProps<TItem> = Partial<UseListReturn> &
     filtersComponent?: React.ReactNode
     moreMenuHeaderComponent?: Renderer<HeaderProps<any>> | string
     moreMenuComponent?: Renderer<CellProps<any, any>>
+    expandComponent?: React.ReactNode
   }
 // DataTableFC<DataTableProps>
 export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
-  const { loading, filtersComponent, total, offset, resource, hasEdit, hasShow } = props
+  const {
+    loading,
+    filtersComponent,
+    total,
+    offset,
+    resource,
+    expandComponent,
+    hasEdit,
+    hasShow,
+  } = props
 
   const {
     getTableProps,
@@ -39,6 +49,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
     nextPage,
     previousPage,
     setPageSize,
+    visibleColumns,
     state: { pageIndex, pageSize },
   } = useDataTable<TItem>(props)
 
@@ -134,39 +145,53 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           <Tbody {...getTableBodyProps()}>
             {rows.map((row, index) => {
               prepareRow(row)
+              const rowProps = row.getRowProps()
               return (
-                <Tr
-                  bgColor="white"
-                  my={5}
-                  boxShadow="sm"
-                  borderRadius="md"
-                  {...row.getRowProps()}
-                  role="group"
-                >
-                  {row.cells.map((cell, cellIndex) => (
-                    <Td
-                      {...cell.getCellProps()}
-                      isNumeric={(cell.column as any).isNumeric}
-                      _groupHover={{
-                        backgroundColor: 'gray.50',
-                        cursor: 'pointer',
-                      }}
-                      borderBottom="none"
-                      fontSize="sm"
-                      onClick={handleRowClick(row)}
-                      // onClick={(e) => {
-                      //   e.preventDefault()
-                      //   if (hasShow) {
-                      //     history.push(`/${resource}/${cell.row.values.id}`)
-                      //   } else if (hasEdit) {
-                      //     history.push(`/${resource}/${cell.row.values.id}/edit`)
-                      //   }
-                      // }}
-                    >
-                      {cell.render('Cell')}
-                    </Td>
-                  ))}
-                </Tr>
+                <React.Fragment key={rowProps.key}>
+                  <Tr
+                    my={5}
+                    boxShadow="sm"
+                    borderRadius="md"
+                    {...rowProps}
+                    role="group"
+                    bgColor="transparent"
+                    sx={{
+                      'td:first-child': {
+                        borderLeftRadius: 'md',
+                      },
+                      'td:last-child': {
+                        borderRightRadius: 'md',
+                      },
+                    }}
+                  >
+                    {row.cells.map((cell, cellIndex) => (
+                      <Td
+                        {...cell.getCellProps()}
+                        isNumeric={(cell.column as any).isNumeric}
+                        _groupHover={{
+                          backgroundColor: 'gray.50',
+                          cursor: 'pointer',
+                        }}
+                        bgColor="white"
+                        borderBottom="none"
+                        fontSize="sm"
+                        onClick={handleRowClick(row)}
+                      >
+                        {cell.render('Cell')}
+                      </Td>
+                    ))}
+                  </Tr>
+
+                  {row.isExpanded &&
+                    expandComponent &&
+                    React.cloneElement(expandComponent as React.ReactElement, {
+                      record: row.original,
+                      rowProps,
+                      row,
+                      visibleColumns,
+                      resource,
+                    })}
+                </React.Fragment>
               )
             })}
           </Tbody>

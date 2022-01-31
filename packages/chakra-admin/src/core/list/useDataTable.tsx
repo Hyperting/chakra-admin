@@ -1,7 +1,9 @@
 import React, { Children, cloneElement, ReactElement, useCallback, useEffect, useMemo } from 'react'
 import { Column, TableInstance, usePagination, useSortBy, useTable, useExpanded } from 'react-table'
 import { humanize } from 'inflection'
+import { chakra, Icon, IconButton } from '@chakra-ui/react'
 import { useTranslate } from 'ca-i18n'
+import { BsChevronUp, BsChevronDown } from 'react-icons/bs'
 import { DataTableProps } from '../../components/list/DataTable'
 import { SortDirection } from './SortType'
 import { MoreMenuHeader } from '../../components/list/MoreMenuHeader'
@@ -37,6 +39,7 @@ export function useDataTable<TItem = Record<string, any>>({
   hasShow,
   resource,
   queryResult,
+  expandComponent,
 }: DataTableProps<TItem>): UseDataTableReturn {
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
   const tAll = useTranslate()
@@ -77,7 +80,10 @@ export function useDataTable<TItem = Record<string, any>>({
           } else {
             newColumn.Cell = (cellData: any) => {
               return cloneElement(child as any, {
-                record: cellData?.cell?.row?.original,
+                ...data,
+                ...childProps,
+                ...cellData,
+                record: cellData?.record || cellData?.cell?.row?.original,
               })
             }
           }
@@ -121,7 +127,6 @@ export function useDataTable<TItem = Record<string, any>>({
   }, [defaultSorting])
 
   const getSubRows = useCallback((row: any, relativeIndex: number) => {
-    console.log('getSubRows', row, relativeIndex)
     return []
   }, [])
 
@@ -145,6 +150,31 @@ export function useDataTable<TItem = Record<string, any>>({
     useExpanded,
     usePagination,
     (hooks) => {
+      if (expandComponent) {
+        hooks.visibleColumns.push((columns) => [
+          ...columns,
+          {
+            // Make an expander cell
+            Header: () => null, // No header
+            id: 'expander', // It needs an ID
+            Cell: ({ row }) => (
+              // Use Cell to render an expander for each row.
+              // We can use the getToggleRowExpandedProps prop-getter
+              // to build the expander.
+              // <chakra.span {...row.getToggleRowExpandedProps()} p={4}>
+              //   {row.isExpanded ? <Icon as={BsChevronUp} /> : <Icon as={BsChevronDown} />}
+              // </chakra.span>
+              <IconButton
+                aria-label="Expand"
+                variant="ghost"
+                icon={<Icon as={row.isExpanded ? BsChevronUp : BsChevronDown} />}
+                {...row.getToggleRowExpandedProps()}
+              />
+            ),
+          },
+        ])
+      }
+
       hooks.visibleColumns.push((columns) => [
         ...columns,
         // MoreMenu Column
