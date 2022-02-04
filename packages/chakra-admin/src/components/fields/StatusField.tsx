@@ -12,16 +12,16 @@ export type StatusOptions = {
   label?: React.ReactNode
 }
 
-export type StatusFieldProps<TItem> = {
+export type StatusFieldProps<TItem extends object> = {
   statuses?: Record<string | number, StatusOptions>
 } & Partial<CAFieldProps<BoxProps, TItem>> &
   BoxProps
 
-export function StatusField<TItem = Record<string, any>>({
+export function StatusField<TItem extends object = Record<string, any>>({
   statuses = {},
   ...rest
 }: StatusFieldProps<TItem>) {
-  const value = useField(rest as any)
+  const value = useField<TItem>(rest as any)
 
   const statusOptions = useMemo(() => {
     return statuses[value] || {}

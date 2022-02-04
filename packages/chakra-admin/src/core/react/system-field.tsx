@@ -39,6 +39,7 @@ import {
 import get from 'lodash.get'
 import { useField } from '../fields/useField'
 import { filterChakraProps } from './system-utils'
+import { NestedKeyOf, Required } from './nested-key'
 
 export const CAFieldComponents = {
   AlertDescription: caField<AlertDescriptionProps>(AlertDescription),
@@ -65,22 +66,23 @@ export type CAFieldOptions<P = Record<string, any>> = {
   target?: keyof P
 }
 
-export type CAFieldProps<P = {}, TItem = Record<string, any>> = {
-  source?: keyof TItem | ((record: TItem) => any)
-  sources?: Partial<Record<keyof P, keyof TItem | ((record: TItem) => any)>>
+export type CAFieldProps<P = {}, TItem extends object = Record<string, any>> = {
+  source?: NestedKeyOf<Required<TItem>> | ((record: TItem) => any)
+  sources?: Partial<Record<keyof P, NestedKeyOf<Required<TItem>> | ((record: TItem) => any)>>
   record?: TItem
   sortable?: boolean
   label?: string
+  additionalFields?: string[]
 }
 
-export function caField<P = {}, TItem = Record<string, any>, T = As<any>>(
+export function caField<P = {}, TItem extends object = Record<string, any>, T = As<any>>(
   component: T,
   options: CAFieldOptions<P> = { target: 'children' as any, type: 'simple' }
 ) {
   const target = options?.target || 'children'
   const type = options?.type || 'simple'
 
-  function CAFieldImpl<TItemField = TItem>(props: P & CAFieldProps<P, TItemField>) {
+  function CAFieldImpl<TItemField extends object = TItem>(props: P & CAFieldProps<P, TItemField>) {
     const { record, source, sources, children, ...filteredProps } = props as any
     if (!source && !sources && type === 'simple') {
       throw new Error('You must provide either a `source` or `sources` prop')

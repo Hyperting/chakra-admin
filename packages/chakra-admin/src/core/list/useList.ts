@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ApolloQueryResult, OperationVariables, QueryResult, useQuery } from '@apollo/client'
-import { useCallback, useEffect, useMemo } from 'react'
+import { ApolloQueryResult, gql, OperationVariables, QueryResult, useQuery } from '@apollo/client'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 import { useVersionStateValue } from '../admin/versionState'
 import { ListProps } from './ListProps'
@@ -14,12 +14,19 @@ export const QP_OFFSET = 'offset'
 export const QP_SORT_PREFIX = 's_'
 export const QP_FILTERS_PREFIX = 'f_'
 
+const EMPTY_QUERY = gql`
+  query EmptyQuery {
+    __typename
+  }
+`
+
 export type UseListParams<
+  TQuery = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
   DeleteTVariables = OperationVariables
-> = ListProps<ListTData, ListTVariables, DeleteTData, DeleteTVariables> & {}
+> = ListProps<TQuery, ListTData, ListTVariables, DeleteTData, DeleteTVariables> & {}
 
 export type UseListReturn<TData = any, TVariables = OperationVariables> = {
   refetch: (variables?: Partial<TVariables> | undefined) => Promise<ApolloQueryResult<TData>>
@@ -30,6 +37,7 @@ export type UseListReturn<TData = any, TVariables = OperationVariables> = {
   currentSort: SortType<any>
   currentFilters: Record<string, any>
   queryResult: QueryResult<TData, TVariables>
+  setQuerySelectionSet: (fields: string[]) => void
 } & QueryResult<TData, TVariables> &
   PaginationType
 
@@ -39,20 +47,26 @@ export type UseListReturn<TData = any, TVariables = OperationVariables> = {
  * @returns {UseListReturn} - use the result to render a custom ListView
  */
 export const useList = <
+  TQuery = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
   DeleteTVariables = OperationVariables
 >({
+  resource,
   query,
   queryOptions,
   defaultFilters,
-}: UseListParams<ListTData, ListTVariables, DeleteTData, DeleteTVariables>): UseListReturn<
+}: UseListParams<TQuery, ListTData, ListTVariables, DeleteTData, DeleteTVariables>): UseListReturn<
   ListTData,
   ListTVariables
 > => {
   const version = useVersionStateValue()
   const strategy = useGlobalStrategy()
+  const [querySelectionSet, setSelectionSet] = useState<undefined | string[]>(undefined)
+  const [isQuerySelectionSeatReady, setIsQuerySelectionSeatReady] = useState<boolean>(
+    !(typeof query === 'string')
+  )
 
   const [params, setParams] = useSearchParamsAsState({
     [QP_LIMIT]: `${DEFAULT_LIMIT}`,
@@ -108,16 +122,41 @@ export const useList = <
     }
   }, [defaultFilters, params])
 
-  const result = useQuery<ListTData, ListTVariables>(query, {
-    variables: strategy?.list?.getVariables({
+  const variables = useMemo(() => {
+    return strategy?.list?.getVariables({
       filters: currentFilters,
       pagination: {
         first: limit,
         after: offset,
       },
       sort: currentSort,
-    }) as ListTVariables,
+    }) as ListTVariables
+  }, [currentFilters, currentSort, limit, offset, strategy?.list])
+
+  const finalQuery = useMemo(() => {
+    if (typeof query === 'string' && !strategy?.list?.getQuery) {
+      throw new Error(
+        'You must provide a getQuery function in your strategy if you want to generate the query from a string'
+      )
+    }
+
+    if (typeof query === 'string' && isQuerySelectionSeatReady) {
+      return strategy!.list.getQuery!(resource!, query, variables, querySelectionSet)
+    }
+
+    if (query && typeof query !== 'string') {
+      return query
+    }
+
+    return EMPTY_QUERY
+  }, [isQuerySelectionSeatReady, query, querySelectionSet, resource, strategy, variables])
+
+  const result = useQuery<ListTData, ListTVariables>(finalQuery as any, {
+    variables,
     ...(queryOptions || {}),
+    skip: queryOptions?.skip
+      ? !isQuerySelectionSeatReady && !finalQuery && queryOptions.skip
+      : !isQuerySelectionSeatReady && !finalQuery,
   })
 
   const total = useMemo(() => {
@@ -212,6 +251,11 @@ export const useList = <
     [setParams, params]
   )
 
+  const setQuerySelectionSet = useCallback((fields: string[]) => {
+    setSelectionSet(fields)
+    setIsQuerySelectionSeatReady(true)
+  }, [])
+
   useEffect(() => {
     if (result?.refetch) {
       result.refetch()
@@ -242,5 +286,6 @@ export const useList = <
     pageCount: pageCount || 0,
     currentSort,
     currentFilters,
+    setQuerySelectionSet,
   }
 }

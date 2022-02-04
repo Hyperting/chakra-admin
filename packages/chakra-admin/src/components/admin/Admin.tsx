@@ -55,16 +55,16 @@ export const Admin: FC<AdminProps<any>> = ({
   ...props
 }) => {
   return (
-    <ErrorBoundary>
-      <RecoilRoot>
-        <ApolloProvider client={client}>
-          <I18nProvider {...(i18nProviderProps as any)} fallback={loadingComponent}>
-            <Router>
-              <AdminCore {...props} />
-            </Router>
-          </I18nProvider>
-        </ApolloProvider>
-      </RecoilRoot>
-    </ErrorBoundary>
+    // <ErrorBoundary>
+    <RecoilRoot>
+      <ApolloProvider client={client}>
+        <I18nProvider {...(i18nProviderProps as any)} fallback={loadingComponent}>
+          <Router>
+            <AdminCore {...props} />
+          </Router>
+        </I18nProvider>
+      </ApolloProvider>
+    </RecoilRoot>
+    // </ErrorBoundary>
   )
 }

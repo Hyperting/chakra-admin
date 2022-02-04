@@ -11,6 +11,7 @@ import { ListStrategy } from '../admin/Strategy'
 import { PageLayoutProps } from '../../components/details/PageLayout'
 
 export type ListProps<
+  TQuery = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
@@ -22,7 +23,7 @@ export type ListProps<
   defaultFilters?: Record<string, any>
   filtersComponent?: React.ReactNode
   toolbarComponent?: React.ReactNode
-  query: DocumentNode | TypedDocumentNode<ListTData, ListTVariables>
+  query: keyof TQuery | (DocumentNode | TypedDocumentNode<ListTData, ListTVariables>)
   queryOptions?: QueryHookOptions<ListTData, ListTVariables>
   listStrategy?: Partial<ListStrategy>
   deleteItemMutation?: DocumentNode | TypedDocumentNode<DeleteTData, DeleteTVariables>
@@ -35,5 +36,7 @@ export type ListProps<
   hasCreate?: boolean
   hasShow?: boolean
   hasList?: boolean
+  children?: React.ReactNode
   layout?: ReactElement<PageLayoutProps, any>
+  additionalFields?: string[]
 } & Pick<PageLayoutProps, 'title'>

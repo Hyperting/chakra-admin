@@ -51,7 +51,9 @@
     "react-use": "^17.3.2",
     "recoil": "^0.5.2",
     "reflect-metadata": "^0.1.13",
-    "typedi": "^0.10.0"
+    "typedi": "^0.10.0",
+    "gql-query-builder": "^3.5.7",
+    "ts-toolbelt": "^9.6.0"
   },
   "devDependencies": {
     "ca-test-utils": "^0.0.1-dev.9"

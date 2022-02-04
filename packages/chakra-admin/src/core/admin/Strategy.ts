@@ -1,7 +1,71 @@
 /* eslint max-classes-per-file: "off" */
 
-import { OperationVariables, QueryResult } from '@apollo/client'
+import {
+  DocumentNode,
+  gql,
+  OperationVariables,
+  QueryResult,
+  TypedDocumentNode,
+} from '@apollo/client'
+import { query, mutation, subscription } from 'gql-query-builder'
+import Fields from 'gql-query-builder/build/Fields'
 import { SortType } from '../list'
+
+export function generateFields(fields?: string[]) {
+  const newFields: Fields = []
+  const deepMappedFields = {}
+
+  for (const field of fields || []) {
+    const tree = field.split('.')
+
+    if (tree.length === 1) {
+      newFields.push(field)
+    } else {
+      if (!deepMappedFields[tree[0]]) {
+        deepMappedFields[tree[0]] = tree.length > 2 ? {} : []
+      }
+
+      const newField = deepMappedFields[tree[0]]
+      let curr = newField
+      for (let i = 1; i < tree.length; i++) {
+        const key = tree[i]
+        const leftDepth = tree.length - 1 - i
+
+        if (leftDepth > 1) {
+          if (Array.isArray(curr)) {
+            curr.push({ [key]: {} })
+          } else {
+            curr[key] = {}
+          }
+        } else if (leftDepth > 0) {
+          if (Array.isArray(curr)) {
+            curr.push({ [key]: [] })
+          } else {
+            curr[key] = []
+          }
+        } else if (Array.isArray(curr)) {
+          curr.push(key)
+        }
+
+        if (leftDepth > 0) {
+          if (Array.isArray(curr)) {
+            curr = curr[curr.length - 1][key]
+          } else {
+            curr = curr[key]
+          }
+        }
+      }
+    }
+  }
+
+  newFields.push(
+    ...Object.keys(deepMappedFields).map((key) => {
+      return { [key]: deepMappedFields[key] }
+    })
+  )
+
+  return newFields
+}
 
 export type OffsetPaginationParam = {
   first?: number
@@ -24,6 +88,12 @@ export interface ListStrategy<
   TVariables = OperationVariables,
   TItem = Record<string, any>
 > {
+  getQuery?(
+    resource: string,
+    operation: string,
+    variables?: OperationVariables,
+    fields?: string[]
+  ): DocumentNode | TypedDocumentNode<TData, TVariables>
   // TODO: add support for cursor based pagination
   /* type: 'offset' | 'cursor' */
   getVariables(params: ListGetVariablesParams): TVariables
@@ -84,6 +154,23 @@ export interface GlobalStrategy {
 }
 
 export class DefaultListStrategy implements ListStrategy {
+  getQuery(
+    resource: string,
+    operation: string,
+    variables?: OperationVariables,
+    fields?: string[]
+  ): DocumentNode | TypedDocumentNode<any, OperationVariables> {
+    const result = query({
+      operation,
+      variables,
+      fields: generateFields(fields),
+    })
+
+    return gql`
+      ${result.query}
+    `
+  }
+
   getVariables(params: ListGetVariablesParams): OperationVariables {
     return { ...params }
   }

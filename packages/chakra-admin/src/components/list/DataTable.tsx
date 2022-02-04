@@ -75,7 +75,6 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
       <chakra.div
         display="flex"
         w="100%"
-        // pt={{ base: 0, lg: '56px' }}
         pb={5}
         pl={{ base: 5, lg: 0 }}
         pr={{ base: 5, lg: 0 }}

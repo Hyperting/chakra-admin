@@ -8,10 +8,9 @@ import { useList } from '../../core/list/useList'
 import { PageLayout } from '../details/PageLayout'
 import { PageTitle } from '../details/PageTitle'
 import { ListToolbar } from './ListToolbar'
-import { ca } from '../../core/react/system'
-import { CALayoutComponents, CUILayoutComponents } from '../../core/react/system-layout'
 
-export const List: FC<ListProps> = (props) => {
+// export const List: FC<ListProps> = (props) => {
+export function List<TQuery = Record<string, any>>(props: ListProps<TQuery>) {
   const {
     title = <PageTitle />,
     toolbarComponent = <ListToolbar />,
