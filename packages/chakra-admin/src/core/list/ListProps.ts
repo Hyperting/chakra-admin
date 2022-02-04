@@ -9,9 +9,11 @@ import {
 import { SortType } from './SortType'
 import { ListStrategy } from '../admin/Strategy'
 import { PageLayoutProps } from '../../components/details/PageLayout'
+import { NestedKeyOf } from '../react/nested-key'
 
 export type ListProps<
   TQuery = Record<string, any>,
+  TItem = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
@@ -38,5 +40,5 @@ export type ListProps<
   hasList?: boolean
   children?: React.ReactNode
   layout?: ReactElement<PageLayoutProps, any>
-  additionalFields?: string[]
+  fields?: NestedKeyOf<Required<TItem>>[]
 } & Pick<PageLayoutProps, 'title'>

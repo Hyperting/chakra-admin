@@ -11,8 +11,17 @@ import { query, mutation, subscription } from 'gql-query-builder'
 import Fields from 'gql-query-builder/build/Fields'
 import { SortType } from '../list'
 
-export function generateFields(fields?: string[]) {
-  const newFields: Fields = []
+type GetAdditionalFields = () => Fields
+
+const getDefaultAdditionalFields: GetAdditionalFields = () => {
+  return ['id']
+}
+
+export function generateFields(
+  fields?: string[],
+  getAdditionalFields: GetAdditionalFields = getDefaultAdditionalFields
+) {
+  const newFields: Fields = [...getDefaultAdditionalFields()]
   const deepMappedFields = {}
 
   for (const field of fields || []) {
@@ -22,7 +31,7 @@ export function generateFields(fields?: string[]) {
       newFields.push(field)
     } else {
       if (!deepMappedFields[tree[0]]) {
-        deepMappedFields[tree[0]] = tree.length > 2 ? {} : []
+        deepMappedFields[tree[0]] = tree.length > 2 ? {} : [...getAdditionalFields()]
       }
 
       const newField = deepMappedFields[tree[0]]
@@ -39,9 +48,9 @@ export function generateFields(fields?: string[]) {
           }
         } else if (leftDepth > 0) {
           if (Array.isArray(curr)) {
-            curr.push({ [key]: [] })
+            curr.push({ [key]: [...getAdditionalFields()] })
           } else {
-            curr[key] = []
+            curr[key] = [...getAdditionalFields()]
           }
         } else if (Array.isArray(curr)) {
           curr.push(key)
@@ -108,6 +117,12 @@ export interface ShowStrategy<
   TItem = Record<string, any>
 > {
   getId: (item: TItem) => string
+  getQuery?(
+    resource: string,
+    operation: string,
+    variables?: OperationVariables,
+    fields?: string[]
+  ): DocumentNode | TypedDocumentNode<TData, TVariables>
   getItem: (queryResult: QueryResult<TData, TVariables>) => TItem
   getItemVariables: (id: string) => TVariables
   getMutationVariables?: (id: string, values: TFormValues) => TVariables
@@ -186,6 +201,23 @@ export class DefaultListStrategy implements ListStrategy {
 
 export class DefaultShowStrategy implements ShowStrategy {
   getId: ShowStrategy['getId'] = ({ id }) => id
+
+  getQuery(
+    resource: string,
+    operation: string,
+    variables?: OperationVariables,
+    fields?: string[]
+  ): DocumentNode | TypedDocumentNode<any, OperationVariables> {
+    const result = query({
+      operation,
+      variables,
+      fields: generateFields(fields),
+    })
+
+    return gql`
+      ${result.query}
+    `
+  }
 
   getItem: ShowStrategy['getItem'] = (queryResult) => {
     return queryResult.data

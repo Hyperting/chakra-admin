@@ -22,11 +22,12 @@ const EMPTY_QUERY = gql`
 
 export type UseListParams<
   TQuery = Record<string, any>,
+  TItem = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
   DeleteTVariables = OperationVariables
-> = ListProps<TQuery, ListTData, ListTVariables, DeleteTData, DeleteTVariables> & {}
+> = ListProps<TQuery, TItem, ListTData, ListTVariables, DeleteTData, DeleteTVariables> & {}
 
 export type UseListReturn<TData = any, TVariables = OperationVariables> = {
   refetch: (variables?: Partial<TVariables> | undefined) => Promise<ApolloQueryResult<TData>>
@@ -48,6 +49,7 @@ export type UseListReturn<TData = any, TVariables = OperationVariables> = {
  */
 export const useList = <
   TQuery = Record<string, any>,
+  TItem = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
@@ -57,13 +59,18 @@ export const useList = <
   query,
   queryOptions,
   defaultFilters,
-}: UseListParams<TQuery, ListTData, ListTVariables, DeleteTData, DeleteTVariables>): UseListReturn<
+  fields,
+}: UseListParams<
+  TQuery,
+  TItem,
   ListTData,
-  ListTVariables
-> => {
+  ListTVariables,
+  DeleteTData,
+  DeleteTVariables
+>): UseListReturn<ListTData, ListTVariables> => {
   const version = useVersionStateValue()
   const strategy = useGlobalStrategy()
-  const [querySelectionSet, setSelectionSet] = useState<undefined | string[]>(undefined)
+  const [querySelectionSet, setSelectionSet] = useState<undefined | string[]>(fields)
   const [isQuerySelectionSeatReady, setIsQuerySelectionSeatReady] = useState<boolean>(
     !(typeof query === 'string')
   )
@@ -251,10 +258,14 @@ export const useList = <
     [setParams, params]
   )
 
-  const setQuerySelectionSet = useCallback((fields: string[]) => {
-    setSelectionSet(fields)
-    setIsQuerySelectionSeatReady(true)
-  }, [])
+  const setQuerySelectionSet = useCallback(
+    (fields: string[]) => {
+      console.log('setQuerySelectionSet', fields)
+      setSelectionSet([...Array.from(new Set([...(fields || []), ...(querySelectionSet || [])]))])
+      setIsQuerySelectionSeatReady(true)
+    },
+    [querySelectionSet]
+  )
 
   useEffect(() => {
     if (result?.refetch) {

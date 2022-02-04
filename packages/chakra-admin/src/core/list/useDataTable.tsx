@@ -237,7 +237,6 @@ export function useDataTable<TItem = Record<string, any>>({
   }, [sortBy])
 
   useEffect(() => {
-    console.log('e analizziamo sti children cattivi')
     const newSelectionSet: any = []
 
     Children.forEach(children, (child: React.ReactNode, index) => {
@@ -257,15 +256,14 @@ export function useDataTable<TItem = Record<string, any>>({
             }
           }
         }
-
-        console.log('aggiungo robe e ci sono', child)
       }
     })
 
     if (newSelectionSet.length > 0 && setQuerySelectionSet) {
       setQuerySelectionSet(newSelectionSet)
     }
-  }, [children, setQuerySelectionSet])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [children])
 
   return {
     foundedColumns,

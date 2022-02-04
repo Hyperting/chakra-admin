@@ -9,9 +9,11 @@ import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
 import { ShowToolbar } from './ShowToolbar'
+import { NestedKeyOf } from '../../core/react/nested-key'
 
 export type ShowProps<
-  ItemTData = any,
+  TQuery = Record<string, any>,
+  ItemTData = Record<string, any>,
   ItemTVariables = OperationVariables,
   EditTData = any,
   EditTVariables = OperationVariables
@@ -19,13 +21,18 @@ export type ShowProps<
   resource?: string
   id?: string
   mutation?: DocumentNode | TypedDocumentNode<EditTData, EditTVariables>
-  query: DocumentNode | TypedDocumentNode<ItemTData, ItemTVariables>
+  query: keyof TQuery | (DocumentNode | TypedDocumentNode<ItemTData, ItemTVariables>)
+  fields?: NestedKeyOf<Required<ItemTData>>[]
   renderingInModal?: boolean
   layout?: ReactElement<PageLayoutProps, any>
   toolbarComponent?: React.ReactNode
+  children?: React.ReactNode
 } & Pick<PageLayoutProps, 'title'>
 
-export const Show: FC<ShowProps> = (props) => {
+// export const Show: FC<ShowProps> = (props) => {
+export function Show<TQuery = Record<string, any>, TItem = Record<string, any>>(
+  props: ShowProps<TQuery, TItem>
+) {
   const {
     children,
     resource,
