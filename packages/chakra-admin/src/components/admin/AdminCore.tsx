@@ -20,27 +20,6 @@ export type AdminCoreProps = {
   children?: React.ReactNode
 }
 
-// const ModalLayout: FC = () => {
-//   return (
-//     <Drawer isOpen placement="right" onClose={() => {}}>
-//       <DrawerOverlay />
-//       <DrawerContent>
-//         <DrawerCloseButton />
-//         <DrawerHeader>Create your account</DrawerHeader>
-//         <DrawerBody>
-//           <Outlet />
-//         </DrawerBody>
-//         <DrawerFooter>
-//           <Button variant="outline" mr={3}>
-//             Cancel
-//           </Button>
-//           <Button colorScheme="blue">Save</Button>
-//         </DrawerFooter>
-//       </DrawerContent>
-//     </Drawer>
-//   )
-// }
-
 const WithIdParam: FC = ({ children }) => {
   const { id } = useParams()
   return cloneElement(Children.only(children) as React.ReactElement, {

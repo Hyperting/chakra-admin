@@ -40,7 +40,6 @@ export function useDataTable<TItem = Record<string, any>>({
   resource,
   queryResult,
   expandComponent,
-  setQuerySelectionSet,
 }: DataTableProps<TItem>): UseDataTableReturn {
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
   const tAll = useTranslate()
@@ -235,35 +234,6 @@ export function useDataTable<TItem = Record<string, any>>({
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy])
-
-  useEffect(() => {
-    const newSelectionSet: any = []
-
-    Children.forEach(children, (child: React.ReactNode, index) => {
-      if (
-        child &&
-        (child as any).type &&
-        (child as any).props &&
-        ((child as any).props.source || (child as any).props.sources)
-      ) {
-        if ((child as any).props.source && typeof (child as any).props.source === 'string') {
-          newSelectionSet.push((child as any).props.source)
-        } else if ((child as any).props.sources) {
-          const keys = Object.keys((child as any).props.sources)
-          for (let i = 0; i < keys.length; i++) {
-            if (typeof (child as any).props.sources[keys[i]] === 'string') {
-              newSelectionSet.push((child as any).props.sources[keys[i]])
-            }
-          }
-        }
-      }
-    })
-
-    if (newSelectionSet.length > 0 && setQuerySelectionSet) {
-      setQuerySelectionSet(newSelectionSet)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [children])
 
   return {
     foundedColumns,

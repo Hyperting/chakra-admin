@@ -3,6 +3,7 @@ import { ApolloQueryResult, gql, OperationVariables, QueryResult, useQuery } fro
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 import { useVersionStateValue } from '../admin/versionState'
+import { useGqlBuilder } from '../graphql/gql-builder'
 import { ListProps } from './ListProps'
 import { PaginationType } from './PaginationType'
 import { SortType } from './SortType'
@@ -38,7 +39,6 @@ export type UseListReturn<TData = any, TVariables = OperationVariables> = {
   currentSort: SortType<any>
   currentFilters: Record<string, any>
   queryResult: QueryResult<TData, TVariables>
-  setQuerySelectionSet: (fields: string[]) => void
 } & QueryResult<TData, TVariables> &
   PaginationType
 
@@ -60,6 +60,7 @@ export const useList = <
   queryOptions,
   defaultFilters,
   fields,
+  children,
 }: UseListParams<
   TQuery,
   TItem,
@@ -70,10 +71,6 @@ export const useList = <
 >): UseListReturn<ListTData, ListTVariables> => {
   const version = useVersionStateValue()
   const strategy = useGlobalStrategy()
-  const [querySelectionSet, setSelectionSet] = useState<undefined | string[]>(fields)
-  const [isQuerySelectionSeatReady, setIsQuerySelectionSeatReady] = useState<boolean>(
-    !(typeof query === 'string')
-  )
 
   const [params, setParams] = useSearchParamsAsState({
     [QP_LIMIT]: `${DEFAULT_LIMIT}`,
@@ -140,30 +137,22 @@ export const useList = <
     }) as ListTVariables
   }, [currentFilters, currentSort, limit, offset, strategy?.list])
 
-  const finalQuery = useMemo(() => {
-    if (typeof query === 'string' && !strategy?.list?.getQuery) {
-      throw new Error(
-        'You must provide a getQuery function in your strategy if you want to generate the query from a string'
-      )
-    }
+  const { initialized, operation, selectionSet } = useGqlBuilder({
+    resource,
+    operation: query,
+    type: 'query',
+    generateGql: strategy?.list?.getQuery || (() => EMPTY_QUERY),
+    variables,
+    children,
+    additionalFields: fields as string[],
+  })
 
-    if (typeof query === 'string' && isQuerySelectionSeatReady) {
-      return strategy!.list.getQuery!(resource!, query, variables, querySelectionSet)
-    }
-
-    if (query && typeof query !== 'string') {
-      return query
-    }
-
-    return EMPTY_QUERY
-  }, [isQuerySelectionSeatReady, query, querySelectionSet, resource, strategy, variables])
-
-  const result = useQuery<ListTData, ListTVariables>(finalQuery as any, {
+  const result = useQuery<ListTData, ListTVariables>(operation as any, {
     variables,
     ...(queryOptions || {}),
     skip: queryOptions?.skip
-      ? !isQuerySelectionSeatReady && !finalQuery && queryOptions.skip
-      : !isQuerySelectionSeatReady && !finalQuery,
+      ? !initialized || !operation || queryOptions.skip
+      : !initialized || !operation,
   })
 
   const total = useMemo(() => {
@@ -258,15 +247,6 @@ export const useList = <
     [setParams, params]
   )
 
-  const setQuerySelectionSet = useCallback(
-    (fields: string[]) => {
-      console.log('setQuerySelectionSet', fields)
-      setSelectionSet([...Array.from(new Set([...(fields || []), ...(querySelectionSet || [])]))])
-      setIsQuerySelectionSeatReady(true)
-    },
-    [querySelectionSet]
-  )
-
   useEffect(() => {
     if (result?.refetch) {
       result.refetch()
@@ -297,6 +277,5 @@ export const useList = <
     pageCount: pageCount || 0,
     currentSort,
     currentFilters,
-    setQuerySelectionSet,
   }
 }

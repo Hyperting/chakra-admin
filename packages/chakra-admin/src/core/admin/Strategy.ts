@@ -8,73 +8,8 @@ import {
   TypedDocumentNode,
 } from '@apollo/client'
 import { query, mutation, subscription } from 'gql-query-builder'
-import Fields from 'gql-query-builder/build/Fields'
+import { generateFields } from '../graphql'
 import { SortType } from '../list'
-
-type GetAdditionalFields = () => Fields
-
-const getDefaultAdditionalFields: GetAdditionalFields = () => {
-  return ['id']
-}
-
-export function generateFields(
-  fields?: string[],
-  getAdditionalFields: GetAdditionalFields = getDefaultAdditionalFields
-) {
-  const newFields: Fields = [...getDefaultAdditionalFields()]
-  const deepMappedFields = {}
-
-  for (const field of fields || []) {
-    const tree = field.split('.')
-
-    if (tree.length === 1) {
-      newFields.push(field)
-    } else {
-      if (!deepMappedFields[tree[0]]) {
-        deepMappedFields[tree[0]] = tree.length > 2 ? {} : [...getAdditionalFields()]
-      }
-
-      const newField = deepMappedFields[tree[0]]
-      let curr = newField
-      for (let i = 1; i < tree.length; i++) {
-        const key = tree[i]
-        const leftDepth = tree.length - 1 - i
-
-        if (leftDepth > 1) {
-          if (Array.isArray(curr)) {
-            curr.push({ [key]: {} })
-          } else {
-            curr[key] = {}
-          }
-        } else if (leftDepth > 0) {
-          if (Array.isArray(curr)) {
-            curr.push({ [key]: [...getAdditionalFields()] })
-          } else {
-            curr[key] = [...getAdditionalFields()]
-          }
-        } else if (Array.isArray(curr)) {
-          curr.push(key)
-        }
-
-        if (leftDepth > 0) {
-          if (Array.isArray(curr)) {
-            curr = curr[curr.length - 1][key]
-          } else {
-            curr = curr[key]
-          }
-        }
-      }
-    }
-  }
-
-  newFields.push(
-    ...Object.keys(deepMappedFields).map((key) => {
-      return { [key]: deepMappedFields[key] }
-    })
-  )
-
-  return newFields
-}
 
 export type OffsetPaginationParam = {
   first?: number

@@ -1,4 +1,4 @@
-import { Children, cloneElement, createElement } from 'react'
+import React, { Children, cloneElement, createElement } from 'react'
 import {
   AlertDescription,
   AlertDescriptionProps,
@@ -40,6 +40,7 @@ import get from 'lodash.get'
 import { useField } from '../fields/useField'
 import { filterChakraProps } from './system-utils'
 import { NestedKeyOf, Required } from './nested-key'
+import { TreeRenderer } from '../../components/details/TreeRenderer'
 
 export const CAFieldComponents = {
   AlertDescription: caField<AlertDescriptionProps>(AlertDescription),

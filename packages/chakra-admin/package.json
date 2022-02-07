@@ -53,10 +53,12 @@
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
     "gql-query-builder": "^3.5.7",
-    "ts-toolbelt": "^9.6.0"
+    "ts-toolbelt": "^9.6.0",
+    "type-fest": "^2.11.1"
   },
   "devDependencies": {
-    "ca-test-utils": "^0.0.1-dev.11"
+    "ca-test-utils": "^0.0.1-dev.11",
+    "@testing-library/react-hooks": "^7.0.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"

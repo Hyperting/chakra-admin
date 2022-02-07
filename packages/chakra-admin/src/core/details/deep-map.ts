@@ -1,5 +1,10 @@
 import { ReactElement, ReactNode, Children, cloneElement, isValidElement } from 'react'
-import { CALayoutComponents, CUILayoutComponents } from '../react/system-layout'
+import { ReadonlyDeep } from 'type-fest'
+import {
+  CUILayoutComponents,
+  getRegisteredLayoutComponents,
+  registerLayoutComponent,
+} from '../react/system-layout'
 
 export const hasChildren = (
   element: ReactNode
@@ -16,7 +21,7 @@ export const hasComplexChildren = (
     false
   )
 
-export const areComplexChildren = (children: ReactNode): boolean =>
+export const isChildrenComplex = (children: ReactNode): boolean =>
   Children.toArray(children).reduce(
     (response: boolean, child: ReactNode): boolean => response || isValidElement(child),
     false
@@ -31,8 +36,9 @@ export const deepMap = (
       if (
         isValidElement(child) &&
         hasComplexChildren(child) &&
-        child?.type &&
-        Object.values(CUILayoutComponents).includes(child.type as any)
+        child?.type // &&
+        // (Object.values(CUILayoutComponents).includes(child.type as any) ||
+        //   getRegisteredLayoutComponents().includes(child.type as any))
       ) {
         // Clone the child that has children and map them too
         return deepMapFn(
@@ -45,3 +51,23 @@ export const deepMap = (
       return deepMapFn(child, index, mapChildren)
     }
   )
+
+export const deepForEach = (
+  children: ReadonlyDeep<ReactNode | ReactNode[]>,
+  deepForEachFn: (child: ReadonlyDeep<ReactNode>, index?: number) => void
+): void => {
+  Children.forEach(children, (child: ReadonlyDeep<ReactNode>, index: number) => {
+    if (
+      isValidElement(child) &&
+      hasComplexChildren(child) &&
+      child?.type // &&
+      // (Object.values(CUILayoutComponents).includes(child.type as any) ||
+      //   getRegisteredLayoutComponents().includes(child.type as any))
+    ) {
+      // Each inside the child that has children
+      deepForEach((child as any)?.props?.children, deepForEachFn)
+    }
+
+    deepForEachFn(child, index)
+  })
+}

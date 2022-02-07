@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-key */
-import React, { cloneElement, FC, isValidElement, useCallback } from 'react'
+import React, { cloneElement, isValidElement, useCallback } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { chakra, Heading, Table, Tbody, Td, Th, Thead, Tr, useCallbackRef } from '@chakra-ui/react'
+import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
 import { useNavigate } from 'react-router-dom'
 import { ListProps } from '../../core/list/ListProps'
@@ -10,6 +10,7 @@ import { UseListReturn } from '../../core/list/useList'
 import { Pagination } from './Pagination'
 import { useDataTable } from '../../core/list/useDataTable'
 import { DataTableValueProps } from './DataTableValue'
+import { registerLayoutComponent } from '../../core/react/system-layout'
 
 export type DataTableProps<TItem> = Partial<UseListReturn> &
   Partial<ListProps> & {
@@ -21,7 +22,7 @@ export type DataTableProps<TItem> = Partial<UseListReturn> &
     moreMenuComponent?: Renderer<CellProps<any, any>>
     expandComponent?: React.ReactNode
   }
-// DataTableFC<DataTableProps>
+
 export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
   const {
     loading,
@@ -33,6 +34,8 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
     hasEdit,
     hasShow,
   } = props
+
+  // useRegisterLayoutComponent(DataTable as any)
 
   const {
     getTableProps,
