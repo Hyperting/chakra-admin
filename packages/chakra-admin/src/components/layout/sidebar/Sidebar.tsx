@@ -6,6 +6,7 @@ import { SidebarTitle } from './SidebarTitle'
 import { MenuSearch } from './MenuSearch'
 import { MenuCollapse } from './MenuCollapse'
 import { ResourcesNavMenu } from './ResourcesNavMenu'
+import { AccountBox } from './AccountBox'
 
 type Props = {
   title?: string
@@ -30,7 +31,6 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
       {...rest}
     >
       <ToggleSizeButton isCompressed={collapsed} onClick={handleToggleSize} />
-
       <MotionBox bgColor="white" initial={false} animate={{ width: collapsed ? 18 : 280 }}>
         {!collapsed && (
           <Box overflowX="hidden" w="280px" minW="280px" pt={6}>
@@ -46,6 +46,7 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
           </Box>
         )}
       </MotionBox>
+      <AccountBox />
     </Box>
   )
 }
