@@ -28,7 +28,8 @@ export function generateFields(
       newFields.push(field)
     } else {
       if (!deepMappedFields[tree[0]]) {
-        deepMappedFields[tree[0]] = tree.length > 2 ? {} : [...getAdditionalFields()]
+        // deepMappedFields[tree[0]] = tree.length > 2 ? {} : [...getAdditionalFields()]
+        deepMappedFields[tree[0]] = [...getAdditionalFields()]
       }
 
       const newField = deepMappedFields[tree[0]]

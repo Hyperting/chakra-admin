@@ -82,6 +82,7 @@ export const Create: FC<CreateProps> = (props) => {
               onSubmit,
               executeMutation,
               mutationResult,
+              renderingInModal,
             },
           },
           child.props?.children

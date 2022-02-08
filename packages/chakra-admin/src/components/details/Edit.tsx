@@ -98,6 +98,7 @@ export const Edit: FC<EditProps> = (props) => {
               mutation,
               onSubmit,
               executeMutation,
+              renderingInModal,
               mutationResult,
               defaultValues: item,
               record: item,

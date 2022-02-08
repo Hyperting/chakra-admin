@@ -14,6 +14,7 @@ import { SortType } from '../list'
 export type OffsetPaginationParam = {
   first?: number
   after?: number
+  disabled?: boolean
 }
 
 export type ListGetVariablesParams<TItem = Record<string, any>> = {
