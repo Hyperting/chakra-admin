@@ -27,7 +27,7 @@ export const Create: FC<CreateProps> = (props) => {
     title = <DetailsPageTitle />,
     mutation,
   } = props
-  const { onSubmit, executeMutation, mutationResult } = useCreate(props)
+  const { onSubmit, executeMutation, mutationResult, defaultValues } = useCreate(props)
   const { registeredResources, initialized } = useAdminStateValue()
   const t = useTranslate()
   const getResourceLabel = useGetResourceLabel()
@@ -77,6 +77,7 @@ export const Create: FC<CreateProps> = (props) => {
           {
             ...{
               ...child.props,
+              defaultValues,
               mutation,
               resource,
               onSubmit,

@@ -8,8 +8,8 @@ import {
   useMutation,
 } from '@apollo/client'
 import { useToast } from '@chakra-ui/react'
-import { useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useCallback, useMemo } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { CreateProps } from '../../components/details/Create'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 import { useSetVersionState, useVersion } from '../admin/versionState'
@@ -25,6 +25,7 @@ export type UseCreateResult<
   ) => Promise<FetchResult<TData>>
   mutationResult?: MutationResult<TData>
   onSubmit: (values: any) => Promise<MutationResult<TData>>
+  defaultValues: any
 }
 
 export const useCreate = <
@@ -44,6 +45,12 @@ export const useCreate = <
   const notify = useToast()
   const strategy = useGlobalStrategy()
   const nextVersion = useVersion()
+  const location = useLocation()
+
+  const defaultValues = useMemo(
+    () => (location?.state as { defaultValues?: Location })?.defaultValues || {},
+    [location?.state]
+  )
 
   const onSubmit = useCallback(
     async (values: any): Promise<any> => {
@@ -90,5 +97,6 @@ export const useCreate = <
     executeMutation,
     mutationResult,
     onSubmit,
+    defaultValues,
   }
 }
