@@ -1,6 +1,5 @@
-import React, { cloneElement, FC, isValidElement, useMemo } from 'react'
+import React, { cloneElement, isValidElement, useMemo } from 'react'
 import { useTranslate } from 'ca-i18n'
-import { deepMap } from '../../core/details/deep-map'
 import { registeredIcons, useAdminStateValue } from '../../core/admin/adminState'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { ListProps } from '../../core/list/ListProps'
@@ -8,8 +7,8 @@ import { useList } from '../../core/list/useList'
 import { PageLayout } from '../details/PageLayout'
 import { PageTitle } from '../details/PageTitle'
 import { ListToolbar } from './ListToolbar'
+import { TreeRenderer } from '../details/TreeRenderer'
 
-// export const List: FC<ListProps> = (props) => {
 export function List<TQuery = Record<string, any>, TItem = Record<string, any>>(
   props: ListProps<TQuery, TItem>
 ) {
@@ -23,7 +22,7 @@ export function List<TQuery = Record<string, any>, TItem = Record<string, any>>(
     ...rest
   } = props
   const listData = useList(props)
-  const { registeredResources, initialized } = useAdminStateValue()
+  const { registeredResources } = useAdminStateValue()
 
   const t = useTranslate()
   const getResourceLabel = useGetResourceLabel()
@@ -66,37 +65,14 @@ export function List<TQuery = Record<string, any>, TItem = Record<string, any>>(
           (toolbarComponent as any).props.children
         ),
     },
-    <>
-      {deepMap(children, (child: any) => {
-        // const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
-
-        // if (isLayout) {
-        //   return React.createElement(
-        //     ca[child.type.displayName],
-        //     {
-        //       ...child.props,
-        //       ...childrenProps,
-        //       ...listData,
-        //       showMoreMenu,
-        //     },
-        //     child.props?.children
-        //   )
-        // } else {
-        return React.cloneElement(
-          child,
-          {
-            ...{
-              ...child.props,
-              ...childrenProps,
-              ...listData,
-              showMoreMenu,
-            },
-          },
-          child.props?.children
-        )
-        // }
-      })}
-    </>
+    <TreeRenderer
+      propsOverride={{
+        ...childrenProps,
+        ...listData,
+        showMoreMenu,
+      }}
+      children={children}
+    />
   )
 }
 

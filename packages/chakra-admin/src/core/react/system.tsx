@@ -1,4 +1,11 @@
-import { caLayout, CALayoutComponents } from './system-layout'
+import {
+  caLayout,
+  CALayoutComponents,
+  getRegisteredLayoutComponents,
+  registerLayoutComponent,
+  removeLayoutComponent,
+  useRegisterLayoutComponent,
+} from './system-layout'
 import { caField, CAFieldComponents } from './system-field'
 import { caFormInput, CAFormComponents, CAFormControlComponents } from './system-form'
 
@@ -27,3 +34,10 @@ export const ca = ({
   typeof CAFieldComponents &
   typeof CAFormComponents &
   typeof CAFormControlComponents
+
+export {
+  useRegisterLayoutComponent,
+  getRegisteredLayoutComponents,
+  registerLayoutComponent,
+  removeLayoutComponent,
+}

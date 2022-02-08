@@ -10,6 +10,7 @@ import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
 import { ShowToolbar } from './ShowToolbar'
 import { NestedKeyOf } from '../../core/react/nested-key'
+import { TreeRenderer } from './TreeRenderer'
 
 export type ShowProps<
   TQuery = Record<string, any>,
@@ -103,51 +104,43 @@ export function Show<TQuery = Record<string, any>, TItem = Record<string, any>>(
       {loading ? (
         <>Loading</>
       ) : (
-        deepMap(children, (child: any) => {
-          // const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
-
-          // if (isLayout) {
-          //   return React.createElement(
-          //     ca[child.type.displayName],
-          //     {
-          //       ...{
-          //         id,
-          //         mutation,
-          //         onSubmit,
-          //         executeMutation,
-          //         mutationResult,
-          //         defaultValues: item,
-          //         record: item,
-          //         loading,
-          //         resource,
-          //         data,
-          //         error,
-          //         ...child.props,
-          //       },
-          //     },
-          //     child.props?.children
-          //   )
-          // } else {
-          return React.cloneElement(
-            child,
-            {
-              id,
-              onSubmit,
-              mutation,
-              executeMutation,
-              mutationResult,
-              defaultValues: item,
-              record: item,
-              loading,
-              resource,
-              data,
-              error,
-              ...((child as any).props || {}),
-            },
-            child.props?.children
-          )
-          // }
-        })
+        <TreeRenderer
+          children={children}
+          propsOverride={{
+            id,
+            onSubmit,
+            mutation,
+            executeMutation,
+            mutationResult,
+            defaultValues: item,
+            record: item,
+            loading,
+            resource,
+            data,
+            error,
+          }}
+        />
+        // deepMap(children, (child: any) => {
+        // return React.cloneElement(
+        //   child,
+        //   {
+        //     id,
+        //     onSubmit,
+        //     mutation,
+        //     executeMutation,
+        //     mutationResult,
+        //     defaultValues: item,
+        //     record: item,
+        //     loading,
+        //     resource,
+        //     data,
+        //     error,
+        //     ...((child as any).props || {}),
+        //   },
+        //   child.props?.children
+        // )
+        // }
+        // })
       )}
     </>
   )

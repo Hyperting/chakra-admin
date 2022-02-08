@@ -6,7 +6,7 @@ describe('DefaultStrategy', () => {
       it('should generate correctly a simple query', () => {
         const strategy = new DefaultListStrategy()
 
-        const query = strategy.getQuery('companies', undefined, ['id', 'name'])
+        const query = strategy.getQuery('Company', 'companies', undefined, ['id', 'name'])
 
         console.log((query?.definitions?.[0] as any)?.selectionSet?.selections?.[0])
         expect((query?.definitions?.[0] as any)?.selectionSet?.selections?.[0]?.name?.value).toBe(
@@ -25,12 +25,14 @@ describe('DefaultStrategy', () => {
       it('should generate correctly a nested query', () => {
         const strategy = new DefaultListStrategy()
 
-        const query = strategy.getQuery('companies', undefined, [
+        const query = strategy.getQuery('Company', 'companies', undefined, [
           'id',
           'people.firstName',
           'people.lastName',
           'people.address.street',
         ])
+
+        console.log(query, 'cia')
 
         console.log((query?.definitions?.[0] as any)?.selectionSet?.selections?.[0])
         expect((query?.definitions?.[0] as any)?.selectionSet?.selections?.[0]?.name?.value).toBe(
@@ -43,7 +45,7 @@ describe('DefaultStrategy', () => {
         expect(
           (query?.definitions?.[0] as any)?.selectionSet?.selections?.[0]?.selectionSet
             ?.selections?.[1]?.name?.value
-        ).toBe('people')
+        ).toBe('id')
         expect(
           (query?.definitions?.[0] as any)?.selectionSet?.selections?.[0]?.selectionSet
             ?.selections?.[1]?.selectionSet?.selections?.[0]?.name?.value

@@ -65,7 +65,6 @@ export const useCreate = <
           })
 
           if (typeof redirect === 'boolean' && redirect) {
-            console.log('esistoooo dentrooo', redirect)
             navigate(-1)
           }
 

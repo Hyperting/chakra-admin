@@ -12,8 +12,9 @@ import {
 } from '@apollo/client'
 import { useToast } from '@chakra-ui/react'
 import { useCallback, useMemo, useState } from 'react'
-import { useGlobalStrategy } from '..'
+import { useGqlBuilder } from '../graphql/gql-builder'
 import { ShowProps } from '../../components/details/Show'
+import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 
 const EMPTY_QUERY = gql`
   query EmptyQuery {
@@ -47,6 +48,7 @@ export const useShow = <
   query,
   id,
   fields,
+  children,
 }: ShowProps<ItemTData, ItemTVariables, ShowTData, ShowTVariables>): UseShowResult => {
   const strategy = useGlobalStrategy()
   const queryVariables = useMemo(() => (id ? strategy?.show.getItemVariables(id) : undefined), [
@@ -54,34 +56,20 @@ export const useShow = <
     strategy?.show,
   ])
 
-  const [querySelectionSet, setSelectionSet] = useState<undefined | string[]>(fields)
-  const [isQuerySelectionSeatReady, setIsQuerySelectionSeatReady] = useState<boolean>(true)
-  // const [isQuerySelectionSeatReady, setIsQuerySelectionSeatReady] = useState<boolean>(
-  //   !(typeof query === 'string')
-  // )
-
-  const finalQuery = useMemo(() => {
-    if (typeof query === 'string' && !strategy?.show?.getQuery) {
-      throw new Error(
-        'You must provide a getQuery function in your strategy if you want to generate the query from a string'
-      )
-    }
-
-    if (typeof query === 'string' && isQuerySelectionSeatReady) {
-      return strategy!.show.getQuery!(resource!, query, queryVariables, querySelectionSet)
-    }
-
-    if (query && typeof query !== 'string') {
-      return query
-    }
-
-    return EMPTY_QUERY
-  }, [isQuerySelectionSeatReady, query, querySelectionSet, queryVariables, resource, strategy])
+  const { operation, initialized } = useGqlBuilder({
+    type: 'query',
+    resource,
+    children,
+    operation: query,
+    variables: queryVariables,
+    generateGql: strategy?.show?.getQuery || (() => EMPTY_QUERY),
+    additionalFields: fields,
+  })
 
   const [executeMutation, mutationResult] = useMutation<ShowTData, ShowTVariables>(mutation as any)
-  const data = useQuery<ItemTData, ItemTVariables>(finalQuery as any, {
+  const data = useQuery<ItemTData, ItemTVariables>(operation as any, {
     variables: queryVariables as ItemTVariables,
-    skip: !id || !finalQuery,
+    skip: !id || !initialized || !operation || !queryVariables,
   })
   const item = useMemo(() => (data.data ? strategy?.show.getItem(data) : undefined), [
     data,

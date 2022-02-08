@@ -1,4 +1,4 @@
-import { Children, cloneElement, createElement, FC } from 'react'
+import { Children, cloneElement, createElement, FC, useEffect } from 'react'
 import {
   Alert as CUIAlert,
   As,
@@ -50,7 +50,9 @@ import {
   TabList,
 } from '@chakra-ui/react'
 import { filterChakraProps } from './system-utils'
-import { areComplexChildren } from '../details/deep-map'
+import { isChildrenComplex } from '../details/deep-map'
+import { CAFieldComponents } from './system-field'
+import { DataTable } from '../../components/list'
 
 // fix components without displayName
 const Alert = CUIAlert
@@ -112,14 +114,47 @@ export const CUILayoutComponents = {
   TabPanels,
   TabPanel,
   UnorderedList,
+  // 'ca.StatHelpText': CAFieldComponents.StatHelpText,
+  // 'ca.StatLabel': CAFieldComponents.StatLabel,
+  // 'ca.StatNumber': CAFieldComponents.StatNumber,
+  // DataTable,
+}
+
+export const registeredLayoutComponents: React.ReactElement[] = []
+
+export const getRegisteredLayoutComponents = () => {
+  return registeredLayoutComponents
+}
+
+export const registerLayoutComponent = (component: React.ReactElement) => {
+  if (registeredLayoutComponents?.indexOf(component) === -1) {
+    registeredLayoutComponents?.push(component)
+  }
+}
+
+export function removeLayoutComponent(component: React.ReactElement) {
+  if (registeredLayoutComponents?.indexOf(component) !== -1) {
+    registeredLayoutComponents?.splice(registeredLayoutComponents.indexOf(component), 1)
+  }
+}
+
+export const useRegisterLayoutComponent = (component: React.ReactElement) => {
+  useEffect(() => {
+    registerLayoutComponent(component)
+    console.log(registeredLayoutComponents)
+    return () => {
+      removeLayoutComponent(component)
+    }
+  }, [component])
 }
 
 export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string]: any }> {
   const CALayoutImpl = ({ children, record, ...props }) => {
+    useRegisterLayoutComponent(CALayoutImpl as any)
     return createElement(
       component as any,
       props,
-      areComplexChildren(children)
+      isChildrenComplex(children)
         ? Children.toArray(children).map((child) => {
             return cloneElement(child as any, {
               ...filterChakraProps(props || {}),
@@ -134,6 +169,9 @@ export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string
   ;((CALayoutImpl as unknown) as FC<P & { [x: string]: any }>).displayName = `CA${
     (component as any).displayName || (component as any).name
   }`
+
+  console.log(registeredLayoutComponents, 'register vediamo')
+  // registerLayoutComponent(CALayoutImpl as any)
 
   return (CALayoutImpl as unknown) as FC<P & { [x: string]: any }>
 }

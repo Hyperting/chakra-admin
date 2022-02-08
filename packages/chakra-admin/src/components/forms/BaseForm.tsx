@@ -14,6 +14,7 @@ type BaseFormProps = {
   children?: React.ReactNode
   defaultValues?: any
   resource?: string
+  renderingInModal?: boolean
 } & Partial<UseCreateResult | UseEditResult> &
   ChakraProps
 
@@ -24,6 +25,7 @@ export const BaseForm: FC<BaseFormProps> = ({
   mutationResult,
   executeMutation,
   resource,
+  renderingInModal,
   ...rest
 }) => {
   const methods = useForm({ defaultValues })

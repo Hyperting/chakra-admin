@@ -20,6 +20,7 @@ import {
 } from '@chakra-ui/react'
 import { Controller, RegisterOptions, useFormState } from 'react-hook-form'
 import { useTranslate } from 'ca-i18n'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { keys } from 'ts-transformer-keys'
 import { humanize } from 'inflection'
 import { filterChakraProps } from './system-utils'

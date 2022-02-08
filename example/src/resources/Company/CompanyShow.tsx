@@ -23,17 +23,14 @@ const MUTATION_UPDATE_COMPANY = gql`
   }
 `
 
-const CAText = ca.field<TextProps>(Text)
-const CAAvatar = ca.field<AvatarProps>(Avatar, { target: 'name' })
-
 export const CompanyShow: FC = (props) => {
   return (
     <Show query={QUERY_GET_COMPANY} mutation={MUTATION_UPDATE_COMPANY} {...props}>
       <Box d="flex">
-        <CAAvatar source="id" />
+        <ca.Avatar source="id" />
         <Box ml={4}>
-          <CAText source="name" />
-          <CAText color="gray.600" fontSize="sm" source="industry" />
+          <ca.Text source="name" />
+          <ca.Text color="gray.600" fontSize="sm" source="industry" />
         </Box>
       </Box>
     </Show>
