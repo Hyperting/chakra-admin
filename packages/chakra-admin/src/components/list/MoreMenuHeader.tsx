@@ -6,5 +6,5 @@ type Props = {
 }
 
 export const MoreMenuHeader: FC<Props> = () => {
-  return <chakra.div style={{ content: "''", width: '40px' }} />
+  return <chakra.div data-content="''" width="40px" />
 }

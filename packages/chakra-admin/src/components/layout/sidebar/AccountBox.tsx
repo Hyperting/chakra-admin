@@ -11,16 +11,18 @@ export const AccountBox: FC<Props> = ({ ...props }) => {
 
   return (
     <Flex
-      padding="13px 16px"
-      borderTop="1px solid #E9E9E8"
+      py={3.5}
+      px={4}
+      borderTop="1px solid"
+      borderColor="gray.200"
       justifyContent="space-between"
       alignItems="center"
       bg="white"
       {...props}
     >
       <Flex width="fit-content" alignItems="center">
-        <Box border="2px solid #DBDBDB" w="38x" h="38px" borderRadius="50%">
-          <Avatar src={user?.avatarUrl} maxW="34px" maxH="34px" bg="#DBDBDB" />
+        <Box border="2px solid" borderColor="gray.200" w="38x" h="38px" borderRadius="full">
+          <Avatar src={user?.avatarUrl} maxW="34px" maxH="34px" bg="gray.200" />
         </Box>
         <Box ml={4}>
           <Text
@@ -29,18 +31,19 @@ export const AccountBox: FC<Props> = ({ ...props }) => {
             textTransform="capitalize"
             lineHeight="17.64px"
             letterSpacing="0.2px"
-            fontSize="14px"
+            fontSize="md"
+            noOfLines={1}
           >
             {user?.roles[0].name}
           </Text>
-          <Text textStyle="description" textTransform="capitalize">
+          <Text textStyle="description" textTransform="capitalize" noOfLines={1}>
             {user?.fullName}
           </Text>
         </Box>
       </Flex>
 
       <LogoutButton
-        icon={<Icon as={FiLogOut} color="black" w="20px" height="20px" />}
+        icon={<Icon as={FiLogOut} color="black" w={5} h={5} />}
         label=""
         colorScheme="whiteAlpha"
       />

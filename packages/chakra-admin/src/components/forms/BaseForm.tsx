@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import { chakra, ChakraProps, DrawerFooter } from '@chakra-ui/react'
+import { chakra, ChakraProps, Box } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { deepMap } from '../../core/details/deep-map'
 import { UseCreateResult } from '../../core/details/useCreate'
@@ -30,8 +30,6 @@ export const BaseForm: FC<BaseFormProps> = ({
 }) => {
   const methods = useForm({ defaultValues })
   const { handleSubmit } = methods
-
-  console.log('renderingInModal::::::::: ', renderingInModal)
 
   const onSubmit = useCallback(
     (values) => {
@@ -111,37 +109,18 @@ export const BaseForm: FC<BaseFormProps> = ({
           }
         })}
       </chakra.div>
-      {renderingInModal ? (
-        <DrawerFooter
-          zIndex="10"
-          position="absolute"
-          bottom="0px"
-          w="100%"
-          right="0px"
-          boxShadow="main"
-          bg="white"
-          p={4}
-        >
-          <chakra.div style={{ display: 'flex', justifyContent: 'end' }}>
-            <CancelButton />
-            <SubmitButton
-              disabled={mutationResult?.loading}
-              isLoading={mutationResult?.loading}
-              type="submit"
-              bg="gray.700"
-              _hover={{ bg: 'gray.500' }}
-              ml={5}
-            />
-          </chakra.div>
-        </DrawerFooter>
-      ) : (
-        <chakra.div
-          style={{
-            display: 'flex',
-            justifyContent: 'end',
-            marginBottom: '20px',
-          }}
-        >
+
+      <Box
+        zIndex="10"
+        position={renderingInModal ? 'fixed' : 'relative'}
+        bottom="0px"
+        w="100%"
+        right="0px"
+        boxShadow={renderingInModal ? 'main' : 'none'}
+        bg={renderingInModal ? 'white' : 'transparent'}
+        p={renderingInModal ? 4 : 0}
+      >
+        <chakra.div display="flex" justifyContent="end" marginBottom={renderingInModal ? 0 : 5}>
           <CancelButton />
           <SubmitButton
             disabled={mutationResult?.loading}
@@ -152,7 +131,7 @@ export const BaseForm: FC<BaseFormProps> = ({
             ml={5}
           />
         </chakra.div>
-      )}
+      </Box>
     </chakra.form>
   )
 }

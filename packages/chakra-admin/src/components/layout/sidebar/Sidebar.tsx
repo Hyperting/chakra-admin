@@ -41,13 +41,7 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
         {!collapsed && (
           <Box overflowX="hidden" w="280px" minW="280px" display="flex">
             {!isMobile && (
-              <chakra.div
-                style={{
-                  position: 'fixed',
-                  backgroundColor: 'white',
-                  zIndex: '10',
-                }}
-              >
+              <chakra.div position="fixed" backgroundColor="white" zIndex="10">
                 <SidebarTitle icon={icon} title={title} pt={6} />
                 <MenuSearch placeholder="Cerca..." mb={5} />
               </chakra.div>
@@ -61,8 +55,8 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
             </Box>
             <AccountBox
               position="fixed"
-              pb="24px"
-              bottom="0"
+              pb={6}
+              bottom={0}
               zIndex="100"
               minW="280px"
               maxW={isMobile ? '100%' : '280px'}
