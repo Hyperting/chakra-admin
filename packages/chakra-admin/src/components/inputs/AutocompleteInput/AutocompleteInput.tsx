@@ -58,9 +58,9 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
       showEmptyState
         ? [
             {
-              value: '',
+              value: null,
               label: emptyLabel,
-            },
+            } as any,
           ]
         : []
     )
@@ -73,7 +73,7 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
         onChange(changes.selectedItem.value)
         // setSelectedItem(changes.selectedItem)
       }
-      if (changes.selectedItem?.value === '') {
+      if (changes.selectedItem?.value === '' || changes.selectedItem?.value === null) {
         setSelectedItem(undefined)
       }
     }
@@ -103,9 +103,9 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
             if (showEmptyState) {
               return [
                 {
-                  value: '',
+                  value: null,
                   label: emptyLabel,
-                },
+                } as any,
                 ...newData,
               ]
             }
@@ -114,9 +114,9 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
           } else if (showEmptyState) {
             return [
               {
-                value: '',
+                value: null,
                 label: emptyLabel,
-              },
+              } as any,
             ]
           } else {
             return []
