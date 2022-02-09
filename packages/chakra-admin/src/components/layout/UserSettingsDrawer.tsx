@@ -1,3 +1,4 @@
+import React, { FC } from 'react'
 import {
   Drawer,
   DrawerContent,
@@ -6,7 +7,6 @@ import {
   DrawerProps,
   DrawerCloseButton,
 } from '@chakra-ui/react'
-import React, { FC } from 'react'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { LogoutButton } from '../buttons/LogoutButton'
 import { DrawerBody } from '../modal/DrawerBody'
@@ -26,11 +26,7 @@ export const UserSettingsDrawer: FC<Props> = ({ isOpen, onClose, ...rest }) => {
     >
       <DrawerOverlay>
         <DrawerContent>
-          <DrawerCloseButton
-            aria-label="Chiudi"
-            drawerPlacement={rest.placement === 'left' ? rest.placement : 'right'}
-            icon={rest.placement === 'left' ? <FaArrowLeft /> : <FaArrowRight />}
-          />
+          <DrawerCloseButton />
           <DrawerHeader title="Impostazioni Utente" />
           <DrawerBody></DrawerBody>
           <DrawerFooter>

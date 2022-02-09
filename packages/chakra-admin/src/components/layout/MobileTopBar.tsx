@@ -101,7 +101,7 @@ export const MobileTopBar: FC<Props> = () => {
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay>
           <DrawerContent>
-            <DrawerCloseButton aria-label="Chiudi" drawerPlacement="left" icon={<FaArrowLeft />} />
+            <DrawerCloseButton />
             <DrawerHeader title="Menu" />
             <DrawerBody px={0}>
               <NavMenu onItemClick={onClose} />

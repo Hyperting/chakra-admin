@@ -4,8 +4,9 @@ import { useAuthProvider } from '../../core/auth/useAuthProvider'
 
 type Props = ButtonProps & {
   label?: string
+  icon?: any
 }
-export const LogoutButton: FC<Props> = ({ label = 'Esci', ...rest }) => {
+export const LogoutButton: FC<Props> = ({ label = 'Esci', icon, ...rest }) => {
   const authProvider = useAuthProvider()
   const toast = useToast()
   const [loading, setLoading] = useState<boolean>(false)
@@ -29,7 +30,7 @@ export const LogoutButton: FC<Props> = ({ label = 'Esci', ...rest }) => {
 
   return (
     <Button colorScheme="red" onClick={onLogout} isLoading={loading} disabled={loading} {...rest}>
-      {label}
+      {label} {icon}
     </Button>
   )
 }

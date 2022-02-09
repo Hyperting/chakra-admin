@@ -10,7 +10,7 @@ export const SubmitButton: FC<SubmitButtonProps> = ({ label, children, ...props 
   const t = useTranslate()
 
   return (
-    <Button type="submit" {...props}>
+    <Button type="submit" color="white" textStyle="description" fontWeight="600" {...props}>
       {children || t('ca.action.submit')}
     </Button>
   )
