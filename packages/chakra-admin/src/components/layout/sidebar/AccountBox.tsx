@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
-import { Avatar, Box, Flex, Icon, Text } from '@chakra-ui/react'
+import { Avatar, Box, Flex, FlexProps, Icon, Text } from '@chakra-ui/react'
 import { FiLogOut } from 'react-icons/fi'
 import { LogoutButton } from '../../buttons/LogoutButton'
 import { useAuthUser } from '../../../core/auth/useAuthUser'
 
-type Props = {}
+type Props = {} & FlexProps
 
 export const AccountBox: FC<Props> = ({ ...props }) => {
   const { initialized, user } = useAuthUser()
@@ -15,6 +15,8 @@ export const AccountBox: FC<Props> = ({ ...props }) => {
       borderTop="1px solid #E9E9E8"
       justifyContent="space-between"
       alignItems="center"
+      bg="white"
+      {...props}
     >
       <Flex width="fit-content" alignItems="center">
         <Box border="2px solid #DBDBDB" w="38x" h="38px" borderRadius="50%">

@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react'
-import { Box, BoxProps, Icon, useBreakpointValue } from '@chakra-ui/react'
+import { Box, BoxProps, useBreakpointValue, chakra } from '@chakra-ui/react'
 import { MotionBox } from '../../base/motion'
 import { ToggleSizeButton } from './ToggleSizeButton'
 import { SidebarTitle } from './SidebarTitle'
@@ -28,7 +28,7 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
   return (
     <Box
       pos="relative"
-      boxShadow="0px 3px 12px 1px rgba(37, 31, 30, 0.05)"
+      boxShadow="main"
       onClick={collapsed ? handleToggleSize : undefined}
       cursor={collapsed ? 'pointer' : 'default'}
       bgColor="white"
@@ -36,27 +36,40 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
       overflowY="auto"
       {...rest}
     >
-      <ToggleSizeButton isCompressed={collapsed} onClick={handleToggleSize} />
+      {!isMobile && <ToggleSizeButton isCompressed={collapsed} onClick={handleToggleSize} />}
       <MotionBox bgColor="white" initial={false} animate={{ width: collapsed ? 18 : 280 }}>
         {!collapsed && (
-          <Box overflowX="hidden" w="280px" minW="280px" pt={!isMobile ? 6 : 0}>
+          <Box overflowX="hidden" w="280px" minW="280px" display="flex">
             {!isMobile && (
-              <>
-                <SidebarTitle icon={icon} title={title} />
+              <chakra.div
+                style={{
+                  position: 'fixed',
+                  backgroundColor: 'white',
+                  zIndex: '10',
+                }}
+              >
+                <SidebarTitle icon={icon} title={title} pt={6} />
                 <MenuSearch placeholder="Cerca..." mb={5} />
-              </>
+              </chakra.div>
             )}
-            <Box h="100%" minH="100%">
+            <Box minH="100%" overflowY="auto" mt={!isMobile ? '111px' : 0} pb="86px" minW="280px">
               {children || (
                 <MenuCollapse>
                   <ResourcesNavMenu />
                 </MenuCollapse>
               )}
             </Box>
+            <AccountBox
+              position="fixed"
+              pb="24px"
+              bottom="0"
+              zIndex="100"
+              minW="280px"
+              maxW={isMobile ? '100%' : '280px'}
+            />
           </Box>
         )}
       </MotionBox>
-      <AccountBox />
     </Box>
   )
 }

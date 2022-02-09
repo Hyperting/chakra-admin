@@ -19,6 +19,7 @@ export const ToggleSizeButton: FC<Props> = ({ isCompressed, ...props }) => {
       borderRightRadius="none"
       borderLeftRadius="md"
       icon={isCompressed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+      zIndex="100"
       {...props}
     />
   )
