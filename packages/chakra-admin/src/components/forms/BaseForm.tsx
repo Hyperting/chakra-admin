@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import { chakra, ChakraProps } from '@chakra-ui/react'
+import { chakra, ChakraProps, DrawerFooter } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { deepMap } from '../../core/details/deep-map'
 import { UseCreateResult } from '../../core/details/useCreate'
@@ -31,6 +31,8 @@ export const BaseForm: FC<BaseFormProps> = ({
   const methods = useForm({ defaultValues })
   const { handleSubmit } = methods
 
+  console.log('renderingInModal::::::::: ', renderingInModal)
+
   const onSubmit = useCallback(
     (values) => {
       // const foundedFields = deepFilter(children, (child: any) => {
@@ -56,7 +58,7 @@ export const BaseForm: FC<BaseFormProps> = ({
 
   return (
     <chakra.form onSubmit={handleSubmit(onSubmit)}>
-      <chakra.div>
+      <chakra.div mb={renderingInModal ? '76px' : 0}>
         {deepMap(children, (child: any, index) => {
           const isLayout =
             child?.type?.displayName &&
@@ -109,14 +111,48 @@ export const BaseForm: FC<BaseFormProps> = ({
           }
         })}
       </chakra.div>
-      <chakra.div>
-        <SubmitButton
-          disabled={mutationResult?.loading}
-          isLoading={mutationResult?.loading}
-          type="submit"
-        />
-        <CancelButton />
-      </chakra.div>
+      {renderingInModal ? (
+        <DrawerFooter
+          zIndex="10"
+          position="absolute"
+          bottom="0px"
+          w="100%"
+          right="0px"
+          boxShadow="main"
+          bg="white"
+          p={4}
+        >
+          <chakra.div style={{ display: 'flex', justifyContent: 'end' }}>
+            <CancelButton />
+            <SubmitButton
+              disabled={mutationResult?.loading}
+              isLoading={mutationResult?.loading}
+              type="submit"
+              bg="gray.700"
+              _hover={{ bg: 'gray.500' }}
+              ml={5}
+            />
+          </chakra.div>
+        </DrawerFooter>
+      ) : (
+        <chakra.div
+          style={{
+            display: 'flex',
+            justifyContent: 'end',
+            marginBottom: '20px',
+          }}
+        >
+          <CancelButton />
+          <SubmitButton
+            disabled={mutationResult?.loading}
+            isLoading={mutationResult?.loading}
+            type="submit"
+            bg="gray.700"
+            _hover={{ bg: 'gray.500' }}
+            ml={5}
+          />
+        </chakra.div>
+      )}
     </chakra.form>
   )
 }

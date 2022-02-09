@@ -162,11 +162,7 @@ export const Filters: FC<FiltersProps> = ({
       <Drawer size={isMobile ? 'xs' : 'md'} isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay>
           <DrawerContent>
-            <DrawerCloseButton
-              aria-label="Chiudi"
-              drawerPlacement="right"
-              icon={<FaArrowRight />}
-            />
+            <DrawerCloseButton />
 
             <DrawerHeader
               title={filtersTitle}
