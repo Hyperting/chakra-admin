@@ -34,7 +34,7 @@ export const RouteLayout: FC<RouteLayoutProps> = ({
       )}
       <Box
         pl={isMobile ? 0 : '25px'}
-        pt={isMobile ? '25px' : 0}
+        // pt={isMobile ? '25px' : 0}
         mt={isMobile ? 16 : 0}
         flex="1"
         bgColor="gray.50"

@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { Button, Collapse, Icon, Text, useDisclosure, Box, BoxProps } from '@chakra-ui/react'
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
-import { BiPlus } from 'react-icons/bi'
 
 type Props = {
   label?: string

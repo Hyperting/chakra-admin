@@ -22,7 +22,7 @@ export const AccountBox: FC<Props> = ({ ...props }) => {
     >
       <Flex width="fit-content" alignItems="center">
         <Box border="2px solid" borderColor="gray.200" w="38x" h="38px" borderRadius="full">
-          <Avatar src={user?.avatarUrl} maxW="34px" maxH="34px" bg="gray.200" />
+          <Avatar src={user?.roles[0].userPicture} maxW="34px" maxH="34px" bg="gray.200" />
         </Box>
         <Box ml={4}>
           <Text
