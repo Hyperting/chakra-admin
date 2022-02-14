@@ -84,6 +84,7 @@ export const useShow = <
         if (!id) {
           throw new Error('No id found')
         }
+
         if (!strategy?.show.getMutationVariables) {
           throw new Error('No implementation found for ShowStrategy.getMutationVariables')
         }
