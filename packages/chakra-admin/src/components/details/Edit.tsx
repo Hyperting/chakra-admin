@@ -8,6 +8,7 @@ import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
+import { TreeRenderer } from './TreeRenderer'
 
 export type EditProps<
   ItemTData = any,
@@ -65,51 +66,67 @@ export const Edit: FC<EditProps> = (props) => {
       {loading ? (
         <>Loading</>
       ) : (
-        deepMap(children, (child: any) => {
-          // const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
+        <TreeRenderer
+          children={children}
+          propsOverride={{
+            id,
+            onSubmit,
+            mutation,
+            executeMutation,
+            mutationResult,
+            defaultValues: item,
+            record: item,
+            loading,
+            resource,
+            data,
+            error,
+          }}
+        />
+        // deepMap(children, (child: any) => {
+        //   // const isLayout = Object.values(CUILayoutComponents).includes((child as any)?.type as any)
 
-          // if (isLayout) {
-          //   return React.createElement(
-          //     ca[child.type.displayName],
-          //     {
-          //       ...{
-          //         ...child.props,
-          //         id,
-          //         resource,
-          //         mutation,
-          //         onSubmit,
-          //         executeMutation,
-          //         mutationResult,
-          //         defaultValues: item,
-          //         record: item,
-          //         loading,
-          //         data,
-          //         error,
-          //       },
-          //     },
-          //     child.props?.children
-          //   )
-          // } else {
-          return React.cloneElement(
-            child,
-            {
-              id,
-              resource,
-              mutation,
-              onSubmit,
-              executeMutation,
-              renderingInModal,
-              mutationResult,
-              defaultValues: item,
-              record: item,
-              loading,
-              data,
-              error,
-            },
-            child.props?.children
-          )
-          // }
-        })
+        //   // if (isLayout) {
+        //   //   return React.createElement(
+        //   //     ca[child.type.displayName],
+        //   //     {
+        //   //       ...{
+        //   //         ...child.props,
+        //   //         id,
+        //   //         resource,
+        //   //         mutation,
+        //   //         onSubmit,
+        //   //         executeMutation,
+        //   //         mutationResult,
+        //   //         defaultValues: item,
+        //   //         record: item,
+        //   //         loading,
+        //   //         data,
+        //   //         error,
+        //   //       },
+        //   //     },
+        //   //     child.props?.children
+        //   //   )
+        //   // } else {
+        //   return React.cloneElement(
+        //     child,
+        //     {
+        //       id,
+        //       resource,
+        //       mutation,
+        //       onSubmit,
+        //       executeMutation,
+        //       renderingInModal,
+        //       mutationResult,
+        //       defaultValues: item,
+        //       record: item,
+        //       loading,
+        //       data,
+        //       error,
+        //     },
+        //     child.props?.children
+        //   )
+        //   // }
+        // })
       )}
     </>
   )

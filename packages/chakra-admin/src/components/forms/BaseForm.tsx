@@ -73,6 +73,7 @@ export const BaseForm: FC<BaseFormProps> = ({
                   mutationResult,
                   register: methods.register,
                   unregister: methods.unregister,
+                  setValue: methods.setValue,
                   control: methods.control,
                   ...filterChakraProps(rest),
                   resource,
@@ -87,6 +88,7 @@ export const BaseForm: FC<BaseFormProps> = ({
               ...{
                 ...restProps,
                 ...filterChakraProps(rest),
+                setValue: methods.setValue,
                 register: methods.register,
                 unregister: methods.unregister,
                 control: methods.control,

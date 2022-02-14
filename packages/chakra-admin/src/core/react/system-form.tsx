@@ -56,6 +56,7 @@ export function CAFormControl<TItem = Record<string, any>>(
           ...filterChakraProps(filteredProps || {}),
           control,
           source,
+          ...((child as any)?.props || {}),
         })
       })}
     </CUIFormControl>

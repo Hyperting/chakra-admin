@@ -96,7 +96,7 @@ export function useDataTable<TItem = Record<string, any>>({
   )
 
   const transformedSort = useMemo(() => {
-    const sortKeys = Object.keys(currentSort!)
+    const sortKeys = Object.keys(currentSort || {})
     if (sortKeys.length > 0) {
       return sortKeys.map((key) => {
         return {
@@ -208,10 +208,12 @@ export function useDataTable<TItem = Record<string, any>>({
 
   useEffect(() => {
     if (!loading) {
-      onPaginationChange!({
-        limit: pageSize,
-        offset: pageIndex,
-      })
+      if (onPaginationChange) {
+        onPaginationChange({
+          limit: pageSize,
+          offset: pageIndex,
+        })
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSize, pageIndex])
@@ -224,14 +226,16 @@ export function useDataTable<TItem = Record<string, any>>({
   }, [offset])
 
   useEffect(() => {
-    onSortChange!(
-      sortBy.reduce((acc, item) => {
-        return {
-          ...acc,
-          [item.id]: item.desc ? SortDirection.DESC : SortDirection.ASC,
-        }
-      }, {})
-    )
+    if (onSortChange) {
+      onSortChange(
+        sortBy.reduce((acc, item) => {
+          return {
+            ...acc,
+            [item.id]: item.desc ? SortDirection.DESC : SortDirection.ASC,
+          }
+        }, {})
+      )
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy])
 

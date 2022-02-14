@@ -52,6 +52,7 @@ export const useEdit = <
     variables: queryVariables as ItemTVariables,
     skip: !id,
   })
+
   const item = useMemo(() => (data.data ? strategy?.edit.getItem(data) : undefined), [
     data,
     strategy?.edit,

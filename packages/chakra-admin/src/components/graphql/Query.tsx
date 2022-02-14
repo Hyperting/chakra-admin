@@ -8,7 +8,7 @@ import { GQLOperation } from '../../core/graphql/types'
 import { NestedKeyOf } from '../../core/react/nested-key'
 import { TreeRenderer } from '..'
 
-type QueryProps<
+export type QueryProps<
   TQuery = Record<string, any>,
   TData = any,
   TVariables = OperationVariables
@@ -44,6 +44,7 @@ export function Query<TQuery = Record<string, any>, TData = any, TVariables = Op
   ...props
 }: QueryProps<TQuery, TData, TVariables>) {
   const strategy = useGlobalStrategy()
+
   const generateGql = useCallback(
     (resource: string, operation: string, variables?: OperationVariables, fields?: string[]) => {
       return type === 'list'
@@ -89,11 +90,12 @@ export function Query<TQuery = Record<string, any>, TData = any, TVariables = Op
 
     if (type === 'show') {
       propsOverride.record = data
+    } else if (type === 'list') {
+      propsOverride.entries = data
     }
 
     return propsOverride
   }, [data, queryResult, type])
 
-  // return <pre>{JSON.stringify(data, null, 2)}</pre>
   return <TreeRenderer children={props.children} propsOverride={childrenProps} />
 }
