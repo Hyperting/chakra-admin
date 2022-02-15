@@ -4,13 +4,19 @@ import React, { cloneElement, isValidElement, useCallback } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
-import { useNavigate } from 'react-router-dom'
+import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
 import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
 import { Pagination } from './Pagination'
 import { useDataTable } from '../../core/list/useDataTable'
 import { DataTableValueProps } from './DataTableValue'
-import { registerLayoutComponent } from '../../core/react/system-layout'
+
+export type RowClickObject<T> = {
+  redirect?: RowClick<T>
+  asModal?: boolean
+}
+
+export type RowClick<T> = 'show' | 'edit' | false | ((item: T) => string)
 
 export type DataTableProps<TItem> = Partial<UseListReturn> &
   Partial<ListProps> & {
@@ -21,7 +27,22 @@ export type DataTableProps<TItem> = Partial<UseListReturn> &
     moreMenuHeaderComponent?: Renderer<HeaderProps<any>> | string
     moreMenuComponent?: Renderer<CellProps<any, any>>
     expandComponent?: React.ReactNode
+    rowClick?: RowClick<TItem> | RowClickObject<TItem>
   }
+
+function getRowClickRedirect<T>(
+  rowClick: RowClick<T> | RowClickObject<T>,
+  item: T,
+  navigate: ReturnType<typeof useNavigate>
+) {
+  if (typeof rowClick === 'function') {
+    return rowClick(item)
+  }
+  if (typeof rowClick === 'object') {
+    return getRowClickRedirect(rowClick.redirect || 'edit', item, navigate)
+  }
+  return rowClick
+}
 
 export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
   const {
@@ -33,6 +54,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
     expandComponent,
     hasEdit,
     hasShow,
+    rowClick = 'edit',
   } = props
 
   // useRegisterLayoutComponent(DataTable as any)
@@ -55,7 +77,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
     visibleColumns,
     state: { pageIndex, pageSize },
   } = useDataTable<TItem>(props)
-
+  const location = useLocation()
   const navigate = useNavigate()
 
   const handleRowClick = useCallback(
@@ -64,13 +86,32 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
         return
       }
 
-      if (hasShow) {
-        navigate(`/${resource}/${row.original.id}/show`)
-      } else {
-        navigate(`/${resource}/${row.original.id}`)
+      if (!rowClick) {
+        return
       }
+
+      let redirectUrl = getRowClickRedirect(rowClick, row.original, navigate)
+      if (redirectUrl === 'show' && hasShow) {
+        redirectUrl = `/${resource}/${row.original.id}/show`
+      } else if (redirectUrl === 'edit' && hasEdit) {
+        redirectUrl = `/${resource}/${row.original.id}`
+      }
+
+      if (!redirectUrl) {
+        return
+      }
+
+      let navigateOptions: NavigateOptions | undefined
+
+      console.log(redirectUrl, navigateOptions, 'facciamo redirect?')
+
+      if (typeof rowClick === 'object' && rowClick.asModal) {
+        navigateOptions = { state: { background: location } }
+      }
+
+      navigate(redirectUrl, navigateOptions)
     },
-    [hasShow, navigate, resource]
+    [hasEdit, hasShow, location, navigate, resource, rowClick]
   )
 
   return (

@@ -49,7 +49,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
     <>
       <Routes location={background || location}>
         {isValidElement(loginComponent) && (
-          <Route path="/login" element={cloneElement(loginComponent, {})} />
+          <Route path="login" element={cloneElement(loginComponent, {})} />
         )}
 
         {Children.map(props.children, (child: React.ReactNode, index) => {
@@ -61,7 +61,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
           return null
         })}
 
-        <Route path="/" element={layoutComponent}>
+        <Route path="" element={layoutComponent}>
           {Children.map(props.children, (child: React.ReactNode, index) => {
             if (isValidElement(child) && child.type === Resource && child.props.name) {
               const crud: RouteAvailability = {
@@ -87,13 +87,13 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                     )}
                     {crud.hasCreate && (
                       <Route
-                        path="create"
+                        path="create/*"
                         element={createElement(child.props.create, { ...resourceProps })}
                       />
                     )}
                     {crud.hasEdit && (
                       <Route
-                        path=":id"
+                        path=":id/*"
                         element={
                           <WithIdParam>
                             {createElement(child.props.edit, { ...resourceProps })}
@@ -103,7 +103,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                     )}
                     {crud.hasShow && (
                       <Route
-                        path=":id/show"
+                        path=":id/show/*"
                         element={
                           <WithIdParam>
                             {createElement(child.props.show, { ...resourceProps })}
