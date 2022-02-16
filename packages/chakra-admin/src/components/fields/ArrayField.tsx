@@ -5,12 +5,14 @@ import { filterChakraProps } from '../../core/react/system-utils'
 
 export type ArrayFieldProps<TItem = Record<string, any>> = {
   entries?: TItem[]
+  emptyComponent?: React.ReactNode
 } & StackProps
 
 export const ArrayField: FC<ArrayFieldProps> = React.forwardRef<any, ArrayFieldProps>(
-  ({ entries = [], children, ...props }, ref) => {
+  ({ entries = [], children, emptyComponent, ...props }, ref) => {
     return (
       <Stack ref={ref} {...props}>
+        {entries.length === 0 && emptyComponent}
         {entries.map((item, index) => {
           return (
             <TreeRenderer
