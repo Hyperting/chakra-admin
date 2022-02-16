@@ -82,7 +82,7 @@ export type UseGQLBuilderParams<
   resource?: string
   type: OperationType
   operation: GQLOperation<TOperations, TData, TVariables>
-  variables?: OperationVariables
+  variables?: TVariables
   operationName?: string
   generateGql: GqlGenerator<TData, TVariables>
   children?: React.ReactNode
