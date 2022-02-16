@@ -1,5 +1,5 @@
 /* eslint-disable react/require-default-props */
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { DocumentNode, gql, OperationVariables, TypedDocumentNode, useQuery } from '@apollo/client'
 import { query } from 'gql-query-builder'
 import { useGlobalStrategy } from '../../core/admin/useGlobalStrategy'
@@ -7,6 +7,7 @@ import { generateFields, useGqlBuilder, UseGQLBuilderParams } from '../../core/g
 import { GQLOperation } from '../../core/graphql/types'
 import { NestedKeyOf } from '../../core/react/nested-key'
 import { TreeRenderer } from '..'
+import { useVersionStateValue } from '../../core/admin/versionState'
 
 export type QueryProps<
   TQuery = Record<string, any>,
@@ -96,6 +97,13 @@ export function Query<TQuery = Record<string, any>, TData = any, TVariables = Op
 
     return propsOverride
   }, [data, queryResult, type])
+
+  const version = useVersionStateValue()
+
+  useEffect(() => {
+    queryResult?.refetch?.()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [version])
 
   return <TreeRenderer children={props.children} propsOverride={childrenProps} />
 }
