@@ -1,14 +1,16 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Button, Collapse, Icon, Text, useDisclosure, Box, BoxProps } from '@chakra-ui/react'
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
 import { BiPlus } from 'react-icons/bi'
 
 type Props = {
+  id?: string
   label?: string
   additionalElement?: React.ReactNode
 } & BoxProps
 
 export const MenuCollapse: FC<Props> = ({
+  id,
   label = 'Menu',
   children,
   additionalElement,

@@ -40,7 +40,7 @@ export const MobileTopBarLight: FC<Props> = ({ title, icon, children }) => {
         pt={2}
         pb={3}
         boxShadow="md"
-        zIndex="100"
+        zIndex="1"
       >
         <chakra.div display="flex">
           <IconButton

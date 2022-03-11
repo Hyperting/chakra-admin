@@ -113,7 +113,7 @@ export const BaseForm: FC<BaseFormProps> = ({
       </chakra.div>
 
       <Box
-        zIndex="10"
+        zIndex="1"
         position={renderingInModal ? 'fixed' : 'relative'}
         bottom="0px"
         w="100%"

@@ -57,7 +57,7 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
               position="fixed"
               pb={6}
               bottom={0}
-              zIndex="100"
+              zIndex="1"
               minW="280px"
               maxW={isMobile ? '100%' : '280px'}
             />
