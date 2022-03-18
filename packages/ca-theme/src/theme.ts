@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react'
+import { extendTheme, Theme } from '@chakra-ui/react'
 import { CalendarDefaultTheme } from '@uselessdev/datepicker'
 
 export const theme = extendTheme({
@@ -77,6 +77,9 @@ export const theme = extendTheme({
     global: {
       body: {
         backgroundColor: 'gray.50',
+      },
+      '.chakra-portal-zIndex': {
+        zIndex: '100 !important',
       },
     },
   },
