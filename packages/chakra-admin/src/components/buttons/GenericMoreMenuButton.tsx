@@ -1,23 +1,14 @@
-import { OperationVariables, TypedDocumentNode, useApolloClient } from '@apollo/client'
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useDisclosure,
-  useToast,
-  Icon,
-  IconButton,
-} from '@chakra-ui/react'
+import { OperationVariables, TypedDocumentNode } from '@apollo/client'
+import { Menu, MenuButton, MenuItem, MenuList, Icon, IconButton } from '@chakra-ui/react'
 import { useTranslate } from 'ca-i18n'
 import { DocumentNode } from 'graphql'
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback } from 'react'
 import { BsFillEyeFill } from 'react-icons/bs'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { FiMoreVertical } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import { RouteAvailability } from '../../core/admin/RouteAvailability'
-import { useGlobalStrategy } from '../../core/admin/useGlobalStrategy'
+import { useDeleteWithConfirm } from '../../core/details/useDeleteWithConfirm'
 import { DeleteModal } from '../modal'
 
 export type GenericMoreMenuButtonProps<Data = any, Variables = OperationVariables> = {
@@ -57,69 +48,22 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
   hideEdit,
   hideDelete,
 }) => {
-  const { isOpen, onClose, onOpen } = useDisclosure()
+  // const { isOpen, onClose, onOpen } = useDisclosure()
+  const { deleting, onDeleteItem, isOpen, onClose, onOpen } = useDeleteWithConfirm({
+    deleteItemMutation,
+    onDelete,
+    onDeleteCompleted,
+  })
   const t = useTranslate()
   const location = useLocation()
-  const client = useApolloClient()
-  const notify = useToast()
-  const [fetching, setFetching] = useState<boolean>(false)
-  const strategy = useGlobalStrategy()
-
-  const handleDeleteItem = useCallback(
-    async (id: string) => {
-      if (onDelete) {
-        onDelete(id!)
-      } else {
-        try {
-          const variables = strategy?.delete.getVariables(id!)
-          if (!variables) {
-            throw new Error('Variables not found in DeleteStrategy.getVariables()')
-          }
-
-          setFetching(true)
-          const result = await client.mutate({
-            mutation: deleteItemMutation!,
-            variables,
-          })
-          if (result.errors && result.errors.length > 0) {
-            throw new Error(`Error deleting resource with id:${id}`)
-          } else {
-            notify({
-              status: 'success',
-              title: 'Risorsa eliminata correttamente',
-              isClosable: true,
-            })
-            onClose()
-            if (onDeleteCompleted) {
-              onDeleteCompleted()
-            }
-          }
-        } catch (error) {
-          console.error('Error during delete', error)
-          notify({
-            status: 'error',
-            position: 'top',
-            isClosable: true,
-            title: 'Errore!',
-            // eslint-disable-next-line @typescript-eslint/quotes
-            description:
-              "C'è stato un problema con l'eliminazione della risorsa, riprova più tardi.",
-          })
-        } finally {
-          setFetching(false)
-        }
-      }
-    },
-    [client, deleteItemMutation, notify, onClose, onDelete, onDeleteCompleted, strategy?.delete]
-  )
 
   const handleMenuItemDeleteClick = useCallback(() => {
     if (showConfirmDialogOnDelete) {
       onOpen()
     } else {
-      handleDeleteItem(id!)
+      onDeleteItem(id!)
     }
-  }, [handleDeleteItem, id, onOpen, showConfirmDialogOnDelete])
+  }, [onDeleteItem, id, onOpen, showConfirmDialogOnDelete])
 
   return (
     <>
@@ -170,21 +114,9 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
         id={id!}
         isOpen={isOpen}
         onClose={onClose}
-        onDeleteItem={handleDeleteItem}
-        deleting={fetching}
+        onDeleteItem={onDeleteItem}
+        deleting={deleting}
       />
     </>
   )
-
-  // return (
-  //   <IconButton
-  //     variant="ghost"
-  //     minW="20px"
-  //     w="20px"
-  //     colorScheme="red"
-  //     aria-label="Più opzioni"
-  //     color="blackAlpha.700"
-  //     icon={<Icon as={FiMoreVertical} />}
-  //   />
-  // )
 }
