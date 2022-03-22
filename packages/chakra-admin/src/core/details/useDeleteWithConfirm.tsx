@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { ModalProps, useDisclosure, UseDisclosureReturn, useToast } from '@chakra-ui/react'
+import { useDisclosure, UseDisclosureReturn, useToast } from '@chakra-ui/react'
 import {
   DocumentNode,
   OperationVariables,
@@ -7,6 +7,7 @@ import {
   useApolloClient,
 } from '@apollo/client'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
+import { useVersion } from '../admin/versionState'
 
 type UseDeleteWithConfirmOptions<Data = any, Variables = OperationVariables> = {
   onDelete?: ((id: string) => void) | ((id: string) => Promise<void>)
@@ -28,11 +29,16 @@ export function useDeleteWithConfirm(
   const [deleting, setDeleting] = useState(false)
   const toast = useToast()
   const client = useApolloClient()
+  const nextVersion = useVersion()
 
   const onDeleteItem = useCallback(
     async (id: string) => {
       if (onDelete) {
         await onDelete(id!)
+        nextVersion()
+        if (onDeleteCompleted) {
+          onDeleteCompleted()
+        }
       } else {
         try {
           const variables = strategy?.delete.getVariables(id!)
@@ -54,6 +60,7 @@ export function useDeleteWithConfirm(
               isClosable: true,
             })
             disclosureProps.onClose()
+            nextVersion()
             if (onDeleteCompleted) {
               onDeleteCompleted()
             }
