@@ -23,6 +23,7 @@ export type EditProps<
   filtersComponent?: React.ReactNode
   renderingInModal?: boolean
   layout?: ReactElement<PageLayoutProps, any>
+  redirect?: boolean | string | ((data: any) => string)
 } & Pick<PageLayoutProps, 'title'>
 
 export const Edit: FC<EditProps> = (props) => {

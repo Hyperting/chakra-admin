@@ -12,7 +12,7 @@ import { useCallback, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { CreateProps } from '../../components/details/Create'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
-import { useSetVersionState, useVersion } from '../admin/versionState'
+import { useVersion } from '../admin/versionState'
 
 export type UseCreateResult<
   TData = any,

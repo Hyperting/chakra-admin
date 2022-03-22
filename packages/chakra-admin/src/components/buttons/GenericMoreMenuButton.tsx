@@ -1,17 +1,9 @@
 import { OperationVariables, TypedDocumentNode, useApolloClient } from '@apollo/client'
 import {
-  Button,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   useDisclosure,
   useToast,
   Icon,
@@ -25,8 +17,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 import { FiMoreVertical } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import { RouteAvailability } from '../../core/admin/RouteAvailability'
-import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { useGlobalStrategy } from '../../core/admin/useGlobalStrategy'
+import { DeleteModal } from '../modal'
 
 export type GenericMoreMenuButtonProps<Data = any, Variables = OperationVariables> = {
   deleteItemMutation?: DocumentNode | TypedDocumentNode<Data, Variables>
@@ -67,73 +59,67 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const t = useTranslate()
-  const getResourceLabel = useGetResourceLabel()
   const location = useLocation()
   const client = useApolloClient()
   const notify = useToast()
   const [fetching, setFetching] = useState<boolean>(false)
   const strategy = useGlobalStrategy()
 
-  const handleDeleteItem = useCallback(async () => {
-    if (onDelete) {
-      onDelete(id!)
-    } else {
-      try {
-        const variables = strategy?.delete.getVariables(id!)
-        if (!variables) {
-          throw new Error('Variables not found in DeleteStrategy.getVariables()')
-        }
-
-        setFetching(true)
-        const result = await client.mutate({
-          mutation: deleteItemMutation!,
-          variables,
-        })
-        if (result.errors && result.errors.length > 0) {
-          throw new Error(`Error deleting resource with id:${id}`)
-        } else {
-          notify({
-            status: 'success',
-            title: 'Risorsa eliminata correttamente',
-            isClosable: true,
-          })
-          onClose()
-          if (onDeleteCompleted) {
-            onDeleteCompleted()
+  const handleDeleteItem = useCallback(
+    async (id: string) => {
+      if (onDelete) {
+        onDelete(id!)
+      } else {
+        try {
+          const variables = strategy?.delete.getVariables(id!)
+          if (!variables) {
+            throw new Error('Variables not found in DeleteStrategy.getVariables()')
           }
+
+          setFetching(true)
+          const result = await client.mutate({
+            mutation: deleteItemMutation!,
+            variables,
+          })
+          if (result.errors && result.errors.length > 0) {
+            throw new Error(`Error deleting resource with id:${id}`)
+          } else {
+            notify({
+              status: 'success',
+              title: 'Risorsa eliminata correttamente',
+              isClosable: true,
+            })
+            onClose()
+            if (onDeleteCompleted) {
+              onDeleteCompleted()
+            }
+          }
+        } catch (error) {
+          console.error('Error during delete', error)
+          notify({
+            status: 'error',
+            position: 'top',
+            isClosable: true,
+            title: 'Errore!',
+            // eslint-disable-next-line @typescript-eslint/quotes
+            description:
+              "C'è stato un problema con l'eliminazione della risorsa, riprova più tardi.",
+          })
+        } finally {
+          setFetching(false)
         }
-      } catch (error) {
-        console.error('Error during delete', error)
-        notify({
-          status: 'error',
-          position: 'top',
-          isClosable: true,
-          title: 'Errore!',
-          // eslint-disable-next-line @typescript-eslint/quotes
-          description: "C'è stato un problema con l'eliminazione della risorsa, riprova più tardi.",
-        })
-      } finally {
-        setFetching(false)
       }
-    }
-  }, [
-    client,
-    deleteItemMutation,
-    id,
-    notify,
-    onClose,
-    onDelete,
-    onDeleteCompleted,
-    strategy?.delete,
-  ])
+    },
+    [client, deleteItemMutation, notify, onClose, onDelete, onDeleteCompleted, strategy?.delete]
+  )
 
   const handleMenuItemDeleteClick = useCallback(() => {
     if (showConfirmDialogOnDelete) {
       onOpen()
     } else {
-      handleDeleteItem()
+      handleDeleteItem(id!)
     }
-  }, [handleDeleteItem, onOpen, showConfirmDialogOnDelete])
+  }, [handleDeleteItem, id, onOpen, showConfirmDialogOnDelete])
 
   return (
     <>
@@ -179,41 +165,14 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
         </MenuList>
       </Menu>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            {t('ca.message.delete_title', {
-              name: resource ? getResourceLabel(resource, 1) : undefined,
-              id,
-            })}
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {t('ca.message.delete_content', {
-              name: resource ? getResourceLabel(resource, 1) : undefined,
-              id,
-            })}
-          </ModalBody>
-
-          <ModalFooter>
-            <Button disabled={fetching} mr={3} onClick={onClose}>
-              {t('ca.action.cancel')}
-            </Button>
-            <Button
-              onClick={handleDeleteItem}
-              isLoading={fetching}
-              disabled={fetching}
-              colorScheme="red"
-            >
-              {t('ca.action.confirm_delete', {
-                name: resource ? getResourceLabel(resource, 1) : undefined,
-                id,
-              })}
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <DeleteModal
+        resource={resource!}
+        id={id!}
+        isOpen={isOpen}
+        onClose={onClose}
+        onDeleteItem={handleDeleteItem}
+        deleting={fetching}
+      />
     </>
   )
 

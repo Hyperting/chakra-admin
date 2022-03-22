@@ -14,6 +14,7 @@ import { useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalStrategy } from '..'
 import { EditProps } from '../../components/details/Edit'
+import { useVersion } from '../admin/versionState'
 
 export type UseEditResult<
   TData = any,
@@ -40,6 +41,7 @@ export const useEdit = <
   resource,
   query,
   id,
+  redirect = true,
 }: EditProps<ItemTData, ItemTVariables, EditTData, EditTVariables>): UseEditResult => {
   const strategy = useGlobalStrategy()
   const queryVariables = useMemo(() => (id ? strategy?.edit.getItemVariables(id) : undefined), [
@@ -60,6 +62,7 @@ export const useEdit = <
 
   const navigate = useNavigate()
   const notify = useToast()
+  const nextVersion = useVersion()
 
   const onSubmit = useCallback(
     async (values: any): Promise<any> => {
@@ -80,7 +83,12 @@ export const useEdit = <
             title: `${resource} updated.`,
             isClosable: true,
           })
-          navigate(-1)
+
+          if (typeof redirect === 'boolean' && redirect) {
+            navigate(-1)
+          }
+
+          nextVersion()
         } else {
           throw new Error('Error updating data')
         }
@@ -94,7 +102,7 @@ export const useEdit = <
         })
       }
     },
-    [strategy?.edit, id, executeMutation, notify, resource, navigate]
+    [id, strategy?.edit, executeMutation, notify, resource, redirect, nextVersion, navigate]
   )
 
   return {
