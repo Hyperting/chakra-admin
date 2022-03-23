@@ -10,6 +10,14 @@ export function filterChakraProps<P = {}>(props: P): P {
       return acc
     }
 
+    if (key === 'variant') {
+      return acc
+    }
+
+    if (key.indexOf('aria-') !== -1) {
+      return acc
+    }
+
     if (chakraProps.includes((key as unknown) as keyof ChakraProps)) {
       return acc
     }
