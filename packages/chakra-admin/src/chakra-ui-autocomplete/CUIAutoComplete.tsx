@@ -139,11 +139,11 @@ export const CUIAutoComplete = <T extends Item>(
           return {
             ...changes,
             highlightedIndex: state.highlightedIndex,
-            ...(changes.selectedItem && changes.selectedItem.label
+            ...(changes?.selectedItem?.label
               ? {
                   inputValue: changes.selectedItem.value === '' ? '' : changes.selectedItem.label,
                 }
-              : {}),
+              : undefined),
             isOpen: false,
           }
         case useCombobox.stateChangeTypes.FunctionSelectItem:
@@ -182,17 +182,21 @@ export const CUIAutoComplete = <T extends Item>(
   })
 
   React.useEffect(() => {
-    if (inputItems.length === 0 && !disableCreateItem && initialized.current) {
+    if (inputItems.length === 0 && !disableCreateItem && inputValue.length > 0) {
       setIsCreating(true)
       // @ts-ignore
       setInputItems([{ label: `${inputValue}`, value: inputValue }])
       setHighlightedIndex(0)
     }
-
-    if (!initialized.current) {
-      initialized.current = true
-    }
-  }, [inputItems, setIsCreating, setHighlightedIndex, inputValue, disableCreateItem, isCreating])
+  }, [
+    inputItems,
+    setIsCreating,
+    setHighlightedIndex,
+    inputValue,
+    disableCreateItem,
+    isCreating,
+    selectedItem,
+  ])
 
   useDeepCompareEffect(() => {
     setInputItems(items)

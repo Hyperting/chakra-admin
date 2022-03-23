@@ -7,7 +7,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 // } from 'chakra-ui-autocomplete'
 import { UseComboboxStateChange } from 'downshift'
 import { DocumentNode } from 'graphql'
-import { chakra, useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import { Controller } from 'react-hook-form'
 import { useApolloClient } from '@apollo/client'
 import { InputProps } from '../Input'
@@ -190,11 +190,13 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
         }
       }
 
-      if (value) {
+      if ((typeof value === 'string' && value === '0') || !value) {
+        setSelectedItem({ value: '', label: '' })
+      } else if (value) {
         fetchData()
-      } else if (typeof value === 'string' && value === '0') {
-        setSelectedItem(undefined)
       }
+
+      console.log('value', value, typeof value)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value])
 

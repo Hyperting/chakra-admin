@@ -185,7 +185,7 @@ export const CUIMultipleAutoComplete = <T extends Item>(
       setInputItems([{ label: `${inputValue}`, value: inputValue }])
       setHighlightedIndex(0)
     }
-  }, [inputItems, setIsCreating, setHighlightedIndex, inputValue])
+  }, [inputItems, setIsCreating, setHighlightedIndex, inputValue, disableCreateItem])
 
   useDeepCompareEffect(() => {
     setInputItems(items)
