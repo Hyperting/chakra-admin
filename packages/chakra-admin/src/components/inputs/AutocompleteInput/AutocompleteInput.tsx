@@ -13,8 +13,9 @@ import { useApolloClient } from '@apollo/client'
 import { InputProps } from '../Input'
 import { Item, CUIAutoCompleteProps, CUIAutoComplete } from '../../../chakra-ui-autocomplete'
 import { useCreate } from '../../../core/details/useCreate'
+import { CAInputProps } from '../../../core/react/system-form'
 
-export type AutocompleteInputProps = InputProps &
+export type AutocompleteInputProps = Omit<InputProps, 'source'> &
   Omit<CUIAutoCompleteProps<Item>, 'placeholder' | 'items'> & {
     // onChange?: (newValue: Item & { [x: string]: any }) => void
     // value?: Item & { [x: string]: any }
@@ -29,7 +30,9 @@ export type AutocompleteInputProps = InputProps &
       data: Record<string, any>,
       index: number
     ) => Item & { [x: string]: any }
-  }
+    filterResult?: (items: Item) => boolean
+    resetList?: number
+  } & CAInputProps
 
 export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
   any,
@@ -49,6 +52,8 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
       inputValueToFilters = (q: string) => ({ q }),
       dataItemToAutocompleteItem = (data) => ({ ...data, label: data.id, value: data.id }),
       showEmptyState = false,
+      filterResult,
+      resetList = 0,
       ...rest
     },
     ref
@@ -99,7 +104,12 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
             (data as any)[Object.keys(data)[0]] &&
             (data as any)[Object.keys(data)[0]].data?.length > 0
           ) {
-            const newData = (data as any)[Object.keys(data)[0]].data.map(dataItemToAutocompleteItem)
+            let newData = (data as any)[Object.keys(data)[0]].data.map(dataItemToAutocompleteItem)
+
+            if (filterResult) {
+              newData = newData.filter(filterResult)
+            }
+
             if (showEmptyState) {
               return [
                 {
@@ -141,6 +151,7 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
         client,
         dataItemToAutocompleteItem,
         emptyLabel,
+        filterResult,
         inputValueToFilters,
         notify,
         query,
@@ -196,7 +207,6 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
         fetchData()
       }
 
-      console.log('value', value, typeof value)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value])
 
@@ -240,6 +250,10 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
       init()
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+      setItems([])
+    }, [resetList])
 
     return (
       <CUIAutoComplete
@@ -297,13 +311,47 @@ export const AutocompleteWithCreate: FC<AutocompleteInputProps> = ({
   return <Autocomplete onCreateItem={handleCreateItem} resource={resource} {...rest} />
 }
 
-export const AutocompleteInput: FC<AutocompleteInputProps> = (props) => {
-  if (props.control) {
+export const AutocompleteInput: FC<AutocompleteInputProps> = ({
+  required,
+  min,
+  max,
+  maxLength,
+  minLength,
+  pattern,
+  validate,
+  valueAsNumber,
+  valueAsDate,
+  value,
+  setValueAs,
+  shouldUnregister,
+  onChange,
+  onBlur,
+  disabled,
+  deps,
+  register,
+  control,
+  ...props
+}) => {
+  if (control) {
     return (
       <Controller
-        control={props.control}
+        control={control}
         // defaultValue={true}
         name={props.source}
+        rules={{
+          deps,
+          required,
+          min,
+          max,
+          maxLength,
+          minLength,
+          pattern,
+          validate,
+          value,
+          shouldUnregister,
+          onChange,
+          onBlur,
+        }}
         render={({ field }) => {
           return props.createMutation ? (
             <AutocompleteWithCreate {...field} {...props} />
