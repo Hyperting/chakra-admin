@@ -9,6 +9,7 @@ import { CALayoutComponents } from '../../core/react/system-layout'
 import { CancelButton } from '../buttons/CancelButton'
 import { SubmitButton } from '../buttons/SubmitButton'
 import { filterChakraProps } from '../../core/react/system-utils'
+import { TreeRenderer } from '../details/TreeRenderer'
 
 type BaseFormProps = {
   children?: React.ReactNode
@@ -57,7 +58,7 @@ export const BaseForm: FC<BaseFormProps> = ({
   return (
     <chakra.form onSubmit={handleSubmit(onSubmit)}>
       <chakra.div mb={renderingInModal ? '76px' : 0}>
-        {deepMap(children, (child: any, index) => {
+        {/* {deepMap(children, (child: any, index) => {
           const isLayout =
             child?.type?.displayName &&
             Object.keys(CALayoutComponents).includes(child?.type?.displayName)
@@ -109,7 +110,18 @@ export const BaseForm: FC<BaseFormProps> = ({
             //     })
             //   : child
           }
-        })}
+        })} */}
+        <TreeRenderer
+          children={children}
+          propsOverride={{
+            ...filterChakraProps(rest),
+            setValue: methods.setValue,
+            register: methods.register,
+            unregister: methods.unregister,
+            control: methods.control,
+            resource,
+          }}
+        />
       </chakra.div>
 
       <Box

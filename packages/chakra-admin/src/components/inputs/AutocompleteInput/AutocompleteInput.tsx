@@ -15,9 +15,9 @@ import { Item, CUIAutoCompleteProps, CUIAutoComplete } from '../../../chakra-ui-
 import { useCreate } from '../../../core/details/useCreate'
 import { CAInputProps } from '../../../core/react/system-form'
 
-export type AutocompleteInputProps = Omit<InputProps, 'source'> &
-  Omit<CUIAutoCompleteProps<Item>, 'placeholder' | 'items'> & {
-    // onChange?: (newValue: Item & { [x: string]: any }) => void
+export type AutocompleteInputProps = Omit<InputProps, 'source' | 'onChange'> &
+  Omit<CUIAutoCompleteProps<Item>, 'placeholder' | 'items' | 'onChange'> & {
+    onChange?: (newValue: string, item: any) => void
     // value?: Item & { [x: string]: any }
 
     showEmptyState?: boolean
@@ -32,7 +32,7 @@ export type AutocompleteInputProps = Omit<InputProps, 'source'> &
     ) => Item & { [x: string]: any }
     filterResult?: (items: Item) => boolean
     resetList?: number
-  } & CAInputProps
+  } & Omit<CAInputProps, 'onChange'>
 
 export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
   any,
@@ -75,7 +75,7 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
 
     const handleSelectedItemChange = (changes: UseComboboxStateChange<Item>) => {
       if (changes.selectedItem && onChange) {
-        onChange(changes.selectedItem.value)
+        onChange(changes.selectedItem.value, changes.selectedItem)
         // setSelectedItem(changes.selectedItem)
       }
       if (changes.selectedItem?.value === '' || changes.selectedItem?.value === null) {
@@ -301,7 +301,10 @@ export const AutocompleteWithCreate: FC<AutocompleteInputProps> = ({
       const keys = Object.keys(mutationResult.data)
       if (keys.length > 0 && (mutationResult.data as any)[keys[0]]) {
         if (rest?.onChange) {
-          rest?.onChange((mutationResult.data as any)[keys[0]]?.id as any)
+          rest?.onChange(
+            (mutationResult.data as any)[keys[0]]?.id as any,
+            (mutationResult.data as any)[keys[0]]
+          )
         }
       }
     }
@@ -349,7 +352,7 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = ({
           validate,
           value,
           shouldUnregister,
-          onChange,
+          // onChange,
           onBlur,
         }}
         render={({ field }) => {
