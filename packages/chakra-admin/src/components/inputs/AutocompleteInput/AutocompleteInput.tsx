@@ -228,7 +228,7 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
                 ...(data as any)[Object.keys(data)[0]].data.map(dataItemToAutocompleteItem),
               ])
             } else {
-              throw new Error('Error fetching data')
+              // throw new Error('Error fetching data')
             }
           }
 
@@ -366,5 +366,9 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = ({
     )
   }
 
-  return props.createMutation ? <AutocompleteWithCreate {...props} /> : <Autocomplete {...props} />
+  return props.createMutation ? (
+    <AutocompleteWithCreate onChange={onChange} {...props} />
+  ) : (
+    <Autocomplete onChange={onChange} {...props} />
+  )
 }
