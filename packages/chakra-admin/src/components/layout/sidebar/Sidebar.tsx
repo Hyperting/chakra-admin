@@ -7,6 +7,7 @@ import { MenuSearch } from './MenuSearch'
 import { MenuCollapse } from './MenuCollapse'
 import { ResourcesNavMenu } from './ResourcesNavMenu'
 import { AccountBox } from './AccountBox'
+import { useLocalStorage } from '../../../core/store/useLocalStorage'
 
 type Props = {
   title?: string
@@ -14,7 +15,7 @@ type Props = {
 } & BoxProps
 
 export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(false)
+  const [collapsed, setCollapsed] = useLocalStorage<boolean>('ca-default-sidebar-collapsed', false)
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -23,7 +24,7 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
 
   const handleToggleSize = useCallback(() => {
     setCollapsed(!collapsed)
-  }, [collapsed])
+  }, [collapsed, setCollapsed])
 
   return (
     <Box

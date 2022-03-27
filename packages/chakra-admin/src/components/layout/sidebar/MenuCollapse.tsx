@@ -1,23 +1,34 @@
-import React, { FC, useEffect } from 'react'
-import { Button, Collapse, Icon, Text, useDisclosure, Box, BoxProps } from '@chakra-ui/react'
+import React, { FC, useCallback } from 'react'
+import {
+  Button,
+  Collapse,
+  Icon,
+  Text,
+  Box,
+  BoxProps,
+  UseDisclosureProps,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
-import { BiPlus } from 'react-icons/bi'
+import { useLocalStorage } from '../../../core/store/useLocalStorage'
 
-type Props = {
+export type MenuCollapseViewProps = {
   id?: string
   label?: string
   additionalElement?: React.ReactNode
+  isOpen?: boolean
+  onToggle?: () => void
 } & BoxProps
 
-export const MenuCollapse: FC<Props> = ({
+export const MenuCollapseView: FC<MenuCollapseViewProps> = ({
   id,
   label = 'Menu',
   children,
   additionalElement,
+  isOpen,
+  onToggle,
   ...props
 }) => {
-  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
-
   return (
     <Box w="100%">
       <Button
@@ -52,4 +63,48 @@ export const MenuCollapse: FC<Props> = ({
       </Collapse>
     </Box>
   )
+}
+
+export type MenuCollapseProps = Omit<MenuCollapseViewProps, 'onToggle' | 'isOpen'> &
+  UseDisclosureProps
+
+export const MenuCollapse: FC<MenuCollapseProps> = ({
+  id,
+  defaultIsOpen,
+  isOpen: isOpenProp,
+  onClose,
+  onOpen,
+  ...rest
+}) => {
+  const { isOpen, onToggle } = useDisclosure({
+    defaultIsOpen,
+    id,
+    isOpen: isOpenProp,
+    onClose,
+    onOpen,
+  })
+
+  return <MenuCollapseView {...rest} />
+}
+
+export type StoredMenuCollapseProps = Omit<MenuCollapseViewProps, 'id' | 'onToggle' | 'isOpen'> & {
+  id: string
+  defaultIsOpen?: boolean
+}
+
+export const StoredMenuCollapse: FC<StoredMenuCollapseProps> = ({
+  id,
+  defaultIsOpen = true,
+  ...rest
+}) => {
+  const [isOpen, setIsOpen] = useLocalStorage<boolean>(
+    `ca-menu-collapse-${id}-is-open`,
+    defaultIsOpen
+  )
+
+  const handleToggle = useCallback(() => {
+    setIsOpen((prev) => !prev)
+  }, [setIsOpen])
+
+  return <MenuCollapseView onToggle={handleToggle} isOpen={isOpen} {...rest} />
 }
