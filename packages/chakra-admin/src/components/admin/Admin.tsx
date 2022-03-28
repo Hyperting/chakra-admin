@@ -1,7 +1,8 @@
-import React, { FC } from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import React, { FC, useMemo } from 'react'
+import { BrowserRouter as Router, useLocation, useNavigate } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { ApolloClient, ApolloProvider } from '@apollo/client'
+import { QueryParamProvider } from 'use-query-params'
 import {
   I18nProvider,
   I18nProviderProps,
@@ -11,6 +12,24 @@ import {
 } from 'ca-i18n'
 import { AdminCore, AdminCoreProps } from './AdminCore'
 import { ErrorBoundary } from '../base/error-boundary'
+
+const RouteAdapter: FC = ({ children }) => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const adaptedHistory = useMemo(
+    () => ({
+      replace(location) {
+        navigate(location, { replace: true, state: location.state })
+      },
+      push(location) {
+        navigate(location, { replace: false, state: location.state })
+      },
+    }),
+    [navigate]
+  )
+  return (children as any)({ history: adaptedHistory, location })
+}
 
 export type AdminProps<TCache> = AdminCoreProps & {
   client: ApolloClient<TCache>
@@ -60,7 +79,9 @@ export const Admin: FC<AdminProps<any>> = ({
       <ApolloProvider client={client}>
         <I18nProvider {...(i18nProviderProps as any)} fallback={loadingComponent}>
           <Router>
-            <AdminCore {...props} />
+            <QueryParamProvider ReactRouterRoute={RouteAdapter}>
+              <AdminCore {...props} />
+            </QueryParamProvider>
           </Router>
         </I18nProvider>
       </ApolloProvider>

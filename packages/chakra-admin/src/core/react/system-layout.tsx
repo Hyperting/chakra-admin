@@ -170,7 +170,7 @@ export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string
     (component as any).displayName || (component as any).name
   }`
 
-  console.log(registeredLayoutComponents, 'register vediamo')
+  // console.log(registeredLayoutComponents, 'register vediamo')
   // registerLayoutComponent(CALayoutImpl as any)
 
   return (CALayoutImpl as unknown) as FC<P & { [x: string]: any }>

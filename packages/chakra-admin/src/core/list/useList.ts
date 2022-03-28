@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApolloQueryResult, gql, OperationVariables, QueryResult, useQuery } from '@apollo/client'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 import { useVersionStateValue } from '../admin/versionState'
 import { useGqlBuilder } from '../graphql/gql-builder'
@@ -61,6 +61,7 @@ export const useList = <
   defaultFilters,
   fields,
   children,
+  refetchOnDefaultFiltersChange,
 }: UseListParams<
   TQuery,
   TItem,
@@ -263,6 +264,13 @@ export const useList = <
   //     })
   //   }
   // }, [])
+
+  useEffect(() => {
+    if (refetchOnDefaultFiltersChange) {
+      result.refetch()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultFilters])
 
   return {
     ...result,

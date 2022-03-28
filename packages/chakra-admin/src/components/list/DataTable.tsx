@@ -115,7 +115,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
   )
 
   return (
-    <chakra.div>
+    <chakra.div w="100%">
       <chakra.div
         display="flex"
         w="100%"

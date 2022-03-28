@@ -9,17 +9,11 @@ export const useSearchParamsAsState = (
   const [searchParams, setSearchParams] = useSearchParams()
   const [searchParamsState, setSearchParamsState] = useState<Record<string, string>>(initialState)
   const { search } = useLocation()
-  console.log(searchParams, search, 'vediamo che succede')
 
   useEffect(() => {
-    console.log('setto cose', {
-      ...Object.fromEntries(new URLSearchParams(search).entries()),
-      ...Object.fromEntries(searchParams.entries()),
-    })
-
     setSearchParamsState({
-      ...Object.fromEntries(new URLSearchParams(search).entries()),
-      ...Object.fromEntries(searchParams.entries()),
+      ...Object.fromEntries(new URLSearchParams(searchParams.toString()).entries()),
+      // ...Object.fromEntries(searchParams.entries()),
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search])

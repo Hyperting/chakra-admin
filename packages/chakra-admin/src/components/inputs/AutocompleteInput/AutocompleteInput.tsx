@@ -214,7 +214,10 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
       const init = async () => {
         try {
           setFetching(true)
-          const { data } = await client.query({ query })
+          const { data } = await client.query({
+            query,
+            variables: { filters: inputValueToFilters('') },
+          })
 
           if (data) {
             const dataKeys = Object.keys(data)

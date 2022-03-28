@@ -41,4 +41,5 @@ export type ListProps<
   children?: React.ReactNode
   layout?: ReactElement<PageLayoutProps, any>
   fields?: NestedKeyOf<Required<TItem>>[]
+  refetchOnDefaultFiltersChange?: boolean
 } & Pick<PageLayoutProps, 'title'>
