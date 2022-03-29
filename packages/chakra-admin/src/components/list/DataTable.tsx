@@ -103,8 +103,6 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
 
       let navigateOptions: NavigateOptions | undefined
 
-      console.log(redirectUrl, navigateOptions, 'facciamo redirect?')
-
       if (typeof rowClick === 'object' && rowClick.asModal) {
         navigateOptions = { state: { background: location } }
       }

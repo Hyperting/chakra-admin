@@ -141,7 +141,7 @@ export function removeLayoutComponent(component: React.ReactElement) {
 export const useRegisterLayoutComponent = (component: React.ReactElement) => {
   useEffect(() => {
     registerLayoutComponent(component)
-    console.log(registeredLayoutComponents)
+    // console.log(registeredLayoutComponents)
     return () => {
       removeLayoutComponent(component)
     }
