@@ -41,7 +41,7 @@ const InDrawerInputControl: FC<Partial<InputProps>> = ({
   }
 
   return (
-    <FormControl id={source} mt={4}>
+    <FormControl id={source} my={2}>
       {(label || source) && <FormLabel fontWeight="semibold">{label || source}</FormLabel>}
       {children}
       {helperText && <FormHelperText>{helperText}</FormHelperText>}

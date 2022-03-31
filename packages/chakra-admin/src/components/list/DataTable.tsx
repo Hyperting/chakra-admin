@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-key */
 import React, { cloneElement, isValidElement, useCallback } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { chakra, Table, Tbody, Td, Th, Thead, Tr, useBreakpointValue } from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
 import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
 import { ListProps } from '../../core/list/ListProps'
@@ -79,6 +79,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
   } = useDataTable<TItem>(props)
   const location = useLocation()
   const navigate = useNavigate()
+  //   const isMobile = useBreakpointValue({ base: true, md: false })
 
   const handleRowClick = useCallback(
     (row: any) => (event: React.MouseEventHandler<HTMLTableRowElement>) => {
@@ -117,10 +118,14 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
       <chakra.div
         display="flex"
         w="100%"
-        pb={5}
+        mb={5}
         pl={{ base: 5, lg: 0 }}
         pr={{ base: 5, lg: 0 }}
         justifyContent="space-between"
+        position="sticky"
+        // top={isMobile ? '25px' : '80px'}
+        top={0}
+        bgColor="gray.50"
       >
         {filtersComponent &&
           isValidElement(filtersComponent) &&

@@ -36,6 +36,9 @@ export const PageLayout: FC<PageLayoutProps> = ({
         pb={5}
         pl={{ base: 5, lg: 0 }}
         justifyContent="space-between"
+        // position="sticky"
+        // top={isMobile ? '-25px' : 0}
+        // bgColor="gray.50"
       >
         {typeof title === 'string' ? (
           <PageTitle label={title} renderingInModal={renderingInModal} />
