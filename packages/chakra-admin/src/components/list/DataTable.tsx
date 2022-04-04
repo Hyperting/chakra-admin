@@ -112,6 +112,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
     },
     [hasEdit, hasShow, location, navigate, resource, rowClick]
   )
+  //   console.log('222222222: ', props)
 
   return (
     <chakra.div w="100%">
@@ -123,9 +124,11 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
         pr={{ base: 5, lg: 0 }}
         justifyContent="space-between"
         position="sticky"
-        // top={isMobile ? '25px' : '80px'}
         top={0}
+        // top={isMobile ? '25px' : '80px'}
+        // top={props && props.expandComponent === false ? '57px' : '90px'}
         bgColor="gray.50"
+        // border="2px solid green"
       >
         {filtersComponent &&
           isValidElement(filtersComponent) &&

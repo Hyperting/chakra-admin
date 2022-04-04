@@ -15,6 +15,7 @@ export const PageLayout: FC<PageLayoutProps> = ({
   topToolbar,
   ...rest
 }) => {
+  //   const chechScroll = Object.keys(rest).length === 0
   if (renderingInModal) {
     return (
       <>
@@ -36,9 +37,11 @@ export const PageLayout: FC<PageLayoutProps> = ({
         pb={5}
         pl={{ base: 5, lg: 0 }}
         justifyContent="space-between"
-        // position="sticky"
+        // position={chechScroll ? 'sticky' : 'relative'}
+        // top={0}
         // top={isMobile ? '-25px' : 0}
         // bgColor="gray.50"
+        // border={chechScroll ? '2px solid red' : '2px solid blue'}
       >
         {typeof title === 'string' ? (
           <PageTitle label={title} renderingInModal={renderingInModal} />
@@ -47,7 +50,6 @@ export const PageLayout: FC<PageLayoutProps> = ({
         )}
         {topToolbar}
       </Flex>
-
       {children}
     </Box>
   )

@@ -68,15 +68,7 @@ export const PageTitle: FC<PageTitleProps> = ({
   }
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      mr={2}
-      //   bgColor="gray.50"
-      //   position="sticky"
-      //   top={isMobile ? '-25px' : '24px'}
-      {...rest}
-    >
+    <Box display="flex" alignItems="center" mr={2} {...rest}>
       {boxComponent ||
         (icon ? (
           <ShadowedBox>
