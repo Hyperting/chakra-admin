@@ -1,6 +1,6 @@
 {
   "name": "ca-theme",
-  "version": "0.0.1-dev.26",
+  "version": "0.0.1-dev.27",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",

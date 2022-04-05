@@ -1,6 +1,6 @@
 {
   "name": "chakra-admin",
-  "version": "0.0.1-dev.26",
+  "version": "0.0.1-dev.27",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -35,8 +35,8 @@
   "dependencies": {
     "@oieduardorabelo/use-navigator-online": "^6.1.0",
     "@uselessdev/datepicker": "^2.0.0",
-    "ca-i18n": "^0.0.1-dev.26",
-    "ca-theme": "^0.0.1-dev.26",
+    "ca-i18n": "^0.0.1-dev.27",
+    "ca-theme": "^0.0.1-dev.27",
     "date-fns": "^2.25.0",
     "downshift": "^6.1.7",
     "gql-query-builder": "^3.5.7",
@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^7.0.2",
-    "ca-test-utils": "^0.0.1-dev.26"
+    "ca-test-utils": "^0.0.1-dev.27"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
