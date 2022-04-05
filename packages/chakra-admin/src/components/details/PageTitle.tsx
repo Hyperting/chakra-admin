@@ -9,6 +9,7 @@ import {
   ModalCloseButton,
   Box,
   BoxProps,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { ShadowedBox } from '../layout/ShadowedBox'
 
@@ -37,6 +38,8 @@ export const PageTitle: FC<PageTitleProps> = ({
   record,
   ...rest
 }) => {
+  //   const isMobile = useBreakpointValue({ base: true, md: false })
+
   if (renderingInModal) {
     return (
       <DrawerHeader
