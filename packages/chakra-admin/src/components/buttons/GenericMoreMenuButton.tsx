@@ -13,7 +13,7 @@ import { DeleteModal } from '../modal'
 
 export type GenericMoreMenuButtonProps<Data = any, Variables = OperationVariables> = {
   deleteItemMutation?: DocumentNode | TypedDocumentNode<Data, Variables>
-  onDelete?: (id: string) => void
+  onDelete?: ((id: string) => void) | ((id: string) => Promise<void>)
   onDeleteCompleted?: () => void
   id?: string
   confirmDialogTitle?: string
