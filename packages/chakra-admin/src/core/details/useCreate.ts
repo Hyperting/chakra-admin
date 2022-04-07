@@ -72,13 +72,13 @@ export const useCreate = <
             isClosable: true,
           })
 
+          nextVersion()
+
           if (typeof redirect === 'boolean' && redirect) {
             navigate(-1)
           } else if (typeof redirect === 'function') {
             navigate(redirect(result.data))
           }
-
-          nextVersion()
         } else {
           throw new Error('Error creating data')
         }
