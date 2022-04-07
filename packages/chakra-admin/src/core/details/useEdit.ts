@@ -86,6 +86,8 @@ export const useEdit = <
 
           if (typeof redirect === 'boolean' && redirect) {
             navigate(-1)
+          } else if (typeof redirect === 'function') {
+            navigate(redirect(result.data))
           }
 
           nextVersion()

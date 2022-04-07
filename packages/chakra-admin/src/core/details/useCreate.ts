@@ -64,6 +64,7 @@ export const useCreate = <
           variables: variables as TVariables,
           // optimisticResponse: values,
         })
+
         if (result.data && !result.errors) {
           notify({
             status: 'success',
@@ -73,6 +74,8 @@ export const useCreate = <
 
           if (typeof redirect === 'boolean' && redirect) {
             navigate(-1)
+          } else if (typeof redirect === 'function') {
+            navigate(redirect(result.data))
           }
 
           nextVersion()
