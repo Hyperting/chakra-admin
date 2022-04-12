@@ -39,6 +39,7 @@ export const RouteLayout: FC<RouteLayoutProps> = ({
         flex="1"
         bgColor="gray.50"
         overflowY="auto"
+        id="route-page-content"
       >
         <Outlet />
       </Box>
