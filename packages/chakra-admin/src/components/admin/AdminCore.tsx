@@ -134,6 +134,15 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
       {background && (
         <Routes>
           {Children.map(props.children, (child: React.ReactNode, index) => {
+            if (isValidElement(child) && child.type === Route) {
+              return cloneElement(child, {
+                key: `route-${index}`,
+              })
+            }
+            return null
+          })}
+
+          {Children.map(props.children, (child: React.ReactNode, index) => {
             if (isValidElement(child) && child.type === Resource && child.props.name) {
               const crud: RouteAvailability = {
                 hasCreate: !!child.props.create,

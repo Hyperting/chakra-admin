@@ -60,7 +60,6 @@ export const Create: FC<CreateProps> = (props) => {
           child,
           {
             ...{
-              ...child.props,
               defaultValues,
               mutation,
               resource,
@@ -68,6 +67,7 @@ export const Create: FC<CreateProps> = (props) => {
               executeMutation,
               mutationResult,
               renderingInModal,
+              ...child.props,
             },
           },
           child.props?.children

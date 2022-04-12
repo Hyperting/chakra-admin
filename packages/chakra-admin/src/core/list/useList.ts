@@ -59,6 +59,7 @@ export const useList = <
   query,
   queryOptions,
   defaultFilters,
+  defaultSorting,
   fields,
   children,
   refetchOnDefaultFiltersChange,
@@ -95,16 +96,21 @@ export const useList = <
     if (qpKeys.length > 0) {
       const foundedSortingKeys = qpKeys.filter((item) => item.startsWith(QP_SORT_PREFIX))
       if (foundedSortingKeys.length > 0) {
-        return foundedSortingKeys.reduce((acc, item) => {
-          return {
-            ...acc,
-            [item.substr(QP_SORT_PREFIX.length, item.length - 1)]: params[item],
-          }
-        }, {})
+        return {
+          ...(defaultSorting || {}),
+          ...(foundedSortingKeys || []).reduce((acc, item) => {
+            return {
+              ...acc,
+              [item.substr(QP_SORT_PREFIX.length, item.length - 1)]: params[item],
+            }
+          }, {}),
+        }
       }
     }
-    return {}
-  }, [params])
+    return {
+      ...(defaultSorting || {}),
+    }
+  }, [defaultSorting, params])
 
   const currentFilters = useMemo<Record<string, any>>(() => {
     const qpKeys = Object.keys(params)
