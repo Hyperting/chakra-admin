@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, createElement, FC, isValidElement } from 'react'
+import React, { Children, cloneElement, createElement, FC, isValidElement, useMemo } from 'react'
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { AuthProvider } from '../../core/auth/AuthProvider'
 import { ClassType } from '../../core/ClassType'
@@ -40,6 +40,14 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
   }
 
   const { initialized, location, background } = useAdminCore(props)
+
+  const hasIndex = useMemo(
+    () =>
+      Children.toArray(props.children).filter(
+        (c: any) => c.type === Route && (c.props?.index || c.props?.path === '/')
+      ).length > 0,
+    [props.children]
+  )
 
   if (!initialized) {
     return <Loading />
@@ -116,18 +124,20 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
               }
             }
           })}
-          <Route
-            index
-            element={
-              <Navigate
-                to={`/${
-                  (Children.toArray(props.children)[0] as any)?.props?.overrideName ||
-                  (Children.toArray(props.children)[0] as any)?.props?.name
-                }`}
-                replace
-              />
-            }
-          />
+          {!hasIndex && (
+            <Route
+              index
+              element={
+                <Navigate
+                  to={`/${
+                    (Children.toArray(props.children)[0] as any)?.props?.overrideName ||
+                    (Children.toArray(props.children)[0] as any)?.props?.name
+                  }`}
+                  replace
+                />
+              }
+            />
+          )}
         </Route>
       </Routes>
 
