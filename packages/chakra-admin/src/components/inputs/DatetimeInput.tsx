@@ -69,6 +69,7 @@ export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
         },
         '.rdtPicker td.rdtToday': {
           position: 'relative',
+          fontWeight: 'bold',
         },
         '.rdtPicker td.rdtToday:before': {
           content: "''",
@@ -84,6 +85,7 @@ export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
           backgroundColor: '#428bca',
           color: '#fff',
           textShadow: '0 -1px 0 rgba(0, 0, 0, 0.25)',
+          fontWeight: 'bold',
         },
         '.rdtPicker td.rdtActive.rdtToday:before': {
           borderBottomColor: '#fff',
@@ -109,13 +111,24 @@ export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
           width: '14.2857%',
           borderBottom: 'none',
           cursor: 'default',
+          textTransform: 'capitalize',
+          fontWeight: 400,
+          color: '#B7BAC8',
+          fontSize: '11px',
         },
         '.rdtPicker th.rdtSwitch': {
           width: '100px',
+          fontWeight: 'bold',
+          fontSize: 'md',
+          lineHeight: 6,
+          height: 8,
+          color: '#333333',
+          textTransform: 'capitalize',
         },
         '.rdtPicker th.rdtNext, .rdtPicker th.rdtPrev': {
           fontSize: '21px',
           verticalAlign: 'top',
+          fontWeight: 400,
         },
 
         '.rdtPrev span, .rdtNext span': {
@@ -219,6 +232,10 @@ export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
 
         '.rdtTime td': {
           cursor: 'default',
+        },
+
+        '.chakra-input.form-control.css-p2yc5s': {
+          textAlign: 'center',
         },
       }}
     >
