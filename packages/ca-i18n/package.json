@@ -1,6 +1,6 @@
 {
   "name": "ca-i18n",
-  "version": "0.0.1-dev.31",
+  "version": "0.0.1-dev.32",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -35,7 +35,7 @@
     "luxon": "^2.3.0"
   },
   "devDependencies": {
-    "ca-test-utils": "^0.0.1-dev.31"
+    "ca-test-utils": "^0.0.1-dev.32"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
