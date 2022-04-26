@@ -17,7 +17,7 @@ type UseDeleteWithConfirmOptions<Data = any, Variables = OperationVariables> = {
 
 type UseDeleteWithConfirmReturn = {
   deleting: boolean
-  onDeleteItem: (id: string) => Promise<void>
+  onDeleteItem: (id?: string) => Promise<void>
 } & UseDisclosureReturn
 
 export function useDeleteWithConfirm(
@@ -32,7 +32,7 @@ export function useDeleteWithConfirm(
   const nextVersion = useVersion()
 
   const onDeleteItem = useCallback(
-    async (id: string) => {
+    async (id?: string) => {
       if (onDelete) {
         await onDelete(id!)
         nextVersion()
@@ -85,6 +85,7 @@ export function useDeleteWithConfirm(
       client,
       deleteItemMutation,
       disclosureProps,
+      nextVersion,
       onDelete,
       onDeleteCompleted,
       strategy?.delete,

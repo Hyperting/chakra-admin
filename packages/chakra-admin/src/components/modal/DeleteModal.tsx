@@ -14,10 +14,13 @@ import { useTranslate } from 'ca-i18n'
 import { useGetResourceLabel } from '../../core'
 
 export type DeleteModalProps = {
-  resource: string
-  id: string
-  onDeleteItem: ((id: string) => void) | ((id: string) => Promise<void>)
+  resource?: string
+  id?: string
+  onDeleteItem: ((id?: string) => void) | ((id?: string) => Promise<void>)
   deleting: boolean
+  title?: string
+  description?: string
+  confirmDeleteButtonLabel?: string
 } & Omit<ModalProps, 'children'>
 
 export const DeleteModal: FC<DeleteModalProps> = ({
@@ -25,6 +28,9 @@ export const DeleteModal: FC<DeleteModalProps> = ({
   id,
   deleting,
   onDeleteItem,
+  title,
+  description,
+  confirmDeleteButtonLabel,
   ...props
 }) => {
   const t = useTranslate()
@@ -39,17 +45,19 @@ export const DeleteModal: FC<DeleteModalProps> = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {t('ca.message.delete_title', {
-            name: resource ? getResourceLabel(resource, 1) : undefined,
-            id,
-          })}
+          {title ||
+            t('ca.message.delete_title', {
+              name: resource ? getResourceLabel(resource, 1) : undefined,
+              id,
+            })}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {t('ca.message.delete_content', {
-            name: resource ? getResourceLabel(resource, 1) : undefined,
-            id,
-          })}
+          {description ||
+            t('ca.message.delete_content', {
+              name: resource ? getResourceLabel(resource, 1) : undefined,
+              id,
+            })}
         </ModalBody>
 
         <ModalFooter>
@@ -62,10 +70,11 @@ export const DeleteModal: FC<DeleteModalProps> = ({
             disabled={deleting}
             colorScheme="red"
           >
-            {t('ca.action.confirm_delete', {
-              name: resource ? getResourceLabel(resource, 1) : undefined,
-              id,
-            })}
+            {confirmDeleteButtonLabel ||
+              t('ca.action.confirm_delete', {
+                name: resource ? getResourceLabel(resource, 1) : undefined,
+                id,
+              })}
           </Button>
         </ModalFooter>
       </ModalContent>
