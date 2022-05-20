@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGlobalStrategy } from '..'
 import { EditProps } from '../../components/details/Edit'
 import { useVersion } from '../admin/versionState'
+import { navigateBehavior } from './navigateBehavior'
 
 export type UseEditResult<
   TData = any,
@@ -53,6 +54,7 @@ export const useEdit = <
   const [executeMutation, mutationResult] = useMutation<EditTData, EditTVariables>(mutation)
   const data = useQuery<ItemTData, ItemTVariables>(query, {
     variables: queryVariables as ItemTVariables,
+    fetchPolicy: 'no-cache',
     skip: !id,
   })
 
@@ -90,12 +92,27 @@ export const useEdit = <
           })
 
           nextVersion()
+          navigateBehavior(navigate, redirect, result.data)
+          // let goTo: boolean | string
 
-          if (typeof redirect === 'boolean' && redirect) {
-            navigate(-1)
-          } else if (typeof redirect === 'function') {
-            navigate(redirect(result.data))
-          }
+          // switch (typeof redirect) {
+          //   case 'function':
+          //     goTo = redirect(result.data) ?? true
+          //     break
+          //   case 'undefined':
+          //     goTo = true
+          //     break
+          //   default:
+          //     goTo = redirect
+          // }
+
+          // if (goTo) {
+          //   if (typeof goTo === 'string') {
+          //     navigate(goTo)
+          //   } else {
+          //     navigate(-1)
+          //   }
+          // }
         } else {
           throw new Error('Error updating data')
         }
