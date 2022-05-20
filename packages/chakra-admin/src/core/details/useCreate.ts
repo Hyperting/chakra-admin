@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { CreateProps } from '../../components/details/Create'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 import { useVersion } from '../admin/versionState'
+import { navigateBehavior } from './navigateBehavior'
 
 export type UseCreateResult<
   TData = any,
@@ -79,11 +80,7 @@ export const useCreate = <
 
           nextVersion()
 
-          if (typeof redirect === 'boolean' && redirect) {
-            navigate(-1)
-          } else if (typeof redirect === 'function') {
-            navigate(redirect(result.data))
-          }
+          navigateBehavior(navigate, redirect, result.data)
         } else {
           throw new Error('Error creating data')
         }
