@@ -1,6 +1,6 @@
 import React, { cloneElement, FC, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
-import { OperationVariables, TypedDocumentNode } from '@apollo/client'
+import { MutationResult, OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
 import { deepMap } from '../../core/details/deep-map'
 import { useEdit } from '../../core/details/useEdit'
@@ -24,6 +24,9 @@ export type EditProps<
   renderingInModal?: boolean
   layout?: ReactElement<PageLayoutProps, any>
   redirect?: boolean | string | ((data: any) => string)
+  onSuccess?:
+    | ((data: MutationResult<EditTData>) => void)
+    | ((data: MutationResult<EditTData>) => Promise<void>)
 } & Pick<PageLayoutProps, 'title'>
 
 export const Edit: FC<EditProps> = (props) => {

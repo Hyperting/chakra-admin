@@ -42,6 +42,7 @@ export const useEdit = <
   query,
   id,
   redirect = true,
+  onSuccess,
 }: EditProps<ItemTData, ItemTVariables, EditTData, EditTVariables>): UseEditResult => {
   const strategy = useGlobalStrategy()
   const queryVariables = useMemo(() => (id ? strategy?.edit.getItemVariables(id) : undefined), [
@@ -78,6 +79,10 @@ export const useEdit = <
 
         const result = await executeMutation({ variables: variables as EditTVariables })
         if (result.data && !result.errors) {
+          if (onSuccess) {
+            await onSuccess(result.data as any)
+          }
+
           notify({
             status: 'success',
             title: `${resource} updated.`,

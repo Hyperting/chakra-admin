@@ -37,6 +37,7 @@ export const useCreate = <
   mutation,
   resource,
   redirect = true,
+  onSuccess,
 }: CreateProps): UseCreateResult<TData, TVariables, TContext, TCache> => {
   const [executeMutation, mutationResult] = useMutation<TData, TVariables, TContext, TCache>(
     mutation
@@ -66,6 +67,10 @@ export const useCreate = <
         })
 
         if (result.data && !result.errors) {
+          if (onSuccess) {
+            await onSuccess(result.data as any)
+          }
+
           notify({
             status: 'success',
             title: `${resource} created.`,

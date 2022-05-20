@@ -1,6 +1,6 @@
 import React, { cloneElement, FC, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
-import { OperationVariables, TypedDocumentNode } from '@apollo/client'
+import { MutationResult, OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
 import { deepMap } from '../../core/details/deep-map'
 import { useCreate } from '../../core/details/useCreate'
@@ -16,6 +16,9 @@ export type CreateProps<TData = any, TVariables = OperationVariables> = {
   renderingInModal?: boolean
   layout?: ReactElement<PageLayoutProps, any>
   redirect?: boolean | string | ((data: any) => string)
+  onSuccess?:
+    | ((data: MutationResult<TData>) => void)
+    | ((data: MutationResult<TData>) => Promise<void>)
 } & Pick<PageLayoutProps, 'title'>
 
 export const Create: FC<CreateProps> = (props) => {
