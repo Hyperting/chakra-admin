@@ -1,3 +1,9 @@
+## 0.0.1-dev.33 (2022-05-20)
+
+feat: added `onSuccess` prop to `<Create />` and `<Edit />`
+
+
+
 ## 0.0.1-dev.32 (2022-04-26)
 
 
