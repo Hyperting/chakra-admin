@@ -4,6 +4,7 @@ import { MutationResult, OperationVariables, TypedDocumentNode } from '@apollo/c
 import { useTranslate } from 'ca-i18n'
 import { deepMap } from '../../core/details/deep-map'
 import { useEdit } from '../../core/details/useEdit'
+import { NavigateBehavior } from '../../core/details/navigateBehavior'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
@@ -23,10 +24,10 @@ export type EditProps<
   filtersComponent?: React.ReactNode
   renderingInModal?: boolean
   layout?: ReactElement<PageLayoutProps, any>
-  redirect?: boolean | string | ((data: any) => string)
   onSuccess?:
     | ((data: MutationResult<EditTData>) => void)
     | ((data: MutationResult<EditTData>) => Promise<void>)
+  redirect?: NavigateBehavior
 } & Pick<PageLayoutProps, 'title'>
 
 export const Edit: FC<EditProps> = (props) => {

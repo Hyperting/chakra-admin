@@ -8,6 +8,7 @@ import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
+import { NavigateBehavior } from '../../core'
 
 export type CreateProps<TData = any, TVariables = OperationVariables> = {
   resource?: string
@@ -15,10 +16,10 @@ export type CreateProps<TData = any, TVariables = OperationVariables> = {
   filtersComponent?: React.ReactNode
   renderingInModal?: boolean
   layout?: ReactElement<PageLayoutProps, any>
-  redirect?: boolean | string | ((data: any) => string)
   onSuccess?:
     | ((data: MutationResult<TData>) => void)
     | ((data: MutationResult<TData>) => Promise<void>)
+  redirect?: NavigateBehavior
 } & Pick<PageLayoutProps, 'title'>
 
 export const Create: FC<CreateProps> = (props) => {
