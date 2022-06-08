@@ -28,12 +28,13 @@ export default {
     typescript({
       useTsconfigDeclarationDir: true,
       transformers: [
-        service => ({
-          before: [ keysTransformer(service.getProgram()) ],
-          after: []
-        })
-      ]
+        (service) => ({
+          before: [keysTransformer(service.getProgram())],
+          after: [],
+        }),
+      ],
     }),
-    yalcPublish()
+    yalcPublish(),
   ],
+  external: ['react-hook-form'],
 }
