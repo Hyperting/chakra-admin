@@ -185,7 +185,10 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
               (data as any)[dataKeys[0]].data &&
               (data as any)[dataKeys[0]].data.length > 0
             ) {
-              const foundedItem = (data as any)[dataKeys[0]].data[0]
+              const foundedItem = (data as any)[dataKeys[0]].data.find(
+                (unknownData: any) => dataItemToAutocompleteItem(unknownData, 0).value === value
+              )
+
               setSelectedItem(dataItemToAutocompleteItem(foundedItem, 0))
             }
           }
