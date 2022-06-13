@@ -188,7 +188,7 @@ export function useDataTable<TItem = Record<string, any>>({
           Cell: ({ row }) => {
             return cloneElement(moreMenuComponent as any, {
               id: (row.original as any).id,
-              data: row.original,
+              record: row.original,
               deleteItemMutation,
               onDeleteCompleted: () => refetch!(),
               hasEdit,
