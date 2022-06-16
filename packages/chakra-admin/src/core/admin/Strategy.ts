@@ -41,7 +41,7 @@ export interface ListStrategy<
   ): DocumentNode | TypedDocumentNode<TData, TVariables>
   // TODO: add support for cursor based pagination
   /* type: 'offset' | 'cursor' */
-  getVariables(params: ListGetVariablesParams): TVariables
+  getVariables(params: ListGetVariablesParams, resource: string): TVariables
   getList: (queryResult: QueryResult<TData, TVariables>) => TItem[]
   getTotal: (queryResult: QueryResult<TData, TVariables>) => number
 }
@@ -122,7 +122,7 @@ export class DefaultListStrategy implements ListStrategy {
     `
   }
 
-  getVariables(params: ListGetVariablesParams): OperationVariables {
+  getVariables(params: ListGetVariablesParams, resource: string): OperationVariables {
     return { ...params }
   }
 

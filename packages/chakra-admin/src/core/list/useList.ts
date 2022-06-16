@@ -134,15 +134,18 @@ export const useList = <
   }, [defaultFilters, params])
 
   const variables = useMemo(() => {
-    return strategy?.list?.getVariables({
-      filters: currentFilters,
-      pagination: {
-        first: limit,
-        after: offset,
+    return strategy?.list?.getVariables(
+      {
+        filters: currentFilters,
+        pagination: {
+          first: limit,
+          after: offset,
+        },
+        sort: currentSort,
       },
-      sort: currentSort,
-    }) as ListTVariables
-  }, [currentFilters, currentSort, limit, offset, strategy?.list])
+      resource!
+    ) as ListTVariables
+  }, [currentFilters, currentSort, limit, offset, resource, strategy?.list])
 
   const { initialized, operation, selectionSet } = useGqlBuilder({
     resource,
