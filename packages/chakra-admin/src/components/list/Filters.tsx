@@ -14,6 +14,8 @@ import {
   useDisclosure,
   chakra,
   DrawerCloseButton,
+  BoxProps,
+  Box,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
 import { MdFilterList } from 'react-icons/md'
@@ -27,6 +29,7 @@ export type FiltersProps = Partial<UseListReturn & ListProps> & {
   filtersTitle?: string
   filtersButtonLabel?: string
   removeFiltersButtonLabel?: string
+  containerProps?: BoxProps
 }
 
 const InDrawerInputControl: FC<Partial<InputProps>> = ({
@@ -57,6 +60,7 @@ export const Filters: FC<FiltersProps> = ({
   filtersButtonLabel = 'Filtri',
   removeFiltersButtonLabel = 'Rimuovi i filtri',
   defaultFilters,
+  containerProps = {},
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const isMobile = useBreakpointValue({ base: true, lg: false })
@@ -102,7 +106,7 @@ export const Filters: FC<FiltersProps> = ({
 
   return (
     <>
-      <chakra.div display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" {...containerProps}>
         {!isMobile &&
           Children.map(alwaysOnFilters, (child, index) => {
             if (isValidElement(child)) {
@@ -157,7 +161,7 @@ export const Filters: FC<FiltersProps> = ({
             {removeFiltersButtonLabel}
           </Button>
         ) : null}
-      </chakra.div>
+      </Box>
 
       <Drawer size={isMobile ? 'xs' : 'md'} isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay>
