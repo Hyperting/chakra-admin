@@ -7,18 +7,24 @@ export const useSearchParamsAsState = (
   initialState: Record<string, string> = {}
 ): [Record<string, string>, (newSearchParams: Record<string, string>) => void] => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [searchParamsState, setSearchParamsState] = useState<Record<string, string>>(initialState)
-  const { search } = useLocation()
 
-  useEffect(() => {
-    setSearchParamsState({
-      ...Object.fromEntries(new URLSearchParams(searchParams.toString()).entries()),
-      // ...Object.fromEntries(searchParams.entries()),
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search])
+  //   const [searchParamsState, setSearchParamsState] = useState<Record<string, string>>(initialState)
+  //   const { search } = useLocation()
 
-  return [searchParamsState, setSearchParams]
+  //   useEffect(() => {
+  //     setSearchParamsState({
+  //       ...Object.fromEntries(new URLSearchParams(searchParams.toString()).entries()),
+  //       // ...Object.fromEntries(searchParams.entries()),
+  //     })
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   }, [search])
+
+  const searchParamsAsObj = {
+    ...Object.fromEntries(new URLSearchParams(searchParams.toString()).entries()),
+    // ...Object.fromEntries(searchParams.entries()),
+  }
+
+  return [searchParamsAsObj, setSearchParams]
 }
 
 export type NewValueType<D> = D | ((latestValue: D) => D)

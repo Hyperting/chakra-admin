@@ -120,6 +120,10 @@ export const useList = <
         return {
           ...(defaultFilters || {}),
           ...foundedFiltersKeys.reduce((acc, item) => {
+            if (!params[item]) {
+              return { ...acc }
+            }
+
             return {
               ...acc,
               [item.substr(QP_FILTERS_PREFIX.length, item.length - 1)]: params[item],
@@ -158,7 +162,7 @@ export const useList = <
   })
 
   const result = useQuery<ListTData, ListTVariables>(operation as any, {
-    variables,
+    variables: { ...variables },
     ...(queryOptions || {}),
     skip: queryOptions?.skip
       ? !initialized || !operation || queryOptions.skip
