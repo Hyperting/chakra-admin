@@ -1,3 +1,9 @@
+## 0.0.1-dev.39 (2022-06-27)
+
+fix: simple SelectInput is not accepting children
+fix: GenericMoreMenuButton does not accept MenuButtonProps props
+
+
 ## 0.0.1-dev.38 (2022-06-22)
 
 
