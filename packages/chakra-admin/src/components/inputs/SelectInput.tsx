@@ -164,7 +164,7 @@ export function SelectInput<
           // onChange,
         }}
         render={({ field }) => {
-          return <Select {...(field as any)} {...rest} />
+          return <Select children={children} {...(field as any)} {...rest} />
         }}
       />
     )

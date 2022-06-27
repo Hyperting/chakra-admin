@@ -1,5 +1,15 @@
 import { OperationVariables, TypedDocumentNode } from '@apollo/client'
-import { Menu, MenuButton, MenuItem, MenuList, Icon, IconButton } from '@chakra-ui/react'
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Icon,
+  IconButton,
+  Portal,
+  ButtonProps,
+  MenuButtonProps,
+} from '@chakra-ui/react'
 import { useTranslate } from 'ca-i18n'
 import { DocumentNode } from 'graphql'
 import React, { FC, useCallback } from 'react'
@@ -27,7 +37,8 @@ export type GenericMoreMenuButtonProps<Data = any, Variables = OperationVariable
   hideDelete?: boolean
   hideEdit?: boolean
   hideShow?: boolean
-} & RouteAvailability
+} & RouteAvailability &
+  MenuButtonProps
 
 export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
   deleteItemMutation,
@@ -47,6 +58,7 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
   hideShow,
   hideEdit,
   hideDelete,
+  ...props
 }) => {
   // const { isOpen, onClose, onOpen } = useDisclosure()
   const { deleting, onDeleteItem, isOpen, onClose, onOpen } = useDeleteWithConfirm({
@@ -75,38 +87,41 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
           ml={3}
           color="blackAlpha.700"
           icon={<Icon as={FiMoreVertical} />}
+          {...props}
         />
-        <MenuList border="0px">
-          {hasShow && !hideShow && (
-            <MenuItem
-              as={Link}
-              to={`/${resource}/${id}/show`}
-              state={openShowAsModal ? { background: location } : undefined}
-              icon={<Icon as={BsFillEyeFill} />}
-            >
-              {t('ca.action.show')}
-            </MenuItem>
-          )}
-          {hasEdit && !hideEdit && (
-            <MenuItem
-              as={Link}
-              to={`/${resource}/${id}`}
-              state={openEditAsModal ? { background: location } : undefined}
-              icon={<Icon as={FaEdit} />}
-            >
-              {t('ca.action.edit')}
-            </MenuItem>
-          )}
-          {deleteItemMutation && !hideDelete && (
-            <MenuItem
-              onClick={handleMenuItemDeleteClick}
-              color="red.500"
-              icon={<Icon color="red.400" as={FaTrash} />}
-            >
-              {t('ca.action.delete')}
-            </MenuItem>
-          )}
-        </MenuList>
+        <Portal>
+          <MenuList border="0px">
+            {hasShow && !hideShow && (
+              <MenuItem
+                as={Link}
+                to={`/${resource}/${id}/show`}
+                state={openShowAsModal ? { background: location } : undefined}
+                icon={<Icon as={BsFillEyeFill} />}
+              >
+                {t('ca.action.show')}
+              </MenuItem>
+            )}
+            {hasEdit && !hideEdit && (
+              <MenuItem
+                as={Link}
+                to={`/${resource}/${id}`}
+                state={openEditAsModal ? { background: location } : undefined}
+                icon={<Icon as={FaEdit} />}
+              >
+                {t('ca.action.edit')}
+              </MenuItem>
+            )}
+            {deleteItemMutation && !hideDelete && (
+              <MenuItem
+                onClick={handleMenuItemDeleteClick}
+                color="red.500"
+                icon={<Icon color="red.400" as={FaTrash} />}
+              >
+                {t('ca.action.delete')}
+              </MenuItem>
+            )}
+          </MenuList>
+        </Portal>
       </Menu>
 
       <DeleteModal
