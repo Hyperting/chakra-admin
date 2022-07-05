@@ -1,3 +1,6 @@
+## 0.0.1-dev.40 (2022-07-05)
+
+
 ## 0.0.1-dev.39 (2022-06-27)
 
 fix: simple SelectInput is not accepting children
