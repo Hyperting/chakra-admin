@@ -95,7 +95,16 @@ export const useCreate = <
         })
       }
     },
-    [executeMutation, navigate, nextVersion, notify, redirect, resource, strategy?.create]
+    [
+      executeMutation,
+      navigate,
+      nextVersion,
+      notify,
+      onSuccess,
+      redirect,
+      resource,
+      strategy?.create,
+    ]
   )
 
   return {
