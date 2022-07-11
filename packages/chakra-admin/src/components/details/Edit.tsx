@@ -85,6 +85,7 @@ export const Edit: FC<EditProps> = (props) => {
             resource,
             data,
             error,
+            renderingInModal,
           }}
         />
         // deepMap(children, (child: any) => {
