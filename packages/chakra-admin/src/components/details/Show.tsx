@@ -1,6 +1,6 @@
 import React, { cloneElement, FC, isValidElement, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
-import { OperationVariables, TypedDocumentNode } from '@apollo/client'
+import { OperationVariables, QueryHookOptions, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
 import { deepMap } from '../../core/details/deep-map'
 import { useShow } from '../../core/details/useShow'
@@ -28,6 +28,7 @@ export type ShowProps<
   layout?: ReactElement<PageLayoutProps, any>
   toolbarComponent?: React.ReactNode
   children?: React.ReactNode
+  queryOptions?: QueryHookOptions<ItemTData, ItemTVariables>
 } & Pick<PageLayoutProps, 'title'>
 
 // export const Show: FC<ShowProps> = (props) => {

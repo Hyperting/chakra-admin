@@ -49,6 +49,7 @@ export const useShow = <
   id,
   fields,
   children,
+  queryOptions,
 }: ShowProps<ItemTData, ItemTVariables, ShowTData, ShowTVariables>): UseShowResult => {
   const strategy = useGlobalStrategy()
   const queryVariables = useMemo(() => (id ? strategy?.show.getItemVariables(id) : undefined), [
@@ -68,8 +69,11 @@ export const useShow = <
 
   const [executeMutation, mutationResult] = useMutation<ShowTData, ShowTVariables>(mutation as any)
   const data = useQuery<ItemTData, ItemTVariables>(operation as any, {
-    variables: queryVariables as ItemTVariables,
-    skip: !id || !initialized || !operation || !queryVariables,
+    variables: { ...(queryVariables || ({} as any)) },
+    ...((queryOptions || {}) as any),
+    skip: queryOptions?.skip
+      ? !id || !initialized || !operation || !queryVariables || queryOptions.skip
+      : !id || !initialized || !operation || !queryVariables,
   })
   const item = useMemo(() => (data.data ? strategy?.show.getItem(data) : undefined), [
     data,

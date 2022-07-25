@@ -373,8 +373,8 @@ export const AutocompleteInput: FC<AutocompleteInputProps> = ({
   }
 
   return props.createMutation ? (
-    <AutocompleteWithCreate onChange={onChange} {...props} />
+    <AutocompleteWithCreate onChange={onChange} value={value} {...props} />
   ) : (
-    <Autocomplete onChange={onChange} {...props} />
+    <Autocomplete onChange={onChange} value={value} {...props} />
   )
 }
