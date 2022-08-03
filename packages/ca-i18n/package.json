@@ -1,6 +1,6 @@
 {
   "name": "ca-i18n",
-  "version": "0.0.1-dev.42",
+  "version": "0.0.1-dev.43",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -35,7 +35,7 @@
     "react-i18next": "^11.15.3"
   },
   "devDependencies": {
-    "ca-test-utils": "^0.0.1-dev.42"
+    "ca-test-utils": "^0.0.1-dev.43"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
