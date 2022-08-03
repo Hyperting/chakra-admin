@@ -10,7 +10,7 @@ export const ListToolbar: FC<Props> = ({ children, ...rest }) => {
     return (
       <>
         {Children.map(children, (child: any) => {
-          const { children, ...restProps } = child.props
+          const { ...restProps } = child.props
           return React.createElement(child.type, {
             ...{
               ...rest,
