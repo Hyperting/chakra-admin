@@ -13,5 +13,7 @@
     "tsconfig": "0.0.0",
     "tsup-config": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "perfect-waves-change"
+  ]
 }
