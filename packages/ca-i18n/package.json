@@ -1,0 +1,52 @@
+{
+  "name": "ca-i18n",
+  "version": "0.0.1-dev.43",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup src/index.ts",
+    "dev": "npm run build -- --watch"
+  },
+  "author": "Hyperting S.r.l.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyperting/chakra-admin.git",
+    "directory": "packages/ca-18n"
+  },
+  "peerDependencies": {
+    "react": ">= 17.0.2",
+    "react-dom": ">= 17.0.2"
+  },
+  "dependencies": {
+    "i18next": "^21.6.6",
+    "i18next-browser-languagedetector": "^6.1.2",
+    "i18next-chained-backend": "^3.0.2",
+    "i18next-http-backend": "^1.2.6",
+    "i18next-polyglot": "^0.1.0",
+    "i18next-resources-to-backend": "^1.0.0",
+    "luxon": "^2.3.0",
+    "react-i18next": "^11.15.3"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "tsup-config": "workspace:*",
+    "ca-test-utils": "workspace:*",
+    "eslint": "^8.25.0",
+    "react": "^17.0.2",
+    "typescript": "^4.5.2",
+    "tsup": "^6.2.3",
+    "@types/luxon": "^2.0.2",
+    "@types/react": "^17.0.37"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:4873"
+  }
+}

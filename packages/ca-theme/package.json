@@ -1,0 +1,47 @@
+{
+  "name": "ca-theme",
+  "version": "0.0.2-dev.0",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup src/index.ts",
+    "dev": "npm run build -- --watch"
+  },
+  "author": "Hyperting S.r.l.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyperting/chakra-admin.git",
+    "directory": "packages/ca-theme"
+  },
+  "peerDependencies": {
+    "@chakra-ui/react": ">= 1.0.0"
+  },
+  "dependencies": {
+    "@uselessdev/datepicker": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "tsup-config": "workspace:*",
+    "typescript": "^4.5.2",
+    "@chakra-ui/react": "^1.8.8",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "framer-motion": "^6.5.1",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.3.0",
+    "@babel/core": "^7.15.5",
+    "eslint": "^8.25.0",
+    "tsup": "^6.2.3"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:4873"
+  }
+}
