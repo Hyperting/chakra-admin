@@ -30,6 +30,7 @@
   "eslint.workingDirectories": [
     { "pattern": "apps/*" },
     { "pattern": "packages/*" },
-    { "pattern": "tooling/*" }
+    { "pattern": "tooling/*" },
+    { "pattern": "examples/*" }
   ],
 }

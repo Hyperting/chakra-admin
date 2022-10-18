@@ -48,11 +48,10 @@ import {
   StatProps,
   TabListProps,
   TabList,
+  ComponentWithAs,
 } from '@chakra-ui/react'
 import { filterChakraProps } from './system-utils'
-import { isChildrenComplex } from '../details/deep-map'
-import { CAFieldComponents } from './system-field'
-import { DataTable } from '../../components/list'
+import { isChildrenComplex } from './deep-map'
 
 // fix components without displayName
 const Alert = CUIAlert
@@ -87,7 +86,7 @@ export const CALayoutComponents = {
   UnorderedList: caLayout<ListProps>(UnorderedList),
 }
 
-export const CUILayoutComponents = {
+export const CUILayoutComponents: Record<string, ComponentWithAs<any, any>> = {
   Alert,
   AspectRatio,
   Box,
@@ -149,7 +148,7 @@ export const useRegisterLayoutComponent = (component: React.ReactElement) => {
 }
 
 export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string]: any }> {
-  const CALayoutImpl = ({ children, record, ...props }) => {
+  const CALayoutImpl = ({ children, record, ...props }: any) => {
     useRegisterLayoutComponent(CALayoutImpl as any)
     return createElement(
       component as any,
@@ -166,12 +165,12 @@ export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string
     )
   }
 
-  ;((CALayoutImpl as unknown) as FC<P & { [x: string]: any }>).displayName = `CA${
+  ;(CALayoutImpl as unknown as FC<P & { [x: string]: any }>).displayName = `CA${
     (component as any).displayName || (component as any).name
   }`
 
   // console.log(registeredLayoutComponents, 'register vediamo')
   // registerLayoutComponent(CALayoutImpl as any)
 
-  return (CALayoutImpl as unknown) as FC<P & { [x: string]: any }>
+  return CALayoutImpl as unknown as FC<P & { [x: string]: any }>
 }

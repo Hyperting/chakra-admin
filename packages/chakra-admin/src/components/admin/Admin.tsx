@@ -7,7 +7,7 @@ import { I18nProvider, I18nProviderProps, defaultI18n, getDefaultI18nOptions, en
 import { AdminCore, AdminCoreProps } from './AdminCore'
 import { ErrorBoundary } from '../base/error-boundary'
 
-const RouteAdapter: FC = ({ children }) => {
+const RouteAdapter: FC<{ children?: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate()
   const location = useLocation()
 

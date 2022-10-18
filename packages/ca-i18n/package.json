@@ -1,6 +1,6 @@
 {
   "name": "ca-i18n",
-  "version": "0.0.2-dev.2",
+  "version": "0.0.2-dev.11",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -21,8 +21,8 @@
     "directory": "packages/ca-18n"
   },
   "peerDependencies": {
-    "react": ">= 17.0.2",
-    "react-dom": ">= 17.0.2"
+    "react": ">= 18",
+    "react-dom": ">= 18"
   },
   "dependencies": {
     "i18next": "^21.6.6",
@@ -40,11 +40,11 @@
     "tsup-config": "workspace:*",
     "ca-test-utils": "workspace:*",
     "eslint": "^8.25.0",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "typescript": "^4.5.2",
     "tsup": "^6.2.3",
     "@types/luxon": "^2.0.2",
-    "@types/react": "^17.0.37"
+    "@types/react": "^18.0.21"
   },
   "publishConfig": {
     "registry": "http://localhost:4873"

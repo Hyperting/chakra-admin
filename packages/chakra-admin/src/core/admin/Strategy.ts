@@ -1,12 +1,6 @@
 /* eslint max-classes-per-file: "off" */
 
-import {
-  DocumentNode,
-  gql,
-  OperationVariables,
-  QueryResult,
-  TypedDocumentNode,
-} from '@apollo/client'
+import { DocumentNode, gql, OperationVariables, QueryResult, TypedDocumentNode } from '@apollo/client'
 import { query } from 'gql-query-builder'
 import { generateFields } from '../graphql'
 import { SortType } from '../list'
@@ -28,11 +22,7 @@ export type GetListResult<TItem = Record<string, any>> = {
   totalCount: number
 }
 
-export interface ListStrategy<
-  TData = any,
-  TVariables = OperationVariables,
-  TItem = Record<string, any>
-> {
+export interface ListStrategy<TData = any, TVariables = OperationVariables, TItem = Record<string, any>> {
   getQuery?(
     resource: string,
     operation: string,
@@ -64,10 +54,7 @@ export interface ShowStrategy<
   getMutationVariables?: (id: string, values: TFormValues) => TVariables
 }
 
-export interface CreateStrategy<
-  TFormValues = Record<string, any>,
-  TVariables = OperationVariables
-> {
+export interface CreateStrategy<TFormValues = Record<string, any>, TVariables = OperationVariables> {
   getMutationVariables: (values: TFormValues) => TVariables
 }
 

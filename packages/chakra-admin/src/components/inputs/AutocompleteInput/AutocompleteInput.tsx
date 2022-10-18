@@ -13,7 +13,7 @@ import { useApolloClient } from '@apollo/client'
 import { InputProps } from '../Input'
 import { Item, CUIAutoCompleteProps, CUIAutoComplete } from '../../../chakra-ui-autocomplete'
 import { useCreate } from '../../../core/details/useCreate'
-import { CAInputProps } from '../../../core/react/system-form'
+import { CAInputProps } from 'ca-system'
 
 export type AutocompleteInputProps = Omit<InputProps, 'source' | 'onChange'> &
   Omit<CUIAutoCompleteProps<Item>, 'placeholder' | 'items' | 'onChange'> & {

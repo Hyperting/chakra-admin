@@ -34,7 +34,7 @@ import {
 import { format, isValid, startOfWeek, addDays, Locale } from 'date-fns'
 import { FieldValues, useController } from 'react-hook-form'
 import { BsCalendar2EventFill } from 'react-icons/bs'
-import { CAInputProps } from '../../core/react/system-form'
+import { CAInputProps } from 'ca-system'
 
 function weekdays(weekdayFormat: string, locale?: Locale) {
   const start = startOfWeek(new Date(), { locale })

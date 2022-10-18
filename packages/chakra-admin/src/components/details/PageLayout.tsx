@@ -20,7 +20,7 @@ export const PageLayout: FC<PageLayoutProps> = ({
     return (
       <>
         {typeof title === 'string' ? <PageTitle label={title} renderingInModal={renderingInModal} /> : title || null}
-        <DrawerBody {...rest}>{children}</DrawerBody>
+        <Box {...rest}>{children}</Box>
       </>
     )
   }

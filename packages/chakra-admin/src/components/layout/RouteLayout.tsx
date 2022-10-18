@@ -9,14 +9,14 @@ export type RouteLayoutProps = {
   sidebar?: React.ReactNode
   showOfflineAlert?: boolean
 }
-export const RouteLayout: FC<RouteLayoutProps> = ({ sidebar = <Sidebar />, showOfflineAlert = true, children }) => {
+export const RouteLayout: FC<RouteLayoutProps> = ({ sidebar = <Sidebar />, showOfflineAlert = true }) => {
   const isMobile = useBreakpointValue({
     base: true,
     lg: false,
   })
 
   return (
-    <Box d="flex" h="100vh" w="100vw" maxW="100%" overflow="hidden">
+    <Box display="flex" h="100vh" w="100vw" maxW="100%" overflow="hidden">
       {showOfflineAlert && <OfflineAlert />}
       {isMobile ? (
         <MobileTopBarLight

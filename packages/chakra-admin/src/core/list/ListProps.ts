@@ -1,15 +1,10 @@
 import React, { ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
-import {
-  MutationHookOptions,
-  OperationVariables,
-  QueryHookOptions,
-  TypedDocumentNode,
-} from '@apollo/client'
+import { MutationHookOptions, OperationVariables, QueryHookOptions, TypedDocumentNode } from '@apollo/client'
 import { SortType } from './SortType'
 import { ListStrategy } from '../admin/Strategy'
 import { PageLayoutProps } from '../../components/details/PageLayout'
-import { NestedKeyOf } from '../react/nested-key'
+import { NestedKeyOf } from 'ca-system'
 
 export type ListProps<
   TQuery = Record<string, any>,

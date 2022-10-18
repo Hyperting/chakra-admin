@@ -6,8 +6,8 @@ import {
   removeLayoutComponent,
   useRegisterLayoutComponent,
 } from './system-layout'
-import { caField, CAFieldComponents } from './system-field'
-import { caFormInput, CAFormComponents, CAFormControlComponents } from './system-form'
+import { caField, CAFieldComponents, CAFieldOptions, CAFieldProps } from './system-field'
+import { caFormInput, CAFormComponents, CAFormControlComponents, CAInputOptions, CAInputProps } from './system-form'
 
 export type CA = {
   layout: typeof caLayout
@@ -16,9 +16,12 @@ export type CA = {
   f: typeof caField
   formInput: typeof caFormInput
   fi: typeof caFormInput
-}
+} & typeof CALayoutComponents &
+  typeof CAFieldComponents &
+  typeof CAFormComponents &
+  typeof CAFormControlComponents
 
-export const ca = {
+export const ca: CA = {
   layout: caLayout,
   l: caLayout,
   field: caField,
@@ -29,10 +32,7 @@ export const ca = {
   ...CAFieldComponents,
   ...CAFormComponents,
   ...CAFormControlComponents,
-} as unknown as CA &
-  typeof CALayoutComponents &
-  typeof CAFieldComponents &
-  typeof CAFormComponents &
-  typeof CAFormControlComponents
+}
 
 export { useRegisterLayoutComponent, getRegisteredLayoutComponents, registerLayoutComponent, removeLayoutComponent }
+export type { CAFieldOptions, CAFieldProps, CAInputOptions, CAInputProps }

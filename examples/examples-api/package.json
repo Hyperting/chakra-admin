@@ -1,0 +1,16 @@
+{
+  "name": "examples-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "graphql-faker ./example-api.graphql"
+  },
+  "dependencies": {
+    "graphql-faker": "^2.0.0-rc.25"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

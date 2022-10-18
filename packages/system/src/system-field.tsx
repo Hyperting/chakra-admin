@@ -37,10 +37,9 @@ import {
   TextProps,
 } from '@chakra-ui/react'
 import get from 'lodash.get'
-import { useField } from '../fields/useField'
 import { filterChakraProps } from './system-utils'
 import { NestedKeyOf, Required } from './nested-key'
-import { TreeRenderer } from '../../components/details/TreeRenderer'
+import { useField } from './useField'
 
 export const CAFieldComponents = {
   AlertDescription: caField<AlertDescriptionProps>(AlertDescription),

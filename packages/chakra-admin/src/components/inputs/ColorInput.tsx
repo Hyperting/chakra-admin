@@ -20,7 +20,7 @@ import { useTranslate } from 'ca-i18n'
 import { FieldValues, useController } from 'react-hook-form'
 import { HexColorPicker } from 'react-colorful'
 import { BsChevronDown } from 'react-icons/bs'
-import { CAInputProps } from '../../core/react/system-form'
+import { CAInputProps } from 'ca-system'
 
 type ColorInputProps<TItem extends FieldValues = Record<string, any>> = {
   placeholder?: string

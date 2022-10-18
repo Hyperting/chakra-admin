@@ -4,7 +4,7 @@ import { OperationVariables } from '@apollo/client'
 import { Controller, FieldValues, useController } from 'react-hook-form'
 import { FilterInputProps } from './FilterInputProps'
 import { Query, QueryProps } from '../graphql/Query'
-import { CAInputProps } from '../../core/react/system-form'
+import { CAInputProps } from 'ca-system'
 
 export type SelectInputProps<
   TQuery = Record<string, any>,

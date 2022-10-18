@@ -24,12 +24,11 @@ export const MenuCollapseView: FC<MenuCollapseViewProps> = ({
     <Box w="100%">
       <Button
         variant="ghost"
-        isFullWidth
         pl={6}
         pr={8}
         mt={4}
         mb={1}
-        d="flex"
+        display="flex"
         size="sm"
         borderRadius="none"
         justifyContent="space-between"
@@ -42,7 +41,7 @@ export const MenuCollapseView: FC<MenuCollapseViewProps> = ({
           {label}
         </Text>
 
-        <Box d="flex" alignItems="center" as="span">
+        <Box display="flex" alignItems="center" as="span">
           {additionalElement && additionalElement}
           <Icon as={isOpen ? BsChevronUp : BsChevronDown} color="gray.500" />
         </Box>

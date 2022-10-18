@@ -63,14 +63,10 @@ export const useList = <
   fields,
   children,
   refetchOnDefaultFiltersChange,
-}: UseListParams<
-  TQuery,
-  TItem,
+}: UseListParams<TQuery, TItem, ListTData, ListTVariables, DeleteTData, DeleteTVariables>): UseListReturn<
   ListTData,
-  ListTVariables,
-  DeleteTData,
-  DeleteTVariables
->): UseListReturn<ListTData, ListTVariables> => {
+  ListTVariables
+> => {
   const version = useVersionStateValue()
   const strategy = useGlobalStrategy()
 
@@ -86,9 +82,7 @@ export const useList = <
   }, [params])
 
   const offset = useMemo(() => {
-    return params[QP_OFFSET] && !isNaN(params[QP_OFFSET] as any)
-      ? parseInt(params[QP_OFFSET] as string, 10)
-      : 0
+    return params[QP_OFFSET] && !isNaN(params[QP_OFFSET] as any) ? parseInt(params[QP_OFFSET] as string, 10) : 0
   }, [params])
 
   const currentSort = useMemo<SortType<any>>(() => {
@@ -164,9 +158,7 @@ export const useList = <
   const result = useQuery<ListTData, ListTVariables>(operation as any, {
     variables: { ...variables },
     ...(queryOptions || {}),
-    skip: queryOptions?.skip
-      ? !initialized || !operation || queryOptions.skip
-      : !initialized || !operation,
+    skip: queryOptions?.skip ? !initialized || !operation || queryOptions.skip : !initialized || !operation,
   })
 
   const total = useMemo(() => {

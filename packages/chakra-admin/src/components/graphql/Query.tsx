@@ -5,7 +5,7 @@ import { query } from 'gql-query-builder'
 import { useGlobalStrategy } from '../../core/admin/useGlobalStrategy'
 import { generateFields, useGqlBuilder, UseGQLBuilderParams } from '../../core/graphql/gql-builder'
 import { GQLOperation } from '../../core/graphql/types'
-import { NestedKeyOf } from '../../core/react/nested-key'
+import { NestedKeyOf } from 'ca-system'
 import { TreeRenderer } from '..'
 import { useVersionStateValue } from '../../core/admin/versionState'
 

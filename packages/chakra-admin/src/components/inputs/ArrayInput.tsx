@@ -2,9 +2,7 @@ import React, { FC } from 'react'
 import { Stack, StackProps } from '@chakra-ui/react'
 import { FieldValues, useFieldArray } from 'react-hook-form'
 import { TreeRenderer } from '..'
-import { filterChakraProps } from '../../core/react/system-utils'
-import { InputProps } from '../..'
-import { CAInputProps } from '../../core/react/system-form'
+import { filterChakraProps, CAInputProps } from 'ca-system'
 
 export type ArrayInputProps<TItem extends FieldValues = Record<string, any>> = {
   emptyComponent?: React.ReactNode

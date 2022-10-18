@@ -24,7 +24,7 @@ export function filterChakraProps<P = {}>(props: P): P {
 
     return {
       ...acc,
-      [key]: props[key],
+      [key]: (props as any)[key],
     }
   }, {}) as P
 }

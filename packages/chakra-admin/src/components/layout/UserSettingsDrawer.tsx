@@ -23,7 +23,7 @@ export const UserSettingsDrawer: FC<Props> = ({ isOpen, onClose, ...rest }) => {
           <DrawerHeader title="Impostazioni Utente" />
           <DrawerBody></DrawerBody>
           <DrawerFooter>
-            <LogoutButton mb={4} isFullWidth />
+            <LogoutButton mb={4} />
           </DrawerFooter>
         </DrawerContent>
       </DrawerOverlay>

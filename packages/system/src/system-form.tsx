@@ -82,7 +82,7 @@ export function CAFormLabel<TItem extends FieldValues = Record<string, any>>(
   const label = useMemo(
     () =>
       t(`${source}`, {
-        defaultValue: source ? humanize(source) : '',
+        defaultValue: source ? (humanize as any)(source) : '',
       }),
     [source, t]
   )

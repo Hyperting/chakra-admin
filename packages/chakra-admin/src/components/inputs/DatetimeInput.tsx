@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react'
 import { Box, Input, InputProps } from '@chakra-ui/react'
 import { DatetimepickerProps } from 'react-datetime'
-import { ca } from '../../core'
+import { ca } from 'ca-system'
 
 const Datetime = require('react-datetime').default
 

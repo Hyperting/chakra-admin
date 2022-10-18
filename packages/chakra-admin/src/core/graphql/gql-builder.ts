@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { DocumentNode, gql, OperationVariables, TypedDocumentNode } from '@apollo/client'
 import Fields from 'gql-query-builder/build/Fields'
 import { GQLOperation, GqlGenerator, OperationType } from './types'
-import { deepForEach } from '../details/deep-map'
+import { deepForEach } from 'ca-system'
 
 export const EMPTY_QUERY = gql`
   query EmptyQuery {

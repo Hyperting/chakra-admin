@@ -2,7 +2,7 @@ import React, { cloneElement, FC, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
 import { MutationResult, OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
-import { deepMap } from '../../core/details/deep-map'
+import { deepMap } from 'ca-system'
 import { useCreate } from '../../core/details/useCreate'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
@@ -18,6 +18,7 @@ export type CreateProps<TData = any, TVariables = OperationVariables> = {
   layout?: ReactElement<PageLayoutProps, any>
   onSuccess?: ((data: MutationResult<TData>) => void) | ((data: MutationResult<TData>) => Promise<void>)
   redirect?: NavigateBehavior
+  children?: React.ReactNode
 } & Pick<PageLayoutProps, 'title'>
 
 export const Create: FC<CreateProps> = (props) => {

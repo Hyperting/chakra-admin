@@ -1,6 +1,6 @@
+import React, { useMemo } from 'react'
 import get from 'lodash.get'
-import { useMemo } from 'react'
-import { CAFieldProps } from '../react/system-field'
+import { CAFieldProps } from './system-field'
 
 export function useField<TItem = Record<string, any>>(props: CAFieldProps<TItem>) {
   const value = useMemo(() => {

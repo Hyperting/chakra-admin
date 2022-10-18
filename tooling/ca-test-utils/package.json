@@ -1,6 +1,6 @@
 {
   "name": "ca-test-utils",
-  "version": "0.0.2-dev.2",
+  "version": "0.0.2-dev.11",
   "description": "Testing utilities for Chakra Admin",
   "author": "Hyperting S.r.l.",
   "license": "MIT",
@@ -15,13 +15,13 @@
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
-    "@chakra-ui/react": "^1.7.3",
+    "@chakra-ui/react": "^2.3.6",
     "framer-motion": "^6.5.1",
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@testing-library/react": "^12.1.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "eslint": "^8.25.0",
     "typescript": "^4.5.2",
     "@babel/core": "^7.15.5"

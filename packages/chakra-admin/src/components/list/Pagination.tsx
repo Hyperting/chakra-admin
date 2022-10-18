@@ -54,10 +54,14 @@ export const Pagination: FC<Props> = ({
         }}
       >
         <strong>
-          {{ from }}-{{ to }}
+          <>
+            {{ from }}-{{ to }}
+          </>
         </strong>
         of
-        <strong>{{ total }}</strong>
+        <strong>
+          <>{{ total }}</>
+        </strong>
       </Trans>
 
       <IconButton

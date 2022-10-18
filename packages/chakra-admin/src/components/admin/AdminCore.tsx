@@ -20,7 +20,7 @@ export type AdminCoreProps = {
   children?: React.ReactNode
 }
 
-const WithIdParam: FC = ({ children }) => {
+const WithIdParam: FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { id } = useParams()
   return cloneElement(Children.only(children) as React.ReactElement, {
     id,

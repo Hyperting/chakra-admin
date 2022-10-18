@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone'
 import { useTranslate } from 'ca-i18n'
 import { FaUpload } from 'react-icons/fa'
 import { FieldValues, useController } from 'react-hook-form'
-import { CAInputProps } from '../../core/react/system-form'
+import { CAInputProps } from 'ca-system'
 
 type SingleFileInputProps<TItem extends FieldValues = Record<string, any>> = {} & CAInputProps<TItem> & BoxProps
 
@@ -103,7 +103,7 @@ export function SingleFileInput<TItem extends FieldValues = Record<string, any>>
       {!value || isDragActive ? (
         <Box
           pos="absolute"
-          d="flex"
+          display="flex"
           flexDir="column"
           alignItems="center"
           justifyContent="center"
@@ -121,7 +121,7 @@ export function SingleFileInput<TItem extends FieldValues = Record<string, any>>
       ) : (
         <Box
           pos="absolute"
-          d="flex"
+          display="flex"
           flexDir="column"
           alignItems="center"
           justifyContent="center"

@@ -44,17 +44,16 @@ export const Sidebar: FC<Props> = ({ title, icon, children, ...rest }) => {
             {!isMobile && (
               <chakra.div position="fixed" backgroundColor="white" zIndex="10">
                 <SidebarTitle icon={icon} title={title} pt={6} />
-                <MenuSearch placeholder="Cerca..." mb={5} />
               </chakra.div>
             )}
             <Box minH="100%" overflowY="auto" mt={!isMobile ? '111px' : 0} pb="86px" minW="280px">
               {children || (
-                <MenuCollapse>
-                  <ResourcesNavMenu />
-                </MenuCollapse>
+                // <MenuCollapse>
+                <ResourcesNavMenu />
+                // </MenuCollapse>
               )}
             </Box>
-            <AccountBox position="fixed" pb={6} bottom={0} zIndex="1" minW="280px" maxW={isMobile ? '100%' : '280px'} />
+            {/* <AccountBox position="fixed" pb={6} bottom={0} zIndex="1" minW="280px" maxW={isMobile ? '100%' : '280px'} /> */}
           </Box>
         )}
       </MotionBox>

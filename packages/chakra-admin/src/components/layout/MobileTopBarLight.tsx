@@ -20,6 +20,7 @@ import { SidebarTitle } from './sidebar/SidebarTitle'
 type Props = {
   title?: string
   icon?: string
+  children?: React.ReactNode
 }
 export const MobileTopBarLight: FC<Props> = ({ title, icon, children }) => {
   const { isOpen, onClose, onToggle } = useDisclosure()
