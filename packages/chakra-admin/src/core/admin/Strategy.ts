@@ -3,23 +3,54 @@
 import { DocumentNode, gql, OperationVariables, QueryResult, TypedDocumentNode } from '@apollo/client'
 import { query } from 'gql-query-builder'
 import { generateFields } from '../graphql'
-import { SortType } from '../list'
+import { PaginationMode, SortType } from '../list'
 
 export type OffsetPaginationParam = {
-  first?: number
-  after?: number
+  page?: number
+  perPage?: number
   disabled?: boolean
 }
 
-export type ListGetVariablesParams<TItem extends Record<string, any> = Record<string, any>> = {
-  pagination: OffsetPaginationParam
-  sort: SortType<TItem>
-  filters: TItem
+export type ListGetVariablesParamsBase<TItem extends Record<string, any> = Record<string, any>> = {
+  paginationMode: PaginationMode
+  resource: string
 }
+
+export type ListGetVariablesOffsetParams<TItem extends Record<string, any> = Record<string, any>> =
+  ListGetVariablesParamsBase<TItem> & {
+    paginationMode: 'offset'
+    pagination: OffsetPaginationParam
+    sort: SortType<TItem>
+    filters: TItem
+  }
+
+export type ListGetVariablesCursorParams<TItem extends Record<string, any> = Record<string, any>> =
+  ListGetVariablesParamsBase<TItem> & {
+    paginationMode: 'cursor'
+    after?: string
+    before?: string
+    first?: number
+    last?: number
+    revert?: boolean
+    sortBy: keyof TItem | string
+    filters: TItem | Record<string, any>
+    resource: string
+  }
+
+export type ListGetVariablesParams<TItem extends Record<string, any> = Record<string, any>> =
+  | ListGetVariablesOffsetParams<TItem>
+  | ListGetVariablesCursorParams<TItem>
 
 export type GetListResult<TItem = Record<string, any>> = {
   data: TItem[]
-  totalCount: number
+  totalCount?: number | undefined | null
+}
+
+export type PageInfo = {
+  hasNextPage?: boolean
+  hasPreviousPage?: boolean
+  startCursor?: string | null
+  endCursor?: string | null
 }
 
 export interface ListStrategy<TData = any, TVariables = OperationVariables, TItem = Record<string, any>> {
@@ -31,9 +62,10 @@ export interface ListStrategy<TData = any, TVariables = OperationVariables, TIte
   ): DocumentNode | TypedDocumentNode<TData, TVariables>
   // TODO: add support for cursor based pagination
   /* type: 'offset' | 'cursor' */
-  getVariables(params: ListGetVariablesParams, resource: string): TVariables
-  getList: (queryResult: QueryResult<TData, TVariables>) => TItem[]
-  getTotal: (queryResult: QueryResult<TData, TVariables>) => number
+  getVariables(params: ListGetVariablesParams): TVariables
+  getList: (queryResult: QueryResult<TData, TVariables>, paginationMode: PaginationMode) => TItem[]
+  getTotal: (queryResult: QueryResult<TData, TVariables>, paginationMode: PaginationMode) => number | undefined | null
+  getPageInfo?: (queryResult: QueryResult<TData, TVariables>, paginationMode: PaginationMode) => PageInfo
 }
 
 export interface ShowStrategy<
@@ -109,16 +141,22 @@ export class DefaultListStrategy implements ListStrategy {
     `
   }
 
-  getVariables(params: ListGetVariablesParams, resource: string): OperationVariables {
-    return { ...params }
+  getVariables(params: ListGetVariablesParams): OperationVariables {
+    const { paginationMode, resource, ...rest } = params
+
+    return { ...rest }
   }
 
-  getList(queryResult: QueryResult<any, OperationVariables>): any {
+  getList(queryResult: QueryResult<any, OperationVariables>, paginationMode: PaginationMode): any {
     return queryResult.data.items
   }
 
-  getTotal(queryResult: QueryResult<any, OperationVariables>): number {
+  getTotal(queryResult: QueryResult<any, OperationVariables>, paginationMode: PaginationMode): number {
     return queryResult.data.totalCount
+  }
+
+  getPageInfo(queryResult: QueryResult<any, OperationVariables>, paginationMode: PaginationMode): PageInfo {
+    return queryResult.data.pageInfo
   }
 }
 

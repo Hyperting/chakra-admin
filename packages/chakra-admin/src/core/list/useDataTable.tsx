@@ -1,7 +1,7 @@
 import React, { Children, cloneElement, ReactElement, useCallback, useEffect, useMemo } from 'react'
 import { Column, TableInstance, usePagination, useSortBy, useTable, useExpanded } from 'react-table'
 import { humanize } from 'inflection'
-import { chakra, Icon, IconButton } from '@chakra-ui/react'
+import { Icon, IconButton } from '@chakra-ui/react'
 import { useTranslate } from 'ca-i18n'
 import { BsChevronUp, BsChevronDown } from 'react-icons/bs'
 import { DataTableProps } from '../../components/list/DataTable'
@@ -10,6 +10,7 @@ import { MoreMenuHeader } from '../../components/list/MoreMenuHeader'
 import { GenericMoreMenuButton } from '../../components/buttons/GenericMoreMenuButton'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 import { DataTableValue } from '../../components/list/DataTableValue'
+import { CursorPagination, OffsetPagination } from './useList'
 
 export type UseDataTableReturn = {
   foundedColumns: Column<object>[]
@@ -17,13 +18,12 @@ export type UseDataTableReturn = {
 
 export function useDataTable<TItem = Record<string, any>>({
   data,
+  list,
   pageCount: maxOffset,
   loading,
   error,
-  onPaginationChange,
+  onPageChange,
   onSortChange,
-  offset,
-  limit,
   total,
   children,
   currentSort,
@@ -40,6 +40,8 @@ export function useDataTable<TItem = Record<string, any>>({
   resource,
   queryResult,
   expandComponent,
+  paginationMode,
+  ...rest
 }: DataTableProps<TItem>): UseDataTableReturn {
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
   const tAll = useTranslate()
@@ -138,13 +140,20 @@ export function useDataTable<TItem = Record<string, any>>({
       autoResetExpanded: false,
       getSubRows,
       initialState: {
-        pageIndex: offset,
-        pageSize: limit,
+        ...(paginationMode === 'offset'
+          ? {
+              pageIndex: (rest as OffsetPagination).page ? (rest as OffsetPagination).page - 1 : 0,
+              pageSize: (rest as OffsetPagination).perPage,
+            }
+          : {
+              pageSize: (rest as CursorPagination).after || (rest as CursorPagination).before,
+              pageIndex: (rest as CursorPagination).page || undefined,
+            }),
         sortBy: [...transformedDefaultSorting, ...transformedSort],
       },
       pageCount: maxOffset,
       // disableSortBy: false,
-      data: strategy?.list.getList(queryResult!) || [],
+      data: list || [],
     },
     useSortBy,
     useExpanded,
@@ -209,22 +218,25 @@ export function useDataTable<TItem = Record<string, any>>({
 
   useEffect(() => {
     if (!loading) {
-      if (onPaginationChange) {
-        onPaginationChange({
-          limit: pageSize,
-          offset: pageIndex,
-        })
+      if (onPageChange) {
+        if (paginationMode === 'offset') {
+          onPageChange({
+            perPage: pageSize,
+            page: pageIndex,
+          })
+        } else {
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSize, pageIndex])
 
   useEffect(() => {
-    if (offset !== pageIndex) {
+    if (paginationMode === 'offset' && (rest as OffsetPagination).page !== pageIndex) {
       tableInstance.gotoPage(0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset])
+  }, [(rest as OffsetPagination)?.page])
 
   useEffect(() => {
     if (onSortChange) {

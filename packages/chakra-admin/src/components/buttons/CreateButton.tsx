@@ -9,7 +9,8 @@ import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 
 type Props = Partial<ListProps> &
   Partial<UseListReturn> & { label?: string | boolean; openAsModal?: boolean } & ButtonProps &
-  Partial<LinkProps>
+  Partial<LinkProps> &
+  Record<string, any>
 
 export const CreateButton: FC<Props> = ({
   basePath = '/',
@@ -34,14 +35,20 @@ export const CreateButton: FC<Props> = ({
   data,
   error,
   loading,
-  limit,
-  offset,
+  paginationMode,
+  page,
+  perPage,
+  total,
+  after,
+  before,
+  first,
+  last,
+  revert,
   onFiltersChange,
-  onPaginationChange,
+  onPageChange,
   onSortChange,
   pageCount,
   refetch,
-  total,
   fetchMore,
   updateQuery,
   startPolling,

@@ -43,17 +43,7 @@ function getRowClickRedirect<T>(
 }
 
 export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
-  const {
-    loading,
-    filtersComponent,
-    total,
-    offset,
-    resource,
-    expandComponent,
-    hasEdit,
-    hasShow,
-    rowClick = 'edit',
-  } = props
+  const { loading, filtersComponent, total, resource, expandComponent, hasEdit, hasShow, rowClick = 'edit' } = props
 
   // useRegisterLayoutComponent(DataTable as any)
 
@@ -145,7 +135,6 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           pageIndex={pageIndex}
           pageSize={pageSize}
           totalRows={total || 0}
-          offset={offset}
         />
       </chakra.div>
       <chakra.div maxW="100%" overflowX="auto">
@@ -251,7 +240,6 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           pageIndex={pageIndex}
           pageSize={pageSize}
           totalRows={total || 0}
-          offset={offset}
         />
       </chakra.div>
     </chakra.div>

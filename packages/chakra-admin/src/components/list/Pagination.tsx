@@ -19,7 +19,6 @@ type Props = {
   setPageSize: (pageSize: number) => void
   fetching?: boolean
   totalRows: number
-  offset?: number
 }
 
 export const Pagination: FC<Props> = ({
@@ -32,7 +31,6 @@ export const Pagination: FC<Props> = ({
   canPreviousPage,
   previousPage,
   totalRows: total,
-  offset,
 }) => {
   const from = useMemo(() => (total === 0 ? 0 : pageIndex * pageSize + 1), [pageIndex, pageSize, total])
   const to = useMemo(

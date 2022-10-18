@@ -8,6 +8,7 @@ import { GQLOperation } from '../../core/graphql/types'
 import { NestedKeyOf } from 'ca-system'
 import { TreeRenderer } from '..'
 import { useVersionStateValue } from '../../core/admin/versionState'
+import { PaginationMode } from '../../core'
 
 export type QueryProps<TQuery = Record<string, any>, TData = any, TVariables = OperationVariables> = Partial<
   Omit<UseGQLBuilderParams<TQuery, TData, TVariables>, 'operation' | 'type' | 'additionaFields'>
@@ -15,6 +16,7 @@ export type QueryProps<TQuery = Record<string, any>, TData = any, TVariables = O
   type?: 'list' | 'show'
   query: GQLOperation<TQuery, TData, TVariables>
   fields?: NestedKeyOf<Required<TData>>[]
+  paginationMode?: PaginationMode
 }
 
 const defaultResolver = (
@@ -38,6 +40,7 @@ export function Query<TQuery = Record<string, any>, TData = any, TVariables = Op
   query,
   type = 'show',
   fields = [],
+  paginationMode,
   ...props
 }: QueryProps<TQuery, TData, TVariables>) {
   const strategy = useGlobalStrategy()
@@ -69,12 +72,12 @@ export function Query<TQuery = Record<string, any>, TData = any, TVariables = Op
     () =>
       !queryResult.loading && queryResult.data
         ? type === 'list'
-          ? strategy?.list.getList(queryResult as any)
+          ? strategy?.list.getList(queryResult as any, paginationMode || 'offset')
           : strategy?.show.getItem(queryResult as any)
         : type === 'list'
         ? []
         : {},
-    [queryResult, strategy?.list, strategy?.show, type]
+    [paginationMode, queryResult, strategy?.list, strategy?.show, type]
   )
 
   const childrenProps = useMemo(() => {

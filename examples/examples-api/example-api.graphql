@@ -27,6 +27,11 @@ enum SortDirection {
   DESC
 }
 
+enum CompaniesSortByKeys {
+  ID
+  NAME
+}
+
 input CompanySortInput {
   id: SortDirection
   name: SortDirection
@@ -69,15 +74,38 @@ type CompanyListResponse {
   total: Int
 }
 
+type PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor: String
+  endCursor: String
+}
+
+type CompanyEdge {
+  cursor: String
+  node: Company
+}
+
+type CompanyConnection {
+  pageInfo: PageInfo!
+  edges: [CompanyEdge!]!
+  nodes: [Company!]!
+}
+
 type Query {
   employee(id: ID): Employee
   employees: [Employee!]
   company(id: ID): Company
-  companies(
-    sort: CompanySortInput
+  companies(sort: CompanySortInput, filters: CompanyFilterInput, pagination: PaginationInput): CompanyListResponse!
+  cursorCompanies(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    revert: Boolean
+    sortBy: CompaniesSortByKeys
     filters: CompanyFilterInput
-    pagination: PaginationInput
-  ): CompanyListResponse!
+  ): CompanyConnection!
 }
 
 type Mutation {

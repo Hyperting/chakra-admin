@@ -6,6 +6,8 @@ import { ListStrategy } from '../admin/Strategy'
 import { PageLayoutProps } from '../../components/details/PageLayout'
 import { NestedKeyOf } from 'ca-system'
 
+export type PaginationMode = 'offset' | 'cursor'
+
 export type ListProps<
   TQuery = Record<string, any>,
   TItem = Record<string, any>,
@@ -14,6 +16,7 @@ export type ListProps<
   DeleteTData = any,
   DeleteTVariables = OperationVariables
 > = {
+  paginationMode?: PaginationMode
   resource?: string
   basePath?: string
   defaultSorting?: SortType<any>
@@ -37,4 +40,5 @@ export type ListProps<
   layout?: ReactElement<PageLayoutProps, any>
   fields?: NestedKeyOf<Required<TItem>>[]
   refetchOnDefaultFiltersChange?: boolean
+  defaultPerPage?: number
 } & Pick<PageLayoutProps, 'title'>

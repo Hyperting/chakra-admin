@@ -19,7 +19,7 @@ export type MobileDataTableProps<TItem> = Partial<UseListReturn> &
   }
 
 export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTableProps<TItem>) {
-  const { loading, filtersComponent, total, offset } = props
+  const { loading, filtersComponent, total } = props
 
   const {
     getTableProps,
@@ -69,7 +69,6 @@ export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTa
           pageIndex={pageIndex}
           pageSize={pageSize}
           totalRows={total || 0}
-          offset={offset}
         />
       </chakra.div>
       <chakra.div px={5} maxW="100%">
@@ -202,7 +201,6 @@ export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTa
           pageIndex={pageIndex}
           pageSize={pageSize}
           totalRows={total || 0}
-          offset={offset}
         />
       </chakra.div>
     </chakra.div>

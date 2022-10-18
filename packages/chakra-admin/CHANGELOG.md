@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.0.2-dev.12
+
+### Patch Changes
+
+- WIP: Connection Cursor Support
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.12
+  - ca-theme@0.0.2-dev.12
+  - ca-system@0.0.2-dev.12
+
 ## 0.0.2-dev.11
 
 ### Patch Changes

@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApolloQueryResult, gql, OperationVariables, QueryResult, useQuery } from '@apollo/client'
 import { useCallback, useEffect, useMemo } from 'react'
+import { ListGetVariablesParams } from '../admin'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 import { useVersionStateValue } from '../admin/versionState'
 import { useGqlBuilder } from '../graphql/gql-builder'
-import { ListProps } from './ListProps'
-import { PaginationType } from './PaginationType'
+import { ListProps, PaginationMode } from './ListProps'
 import { SortType } from './SortType'
 import { useSearchParamsAsState } from './useSearchParamsAsState'
 
-export const DEFAULT_LIMIT = 10
-export const QP_LIMIT = 'limit'
-export const QP_OFFSET = 'offset'
+export const DEFAULT_PER_PAGE = 20
+export const QP_PER_PAGE = 'l'
+export const QP_PAGE = 'p'
+export const QP_AFTER = 'a'
+export const QP_BEFORE = 'b'
+export const QP_FIRST = 'f'
+export const QP_LAST = 'l'
+export const QP_REVERT = 'r'
 export const QP_SORT_PREFIX = 's_'
 export const QP_FILTERS_PREFIX = 'f_'
 
@@ -20,6 +25,53 @@ const EMPTY_QUERY = gql`
     __typename
   }
 `
+
+export type BaseListPagination = {
+  paginationMode: PaginationMode
+  pageCount?: number
+  total?: number
+}
+
+export type OffsetOnPageChangeParams = {
+  page: number
+  perPage: number
+}
+export type OffsetOnPageChange = (params: OffsetOnPageChangeParams) => void
+
+export type CursorOnPageChangeParams = {
+  after?: string
+  before?: string
+  first?: number
+  last?: number
+  revert?: boolean
+}
+export type CursorOnPageChange = (params: CursorOnPageChangeParams) => void
+
+export type OnPageChangeParams = OffsetOnPageChangeParams | CursorOnPageChangeParams
+export type OnPageChange = OffsetOnPageChange | CursorOnPageChange
+
+export type OffsetPagination = BaseListPagination & {
+  paginationMode: 'offset'
+  page: number
+  perPage: number
+  onPageChange: OffsetOnPageChange
+}
+
+export type CursorPagination = BaseListPagination & {
+  paginationMode: 'cursor'
+  after?: string
+  before?: string
+  first?: number
+  last?: number
+  revert?: boolean
+  onPageChange: CursorOnPageChange
+  /**
+   * a table could need to know in wich page it is to display pagination
+   */
+  page?: number
+}
+
+export type ListPagination = OffsetPagination | CursorPagination
 
 export type UseListParams<
   TQuery = Record<string, any>,
@@ -30,17 +82,16 @@ export type UseListParams<
   DeleteTVariables = OperationVariables
 > = ListProps<TQuery, TItem, ListTData, ListTVariables, DeleteTData, DeleteTVariables> & {}
 
-export type UseListReturn<TData = any, TVariables = OperationVariables> = {
+export type UseListReturn<TItem = Record<string, any>, TData = any, TVariables = OperationVariables> = {
   refetch: (variables?: Partial<TVariables> | undefined) => Promise<ApolloQueryResult<TData>>
-  onPaginationChange: (pagination: { limit: number; offset: number }) => void
   onSortChange: (sort: SortType<any>) => void
   onFiltersChange: (filters: Record<string, any>) => void
-  pageCount: number
   currentSort: SortType<any>
   currentFilters: Record<string, any>
   queryResult: QueryResult<TData, TVariables>
-} & QueryResult<TData, TVariables> &
-  PaginationType
+  list: TItem[]
+} & ListPagination &
+  QueryResult<TData, TVariables>
 
 /**
  * Hook that manage filtering and pagination for resources list QUERIES.
@@ -55,6 +106,8 @@ export const useList = <
   DeleteTData = any,
   DeleteTVariables = OperationVariables
 >({
+  paginationMode = 'offset',
+  defaultPerPage = DEFAULT_PER_PAGE,
   resource,
   query,
   queryOptions,
@@ -64,26 +117,62 @@ export const useList = <
   children,
   refetchOnDefaultFiltersChange,
 }: UseListParams<TQuery, TItem, ListTData, ListTVariables, DeleteTData, DeleteTVariables>): UseListReturn<
+  TItem,
   ListTData,
   ListTVariables
 > => {
   const version = useVersionStateValue()
   const strategy = useGlobalStrategy()
 
-  const [params, setParams] = useSearchParamsAsState({
-    [QP_LIMIT]: `${DEFAULT_LIMIT}`,
-    [QP_OFFSET]: '0',
-  })
+  const [params, setParams] = useSearchParamsAsState()
 
-  const limit = useMemo(() => {
-    return params[QP_LIMIT] && !isNaN(params[QP_LIMIT] as any)
-      ? parseInt(params[QP_LIMIT] as string, 10)
-      : DEFAULT_LIMIT
-  }, [params])
+  const perPage = useMemo(() => {
+    return paginationMode === 'offset'
+      ? params[QP_PER_PAGE] && !isNaN(params[QP_PER_PAGE] as any)
+        ? parseInt(params[QP_PER_PAGE] as string, 10)
+        : defaultPerPage
+      : undefined
+  }, [defaultPerPage, paginationMode, params])
 
-  const offset = useMemo(() => {
-    return params[QP_OFFSET] && !isNaN(params[QP_OFFSET] as any) ? parseInt(params[QP_OFFSET] as string, 10) : 0
-  }, [params])
+  const page = useMemo(() => {
+    return paginationMode === 'offset'
+      ? params[QP_PAGE] && !isNaN(params[QP_PAGE] as any)
+        ? parseInt(params[QP_PAGE] as string, 10)
+        : 1
+      : undefined
+  }, [paginationMode, params])
+
+  const after = useMemo(() => {
+    return paginationMode === 'cursor' ? (params[QP_AFTER] ? (params[QP_AFTER] as string) : undefined) : undefined
+  }, [paginationMode, params])
+
+  const before = useMemo(() => {
+    return paginationMode === 'cursor' ? (params[QP_BEFORE] ? (params[QP_BEFORE] as string) : undefined) : undefined
+  }, [paginationMode, params])
+
+  const first = useMemo(() => {
+    return paginationMode === 'cursor'
+      ? params[QP_FIRST] && !isNaN(params[QP_FIRST] as any)
+        ? parseInt(params[QP_FIRST] as string, 10)
+        : undefined
+      : undefined
+  }, [paginationMode, params])
+
+  const last = useMemo(() => {
+    return paginationMode === 'cursor'
+      ? params[QP_LAST] && !isNaN(params[QP_LAST] as any)
+        ? parseInt(params[QP_LAST] as string, 10)
+        : undefined
+      : undefined
+  }, [paginationMode, params])
+
+  const revert = useMemo(() => {
+    return paginationMode === 'cursor'
+      ? params[QP_REVERT]
+        ? (params[QP_REVERT] as string) === 'true'
+        : false
+      : undefined
+  }, [paginationMode, params])
 
   const currentSort = useMemo<SortType<any>>(() => {
     const qpKeys = Object.keys(params)
@@ -132,18 +221,47 @@ export const useList = <
   }, [defaultFilters, params])
 
   const variables = useMemo(() => {
-    return strategy?.list?.getVariables(
-      {
-        filters: currentFilters,
-        pagination: {
-          first: limit,
-          after: offset,
-        },
+    let preparedVars: ListGetVariablesParams = {
+      paginationMode,
+      filters: currentFilters,
+      resource,
+    } as ListGetVariablesParams
+
+    if (preparedVars.paginationMode === 'offset') {
+      preparedVars = {
+        ...preparedVars,
         sort: currentSort,
-      },
-      resource!
-    ) as ListTVariables
-  }, [currentFilters, currentSort, limit, offset, resource, strategy?.list])
+        pagination: {
+          perPage,
+          page,
+        },
+      }
+    } else {
+      preparedVars = {
+        ...preparedVars,
+        after,
+        before,
+        first,
+        last,
+        revert,
+      }
+    }
+
+    return strategy?.list?.getVariables(preparedVars) as ListTVariables
+  }, [
+    paginationMode,
+    currentFilters,
+    resource,
+    strategy?.list,
+    currentSort,
+    perPage,
+    page,
+    after,
+    before,
+    first,
+    last,
+    revert,
+  ])
 
   const { initialized, operation, selectionSet } = useGqlBuilder({
     resource,
@@ -163,26 +281,49 @@ export const useList = <
 
   const total = useMemo(() => {
     if (!result.loading && result.data) {
-      return strategy?.list.getTotal(result as any) || 0
+      return strategy?.list.getTotal(result as any, paginationMode) || (paginationMode === 'offset' ? 0 : undefined)
     }
 
     return 0
-  }, [result, strategy?.list])
+  }, [paginationMode, result, strategy?.list])
+
+  const list = useMemo<TItem[]>(() => {
+    if (!result.loading && result.data) {
+      return (strategy?.list.getList(result as any, paginationMode) || []) as TItem[]
+    }
+
+    return []
+  }, [paginationMode, result, strategy?.list])
 
   const pageCount = useMemo(() => {
-    const foundedMaxPage = Math.floor((total || 0) / (limit || DEFAULT_LIMIT))
-    return total % (limit || 0) === 0 ? foundedMaxPage : foundedMaxPage + 1
-  }, [limit, total])
+    if (paginationMode === 'offset' || total) {
+      const foundedMaxPage = Math.floor((total || 0) / (perPage || defaultPerPage))
+      return (total || 0) % (perPage || defaultPerPage) === 0 ? foundedMaxPage : foundedMaxPage + 1
+    }
 
-  const onPaginationChange = useCallback(
-    ({ limit, offset }: { limit: number; offset: number }) => {
-      setParams({
-        ...params,
-        [QP_LIMIT]: `${limit}`,
-        [QP_OFFSET]: `${offset}`,
-      })
+    return undefined
+  }, [defaultPerPage, paginationMode, perPage, total])
+
+  const onPageChange = useCallback<OnPageChange>(
+    (params) => {
+      if (paginationMode === 'offset') {
+        setParams({
+          ...params,
+          [QP_PAGE]: params.page,
+          [QP_PER_PAGE]: params.perPage,
+        })
+      } else {
+        setParams({
+          ...params,
+          [QP_AFTER]: params.after,
+          [QP_BEFORE]: params.before,
+          [QP_FIRST]: params.first,
+          [QP_LAST]: params.last,
+          [QP_REVERT]: params.revert,
+        })
+      }
     },
-    [setParams, params]
+    [paginationMode, setParams]
   )
 
   const onSortChange = useCallback(
@@ -277,18 +418,36 @@ export const useList = <
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultFilters])
 
-  return {
+  const baseReturn = {
     ...result,
     queryResult: result,
     refetch: result.refetch,
-    onPaginationChange,
+    onPageChange: onPageChange as any,
     onSortChange,
     onFiltersChange,
-    limit,
-    offset,
     total,
-    pageCount: pageCount || 0,
+    pageCount,
     currentSort,
     currentFilters,
+    list,
+  }
+
+  if (paginationMode === 'offset') {
+    return {
+      ...baseReturn,
+      paginationMode: 'offset',
+      perPage: perPage || defaultPerPage,
+      page: page || 1,
+    }
+  } else {
+    return {
+      ...baseReturn,
+      paginationMode: 'cursor',
+      after,
+      before,
+      first,
+      last,
+      revert,
+    }
   }
 }

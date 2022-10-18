@@ -1,12 +1,9 @@
-/* eslint-disable react/jsx-key */
-import React, { FC } from 'react'
-import { FaUser } from 'react-icons/fa'
+import { FC } from 'react'
 import {
   DataTable,
   Filters,
   Input,
   List,
-  PageTitle,
   SortDirection,
   DataTableValue as Field,
   ListToolbar,
@@ -15,12 +12,36 @@ import {
 import { gql } from '@apollo/client'
 
 const QUERY_GET_COMPANIES = gql`
-  query GetCompanies($pagination: PaginationInput, $sort: CompanySortInput, $filters: CompanyFilterInput) {
-    companies(pagination: $pagination, sort: $sort, filters: $filters) {
-      total
-      data {
-        id
-        name
+  query GetCursorCompanies(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $revert: Boolean
+    $sortBy: CompaniesSortByKeys
+    $filters: CompanyFilterInput
+  ) {
+    cursorCompanies(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      revert: $revert
+      sortBy: $sortBy
+      filters: $filters
+    ) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          id
+          name
+        }
       }
     }
   }
@@ -38,12 +59,12 @@ const CompanyFilters: FC = (props) => (
   </Filters>
 )
 
-export const CompanyList: FC = (props) => {
+export const CompanyCursorList: FC = (props) => {
   return (
     <List
       {...props}
+      paginationMode="cursor"
       query={QUERY_GET_COMPANIES}
-      defaultPerPage={20}
       deleteItemMutation={MUTATION_DELETE_COMPANY}
       filtersComponent={<CompanyFilters />}
       defaultSorting={{ name: SortDirection.ASC }}

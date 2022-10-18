@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.0.2-dev.12
+
+### Patch Changes
+
+- WIP: Connection Cursor Support
+
 ## 0.0.2-dev.11
 
 ### Patch Changes

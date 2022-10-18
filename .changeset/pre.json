@@ -12,10 +12,13 @@
     "eslint-config-custom": "0.0.0",
     "tsconfig": "0.0.0",
     "tsup-config": "0.0.0",
-    "ca-system": "0.0.2-dev.6"
+    "ca-system": "0.0.2-dev.6",
+    "examples-api": "1.0.0",
+    "kitchen-sink": "0.0.0"
   },
   "changesets": [
     "eight-kiwis-fail",
+    "five-kids-search",
     "giant-monkeys-check",
     "happy-parrots-wink",
     "khaki-wombats-dance",
