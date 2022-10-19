@@ -1,13 +1,11 @@
 /* eslint-disable react/jsx-key */
 import React, { FC } from 'react'
-import { FaUser } from 'react-icons/fa'
 import {
   DataTable,
   Filters,
   Input,
   List,
-  PageTitle,
-  SortDirection,
+  OffsetSortDirection,
   DataTableValue as Field,
   ListToolbar,
   CreateButton,
@@ -46,7 +44,7 @@ export const CompanyList: FC = (props) => {
       defaultPerPage={20}
       deleteItemMutation={MUTATION_DELETE_COMPANY}
       filtersComponent={<CompanyFilters />}
-      defaultSorting={{ name: SortDirection.ASC }}
+      defaultSorting={{ name: OffsetSortDirection.ASC }}
       toolbarComponent={
         <ListToolbar>
           <CreateButton openAsModal />

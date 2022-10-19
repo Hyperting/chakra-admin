@@ -3,7 +3,7 @@
 import { DocumentNode, gql, OperationVariables, QueryResult, TypedDocumentNode } from '@apollo/client'
 import { query } from 'gql-query-builder'
 import { generateFields } from '../graphql'
-import { PaginationMode, SortType } from '../list'
+import { PaginationMode, OffsetSortType } from '../list'
 
 export type OffsetPaginationParam = {
   page?: number
@@ -20,7 +20,7 @@ export type ListGetVariablesOffsetParams<TItem extends Record<string, any> = Rec
   ListGetVariablesParamsBase<TItem> & {
     paginationMode: 'offset'
     pagination: OffsetPaginationParam
-    sort: SortType<TItem>
+    sort: OffsetSortType<TItem>
     filters: TItem
   }
 
@@ -64,8 +64,8 @@ export interface ListStrategy<TData = any, TVariables = OperationVariables, TIte
   /* type: 'offset' | 'cursor' */
   getVariables(params: ListGetVariablesParams): TVariables
   getList: (queryResult: QueryResult<TData, TVariables>, paginationMode: PaginationMode) => TItem[]
-  getTotal: (queryResult: QueryResult<TData, TVariables>, paginationMode: PaginationMode) => number | undefined | null
-  getPageInfo?: (queryResult: QueryResult<TData, TVariables>, paginationMode: PaginationMode) => PageInfo
+  getTotal?: (queryResult: QueryResult<TData, TVariables>, paginationMode: PaginationMode) => number | undefined | null
+  getPageInfo?: (queryResult: QueryResult<TData, TVariables>) => PageInfo
 }
 
 export interface ShowStrategy<
@@ -151,11 +151,11 @@ export class DefaultListStrategy implements ListStrategy {
     return queryResult.data.items
   }
 
-  getTotal(queryResult: QueryResult<any, OperationVariables>, paginationMode: PaginationMode): number {
+  getTotal(queryResult: QueryResult<any, OperationVariables>, paginationMode: PaginationMode): number | undefined {
     return queryResult.data.totalCount
   }
 
-  getPageInfo(queryResult: QueryResult<any, OperationVariables>, paginationMode: PaginationMode): PageInfo {
+  getPageInfo(queryResult: QueryResult<any, OperationVariables>): PageInfo {
     return queryResult.data.pageInfo
   }
 }

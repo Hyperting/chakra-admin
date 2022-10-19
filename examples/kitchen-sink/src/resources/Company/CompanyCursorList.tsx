@@ -1,14 +1,5 @@
 import { FC } from 'react'
-import {
-  DataTable,
-  Filters,
-  Input,
-  List,
-  SortDirection,
-  DataTableValue as Field,
-  ListToolbar,
-  CreateButton,
-} from 'chakra-admin'
+import { DataTable, Filters, Input, List, DataTableValue as Field, ListToolbar, CreateButton } from 'chakra-admin'
 import { gql } from '@apollo/client'
 
 const QUERY_GET_COMPANIES = gql`
@@ -67,7 +58,6 @@ export const CompanyCursorList: FC = (props) => {
       query={QUERY_GET_COMPANIES}
       deleteItemMutation={MUTATION_DELETE_COMPANY}
       filtersComponent={<CompanyFilters />}
-      defaultSorting={{ name: SortDirection.ASC }}
       toolbarComponent={
         <ListToolbar>
           <CreateButton openAsModal />

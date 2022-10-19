@@ -51,21 +51,21 @@ export class ExampleListStrategy implements ListStrategy {
       return (result.data as any)[dataKeys[0]].total as number
     }
     
-    return 0
+    return undefined
   }
 
   getVariables(params: ListGetVariablesParams<Record<string, any>>) {
-    console.log(params, 'params')
     if (params.paginationMode === 'offset') {
       return {
         ...params,
         pagination: {
           limit: params.pagination.perPage,
-          offset: (params.pagination.page || 0) * (params.pagination.perPage || 0),
+          offset: (params.pagination.page ? params.pagination.page -1  : 0) * (params.pagination.perPage || 0),
         }
       }
 
     } else {
+      console.log(params, 'getVariables() params')
       return {
         ...params,
       }

@@ -29,7 +29,7 @@ export const CreateButton: FC<Props> = ({
   hasShow,
   hasList,
   deleteItemMutation,
-  defaultSorting,
+  defaultSort: defaultSorting,
   currentFilters,
   currentSort,
   data,

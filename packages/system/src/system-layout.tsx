@@ -140,7 +140,6 @@ export function removeLayoutComponent(component: React.ReactElement) {
 export const useRegisterLayoutComponent = (component: React.ReactElement) => {
   useEffect(() => {
     registerLayoutComponent(component)
-    // console.log(registeredLayoutComponents)
     return () => {
       removeLayoutComponent(component)
     }
@@ -168,9 +167,6 @@ export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string
   ;(CALayoutImpl as unknown as FC<P & { [x: string]: any }>).displayName = `CA${
     (component as any).displayName || (component as any).name
   }`
-
-  // console.log(registeredLayoutComponents, 'register vediamo')
-  // registerLayoutComponent(CALayoutImpl as any)
 
   return CALayoutImpl as unknown as FC<P & { [x: string]: any }>
 }

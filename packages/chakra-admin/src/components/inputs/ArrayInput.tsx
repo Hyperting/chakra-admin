@@ -49,8 +49,6 @@ export const ArrayInput: FC<ArrayInputProps> = React.forwardRef<any, ArrayInputP
     control,
   })
 
-  console.log(props, filterChakraProps(props), 'sono le props')
-
   return (
     <Stack ref={ref} {...rest}>
       {fields.length === 0 && emptyComponent}

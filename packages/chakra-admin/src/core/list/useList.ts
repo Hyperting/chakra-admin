@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApolloQueryResult, gql, OperationVariables, QueryResult, useQuery } from '@apollo/client'
 import { useCallback, useEffect, useMemo } from 'react'
-import { ListGetVariablesParams } from '../admin'
+import { ListGetVariablesParams, PageInfo } from '../admin'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
 import { useVersionStateValue } from '../admin/versionState'
 import { useGqlBuilder } from '../graphql/gql-builder'
 import { ListProps, PaginationMode } from './ListProps'
-import { SortType } from './SortType'
+import { OffsetSortType } from './SortType'
 import { useSearchParamsAsState } from './useSearchParamsAsState'
 
 export const DEFAULT_PER_PAGE = 20
@@ -17,6 +17,7 @@ export const QP_BEFORE = 'b'
 export const QP_FIRST = 'f'
 export const QP_LAST = 'l'
 export const QP_REVERT = 'r'
+export const QP_SORT_BY = 's'
 export const QP_SORT_PREFIX = 's_'
 export const QP_FILTERS_PREFIX = 'f_'
 
@@ -50,11 +51,27 @@ export type CursorOnPageChange = (params: CursorOnPageChangeParams) => void
 export type OnPageChangeParams = OffsetOnPageChangeParams | CursorOnPageChangeParams
 export type OnPageChange = OffsetOnPageChange | CursorOnPageChange
 
+export type OffsetOnSortChange<TItem extends Record<string, any> = Record<string, any>> = (
+  sort: OffsetSortType<TItem>
+) => void
+
+export type CursorsOnSortChangeParams<TItem extends Record<string, any> = Record<string, any>> = {
+  sortBy?: keyof TItem | string
+  revert?: boolean
+}
+export type CursorOnSortChange<TItem extends Record<string, any> = Record<string, any>> = (
+  sort: CursorsOnSortChangeParams<TItem>
+) => void
+
+export type OnSortChange = OffsetOnSortChange | CursorOnSortChange
+
 export type OffsetPagination = BaseListPagination & {
   paginationMode: 'offset'
   page: number
   perPage: number
   onPageChange: OffsetOnPageChange
+  currentSort: OffsetSortType<any>
+  onSortChange: OffsetOnSortChange
 }
 
 export type CursorPagination = BaseListPagination & {
@@ -69,13 +86,15 @@ export type CursorPagination = BaseListPagination & {
    * a table could need to know in wich page it is to display pagination
    */
   page?: number
+  currentSortBy?: string
+  onSortChange: CursorOnSortChange
 }
 
-export type ListPagination = OffsetPagination | CursorPagination
+export type PaginatedList = OffsetPagination | CursorPagination
 
 export type UseListParams<
   TQuery = Record<string, any>,
-  TItem = Record<string, any>,
+  TItem extends Record<string, any> = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
@@ -84,13 +103,12 @@ export type UseListParams<
 
 export type UseListReturn<TItem = Record<string, any>, TData = any, TVariables = OperationVariables> = {
   refetch: (variables?: Partial<TVariables> | undefined) => Promise<ApolloQueryResult<TData>>
-  onSortChange: (sort: SortType<any>) => void
   onFiltersChange: (filters: Record<string, any>) => void
-  currentSort: SortType<any>
   currentFilters: Record<string, any>
   queryResult: QueryResult<TData, TVariables>
   list: TItem[]
-} & ListPagination &
+  pageInfo?: PageInfo
+} & PaginatedList &
   QueryResult<TData, TVariables>
 
 /**
@@ -100,7 +118,7 @@ export type UseListReturn<TItem = Record<string, any>, TData = any, TVariables =
  */
 export const useList = <
   TQuery = Record<string, any>,
-  TItem = Record<string, any>,
+  TItem extends Record<string, any> = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
@@ -112,6 +130,7 @@ export const useList = <
   query,
   queryOptions,
   defaultFilters,
+  defaultSort,
   defaultSorting,
   fields,
   children,
@@ -135,11 +154,11 @@ export const useList = <
   }, [defaultPerPage, paginationMode, params])
 
   const page = useMemo(() => {
-    return paginationMode === 'offset'
-      ? params[QP_PAGE] && !isNaN(params[QP_PAGE] as any)
-        ? parseInt(params[QP_PAGE] as string, 10)
-        : 1
-      : undefined
+    if (params[QP_PAGE] && !isNaN(params[QP_PAGE] as any)) {
+      return parseInt(params[QP_PAGE] as string, 10)
+    }
+
+    return paginationMode === 'offset' ? 1 : undefined
   }, [paginationMode, params])
 
   const after = useMemo(() => {
@@ -174,13 +193,17 @@ export const useList = <
       : undefined
   }, [paginationMode, params])
 
-  const currentSort = useMemo<SortType<any>>(() => {
+  const currentSort = useMemo<OffsetSortType<any> | undefined>(() => {
+    if (paginationMode === 'cursor') {
+      return undefined
+    }
+
     const qpKeys = Object.keys(params)
     if (qpKeys.length > 0) {
       const foundedSortingKeys = qpKeys.filter((item) => item.startsWith(QP_SORT_PREFIX))
       if (foundedSortingKeys.length > 0) {
         return {
-          ...(defaultSorting || {}),
+          ...(defaultSort || defaultSorting || {}),
           ...(foundedSortingKeys || []).reduce((acc, item) => {
             return {
               ...acc,
@@ -191,9 +214,17 @@ export const useList = <
       }
     }
     return {
-      ...(defaultSorting || {}),
+      ...(defaultSort || defaultSorting || {}),
     }
-  }, [defaultSorting, params])
+  }, [defaultSort, defaultSorting, paginationMode, params])
+
+  const currentSortBy = useMemo<string | undefined>(() => {
+    if (paginationMode === 'offset') {
+      return undefined
+    }
+
+    return params[QP_SORT_BY] ? (params[QP_SORT_BY] as string) : undefined
+  }, [paginationMode, params])
 
   const currentFilters = useMemo<Record<string, any>>(() => {
     const qpKeys = Object.keys(params)
@@ -230,7 +261,7 @@ export const useList = <
     if (preparedVars.paginationMode === 'offset') {
       preparedVars = {
         ...preparedVars,
-        sort: currentSort,
+        sort: currentSort as OffsetSortType<any>,
         pagination: {
           perPage,
           page,
@@ -239,6 +270,7 @@ export const useList = <
     } else {
       preparedVars = {
         ...preparedVars,
+        sortBy: currentSortBy as string,
         after,
         before,
         first,
@@ -256,6 +288,7 @@ export const useList = <
     currentSort,
     perPage,
     page,
+    currentSortBy,
     after,
     before,
     first,
@@ -281,18 +314,10 @@ export const useList = <
 
   const total = useMemo(() => {
     if (!result.loading && result.data) {
-      return strategy?.list.getTotal(result as any, paginationMode) || (paginationMode === 'offset' ? 0 : undefined)
+      return strategy?.list.getTotal?.(result as any, paginationMode) || (paginationMode === 'offset' ? 0 : undefined)
     }
 
-    return 0
-  }, [paginationMode, result, strategy?.list])
-
-  const list = useMemo<TItem[]>(() => {
-    if (!result.loading && result.data) {
-      return (strategy?.list.getList(result as any, paginationMode) || []) as TItem[]
-    }
-
-    return []
+    return undefined
   }, [paginationMode, result, strategy?.list])
 
   const pageCount = useMemo(() => {
@@ -304,38 +329,74 @@ export const useList = <
     return undefined
   }, [defaultPerPage, paginationMode, perPage, total])
 
+  const list = useMemo<TItem[]>(() => {
+    if (!result.loading && result.data) {
+      return (strategy?.list.getList(result as any, paginationMode) || []) as TItem[]
+    }
+
+    return []
+  }, [paginationMode, result, strategy?.list])
+
+  const pageInfo = useMemo(() => {
+    if (!result.loading && result.data && paginationMode === 'cursor') {
+      return strategy?.list?.getPageInfo?.(result as any) || undefined
+    }
+
+    return undefined
+  }, [paginationMode, result, strategy?.list])
+
   const onPageChange = useCallback<OnPageChange>(
-    (params) => {
+    (paginationParams) => {
       if (paginationMode === 'offset') {
         setParams({
           ...params,
-          [QP_PAGE]: params.page,
-          [QP_PER_PAGE]: params.perPage,
+          [QP_PAGE]: paginationParams.page,
+          [QP_PER_PAGE]: paginationParams.perPage,
         })
       } else {
-        setParams({
+        const newParams = {
           ...params,
-          [QP_AFTER]: params.after,
-          [QP_BEFORE]: params.before,
-          [QP_FIRST]: params.first,
-          [QP_LAST]: params.last,
-          [QP_REVERT]: params.revert,
+        }
+
+        if ((paginationParams as CursorOnPageChangeParams).first) {
+          newParams[QP_FIRST] = (paginationParams as CursorOnPageChangeParams).first as unknown as string
+          delete newParams[QP_LAST]
+        } else if ((paginationParams as CursorOnPageChangeParams).last) {
+          newParams[QP_LAST] = (paginationParams as CursorOnPageChangeParams).last as unknown as string
+          delete newParams[QP_FIRST]
+        }
+
+        if (paginationParams.after) {
+          newParams[QP_AFTER] = paginationParams.after
+          delete newParams[QP_BEFORE]
+        } else if (paginationParams.before) {
+          newParams[QP_BEFORE] = paginationParams.before
+          delete newParams[QP_AFTER]
+        }
+
+        if (paginationParams.revert) {
+          newParams[QP_REVERT] = paginationParams.revert
+        }
+
+        console.log('newParams', params, newParams)
+        setParams({
+          ...newParams,
         })
       }
     },
-    [paginationMode, setParams]
+    [paginationMode, params, setParams]
   )
 
-  const onSortChange = useCallback(
-    (sort: SortType<any>) => {
-      const newSort = Object.keys(sort).reduce((acc, key) => {
-        return {
-          ...acc,
-          [QP_SORT_PREFIX + key]: sort[key],
-        }
-      }, {})
-      setParams(
-        ((prevState) => {
+  const onSortChange = useCallback<OnSortChange>(
+    (sort) => {
+      if (paginationMode === 'offset') {
+        const newSort = Object.keys(sort).reduce((acc, key) => {
+          return {
+            ...acc,
+            [QP_SORT_PREFIX + key]: sort[key],
+          }
+        }, {})
+        setParams((prevState) => {
           const prevStateKeys = Object.keys(prevState)
           if (prevStateKeys.length > 0) {
             const filteredPrevState = prevStateKeys.reduce((acc, item) => {
@@ -351,10 +412,28 @@ export const useList = <
             return { ...filteredPrevState, ...newSort }
           }
           return { ...newSort }
-        })(params)
-      )
+        })
+      } else {
+        const newParams = {
+          ...params,
+        }
+
+        if (sort?.sortBy) {
+          newParams[QP_SORT_BY] = sort.sortBy
+        }
+
+        if (!sort.sortBy && newParams[QP_SORT_BY] && !params[QP_SORT_BY]) {
+          delete newParams[QP_SORT_BY]
+        }
+
+        if (typeof sort.revert === 'boolean') {
+          newParams[QP_REVERT] = sort.revert
+        }
+
+        setParams(newParams)
+      }
     },
-    [params, setParams]
+    [paginationMode, params, setParams]
   )
 
   const onFiltersChange = useCallback(
@@ -385,9 +464,9 @@ export const useList = <
               }
             }, {})
 
-            return { ...filteredPrevState, ...newFilters, offset: '0' }
+            return { ...filteredPrevState, ...newFilters, [QP_PAGE]: '1' }
           }
-          return { ...newFilters, offset: '0' }
+          return { ...newFilters, [QP_PAGE]: '1' }
         })(params)
       )
     },
@@ -422,14 +501,13 @@ export const useList = <
     ...result,
     queryResult: result,
     refetch: result.refetch,
-    onPageChange: onPageChange as any,
-    onSortChange,
-    onFiltersChange,
+    list,
     total,
     pageCount,
-    currentSort,
     currentFilters,
-    list,
+    onFiltersChange,
+    onPageChange: onPageChange as any,
+    onSortChange: onSortChange as any,
   }
 
   if (paginationMode === 'offset') {
@@ -438,6 +516,7 @@ export const useList = <
       paginationMode: 'offset',
       perPage: perPage || defaultPerPage,
       page: page || 1,
+      currentSort: currentSort as OffsetSortType<any>,
     }
   } else {
     return {
@@ -448,6 +527,8 @@ export const useList = <
       first,
       last,
       revert,
+      pageInfo,
+      currentSortBy: currentSortBy as string,
     }
   }
 }

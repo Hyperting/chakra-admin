@@ -28,8 +28,8 @@ enum SortDirection {
 }
 
 enum CompaniesSortByKeys {
-  ID
-  NAME
+  id
+  name
 }
 
 input CompanySortInput {
@@ -77,12 +77,12 @@ type CompanyListResponse {
 type PageInfo {
   hasNextPage: Boolean
   hasPreviousPage: Boolean
-  startCursor: String
-  endCursor: String
+  startCursor: ID
+  endCursor: ID
 }
 
 type CompanyEdge {
-  cursor: String
+  cursor: ID
   node: Company
 }
 
