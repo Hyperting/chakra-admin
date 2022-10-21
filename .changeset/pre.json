@@ -17,6 +17,7 @@
     "kitchen-sink": "0.0.0"
   },
   "changesets": [
+    "cuddly-cats-teach",
     "eight-kiwis-fail",
     "five-kids-search",
     "giant-monkeys-check",

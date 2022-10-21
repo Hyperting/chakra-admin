@@ -1,5 +1,11 @@
 # ca-test-utils
 
+## 0.0.2-dev.13
+
+### Patch Changes
+
+- Feat: cursor pagination in List and DataTable
+
 ## 0.0.2-dev.12
 
 ### Patch Changes

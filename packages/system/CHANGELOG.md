@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.0.2-dev.13
+
+### Patch Changes
+
+- Feat: cursor pagination in List and DataTable
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.13
+
 ## 0.0.2-dev.12
 
 ### Patch Changes
