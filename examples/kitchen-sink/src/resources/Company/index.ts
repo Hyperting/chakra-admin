@@ -1,6 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { CompanyCreate } from './CompanyCreate'
 import { CompanyCursorList } from './CompanyCursorList'
+import { CompanyCursorWithTotalList } from './CompanyCursorWithTotalList'
 import { CompanyEdit } from './CompanyEdit'
 import { CompanyList } from './CompanyList'
 import { CompanyShow } from './CompanyShow'
@@ -23,7 +24,14 @@ const CursorCompanyList = {
   list: CompanyCursorList,
 }
 
+const CursorCompanyWithTotal = {
+  ...Company,
+  name: 'CursorsCompanyWithTotal',
+  list: CompanyCursorWithTotalList,
+}
+
 export {
   CursorCompanyList,
   OffsetCompanyList,
+  CursorCompanyWithTotal
 }

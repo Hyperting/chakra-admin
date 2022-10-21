@@ -19,7 +19,7 @@ export type MobileDataTableProps<TItem> = Partial<UseListReturn> &
   }
 
 export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTableProps<TItem>) {
-  const { loading, filtersComponent, total } = props
+  const { loading, filtersComponent, total, paginationMode } = props
 
   const {
     getTableProps,
@@ -36,6 +36,8 @@ export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTa
     nextPage,
     previousPage,
     setPageSize,
+    showBackToTop,
+    backToTop,
     state: { pageIndex, pageSize },
   } = useDataTable<TItem>(props)
 
@@ -56,6 +58,7 @@ export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTa
             ...props,
           })}
         <Pagination
+          paginationMode={paginationMode!}
           page={page}
           fetching={loading}
           canPreviousPage={canPreviousPage}
@@ -69,6 +72,8 @@ export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTa
           pageIndex={pageIndex}
           pageSize={pageSize}
           totalRows={total || 0}
+          showBackToTop={showBackToTop}
+          backToTop={backToTop}
         />
       </chakra.div>
       <chakra.div px={5} maxW="100%">
@@ -189,6 +194,7 @@ export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTa
       <chakra.div display="flex" justifyContent="flex-end" py={5} pr={5}>
         <Pagination
           page={page}
+          paginationMode={paginationMode!}
           fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
@@ -201,6 +207,8 @@ export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTa
           pageIndex={pageIndex}
           pageSize={pageSize}
           totalRows={total || 0}
+          showBackToTop={showBackToTop}
+          backToTop={backToTop}
         />
       </chakra.div>
     </chakra.div>

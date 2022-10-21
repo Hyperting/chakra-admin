@@ -33,22 +33,17 @@ export class ExampleListStrategy implements ListStrategy {
       return data && Object.keys(data).length > 0 && (data as any)[Object.keys(data)[0]]
       ? (data as any)[Object.keys(data)[0]].data
       : []
-    } else if (data && Object.keys(data).length > 0 && (data as any)[Object.keys(data)[0]]?.edges) {
-      return (data as any)[Object.keys(data)[0]].edges.map((edge: any) => edge.node)
+    } else if (paginationMode === 'cursor' && data?.result?.edges) {
+      return data?.result?.edges.map((edge: any) => edge.node)
     }
     
     return []
   }
 
   getTotal(result: QueryResult<any, OperationVariables>) {
-    const dataKeys = Object.keys(result.data)
-    if (
-      dataKeys.length > 0 &&
-      (result.data as any)[dataKeys[0]] &&
-      (result.data as any)[dataKeys[0]].total
-    ) {
-      console.log((result.data as any)[dataKeys[0]].total, 'dataKeys total')
-      return (result.data as any)[dataKeys[0]].total as number
+    if ((result.data as any)?.total) {
+      console.log((result.data as any).total, 'dataKeys total')
+      return (result.data as any).total as number
     }
     
     return undefined
@@ -65,7 +60,6 @@ export class ExampleListStrategy implements ListStrategy {
       }
 
     } else {
-      console.log(params, 'getVariables() params')
       return {
         ...params,
       }
@@ -73,9 +67,8 @@ export class ExampleListStrategy implements ListStrategy {
   }
 
   getPageInfo(result: QueryResult<any, OperationVariables>) {
-    const dataKeys = Object.keys(result.data)
-    if (dataKeys.length > 0 && (result.data as any)?.[dataKeys[0]]?.pageInfo) {
-      return dataKeys.length > 0 && (result.data as any)?.[dataKeys[0]]?.pageInfo
+    if (result?.data?.result?.pageInfo) {
+      return result.data.result.pageInfo
     }
 
     return {}

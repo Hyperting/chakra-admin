@@ -63,6 +63,8 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
     previousPage,
     setPageSize,
     visibleColumns,
+    showBackToTop,
+    backToTop,
     state: { pageIndex, pageSize },
   } = useDataTable<TItem>(props)
   const location = useLocation()
@@ -123,6 +125,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           })}
         <Pagination
           page={page}
+          paginationMode={props.paginationMode!}
           fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
@@ -134,7 +137,9 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           setPageSize={setPageSize}
           pageIndex={pageIndex}
           pageSize={pageSize}
-          totalRows={total || 0}
+          totalRows={total}
+          showBackToTop={showBackToTop}
+          backToTop={backToTop}
         />
       </chakra.div>
       <chakra.div maxW="100%" overflowX="auto">
@@ -228,6 +233,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
       <chakra.div display="flex" justifyContent="flex-end" py={5}>
         <Pagination
           page={page}
+          paginationMode={props.paginationMode!}
           fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
@@ -239,7 +245,9 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           setPageSize={setPageSize}
           pageIndex={pageIndex}
           pageSize={pageSize}
-          totalRows={total || 0}
+          totalRows={total}
+          showBackToTop={showBackToTop}
+          backToTop={backToTop}
         />
       </chakra.div>
     </chakra.div>

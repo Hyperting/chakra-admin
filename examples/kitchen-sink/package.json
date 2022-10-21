@@ -48,5 +48,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:9002"
+  "proxy": "http://127.0.0.1:9002"
 }

@@ -1,8 +1,6 @@
 import React, { Children, isValidElement, useEffect, useMemo, useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Location } from 'react-router-dom'
 import Container from 'typedi'
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Location } from 'history'
 import { AdminCoreProps } from '../../components/admin/AdminCore'
 import { AuthProvider } from '../auth/AuthProvider'
 import { DefaultStrategy } from './Strategy'

@@ -12,7 +12,8 @@ const QUERY_GET_COMPANIES = gql`
     $sortBy: CompaniesSortByKeys
     $filters: CompanyFilterInput
   ) {
-    results: cursorCompanies(
+    total: companiesCount
+    result: cursorCompanies(
       after: $after
       before: $before
       first: $first
@@ -50,7 +51,7 @@ const CompanyFilters: FC = (props) => (
   </Filters>
 )
 
-export const CompanyCursorList: FC = (props) => {
+export const CompanyCursorWithTotalList: FC = (props) => {
   return (
     <List
       {...props}

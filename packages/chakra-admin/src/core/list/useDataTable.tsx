@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, ReactElement, useCallback, useEffect, useMemo } from 'react'
+import React, { Children, cloneElement, ReactElement, useCallback, useEffect, useMemo, useRef } from 'react'
 import { Column, TableInstance, usePagination, useSortBy, useTable, useExpanded } from 'react-table'
 import { humanize } from 'inflection'
 import { Icon, IconButton } from '@chakra-ui/react'
@@ -10,9 +10,11 @@ import { MoreMenuHeader } from '../../components/list/MoreMenuHeader'
 import { GenericMoreMenuButton } from '../../components/buttons/GenericMoreMenuButton'
 import { DataTableValue } from '../../components/list/DataTableValue'
 import { CursorOnPageChange, CursorPagination, OffsetPagination } from './useList'
+import { useCursorsHistory } from './useCursorsHistory'
 
 export type UseDataTableReturn = {
   foundedColumns: Column<object>[]
+  showBackToTop: boolean
 } & TableInstance<object>
 
 export function useDataTable<TItem = Record<string, any>>({
@@ -40,12 +42,22 @@ export function useDataTable<TItem = Record<string, any>>({
   resource,
   queryResult,
   expandComponent,
-  paginationMode,
+  paginationMode = 'offset',
   pageInfo,
+  defaultPerPage,
   ...rest
 }: DataTableProps<TItem>): UseDataTableReturn {
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
   const tAll = useTranslate()
+  const cursorHistory = useCursorsHistory({
+    resource: resource!,
+    paginationMode,
+    first: (rest as CursorPagination)?.first,
+    last: (rest as CursorPagination)?.last,
+    after: (rest as CursorPagination)?.after,
+    before: (rest as CursorPagination)?.before,
+  }) // used to go back to previous cursor
+
   const foundedColumns: Column<object>[] = useMemo(
     () =>
       Children.map(children, (child: React.ReactNode, index) => {
@@ -194,8 +206,8 @@ export function useDataTable<TItem = Record<string, any>>({
               pageSize: (rest as OffsetPagination).perPage,
             }
           : {
-              pageIndex: (rest as CursorPagination).page ? (rest as any).page - 1 : 0,
-              pageSize: (rest as CursorPagination).first || (rest as CursorPagination).last || 20,
+              pageIndex: typeof (rest as CursorPagination).page === 'number' ? (rest as any).page - 1 : undefined,
+              pageSize: (rest as CursorPagination).first || (rest as CursorPagination).last || defaultPerPage,
             }),
         sortBy: initialSortBy,
       },
@@ -284,7 +296,13 @@ export function useDataTable<TItem = Record<string, any>>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [(rest as OffsetPagination)?.page])
 
+  const __bad_dirty_please_change_me_sort_initialized_ref__ = useRef(false)
   useEffect(() => {
+    if (!__bad_dirty_please_change_me_sort_initialized_ref__.current) {
+      __bad_dirty_please_change_me_sort_initialized_ref__.current = true
+      return
+    }
+
     if (onSortChange) {
       if (paginationMode === 'offset') {
         onSortChange(
@@ -300,64 +318,124 @@ export function useDataTable<TItem = Record<string, any>>({
           const currentSortBy = sortBy[0]?.id
           const revert = !!sortBy[0]?.desc
 
-          console.log('sortBy onChange()', currentSortBy, revert)
-
           if (currentSortBy) {
             onSortChange({
               sortBy: currentSortBy,
+              [revert ? 'last' : 'first']: pageSize,
               revert,
             })
           }
         } else {
-          console.log('sortBy onChange() undefined')
-          onSortChange({
-            sortBy: undefined,
-            revert: undefined,
-          })
+          onSortChange({})
         }
+        cursorHistory.reset()
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy])
 
-  console.log('ritorrno table instance', { tableInstance, total, pageCount, rest })
+  const revert = useMemo(() => {
+    return (rest as CursorPagination)?.revert
+  }, [rest])
 
   const additonalProps = useMemo(() => {
-    if (paginationMode === 'offset' || (total && pageCount)) {
+    if (paginationMode === 'offset') {
       return {}
     }
 
+    console.log(
+      'pageIndex',
+      !(rest as CursorPagination)?.page && total
+        ? 0
+        : (rest as CursorPagination)?.page
+        ? ((rest as CursorPagination)?.page || 1) - 1
+        : undefined,
+      cursorHistory.length
+    )
+
     return {
+      showBackToTop:
+        ((rest as CursorPagination)?.after || (rest as CursorPagination)?.before) && cursorHistory.length <= 0,
       canNextPage: pageInfo?.hasNextPage,
-      canPreviousPage: pageInfo?.hasPreviousPage,
+      canPreviousPage: pageInfo?.hasPreviousPage || cursorHistory.length > 0,
       previousPage: () => {
         if (onPageChange && pageInfo?.hasPreviousPage) {
           ;(onPageChange as CursorOnPageChange)({
-            first: pageSize,
-            before: pageInfo?.startCursor as string,
+            [revert ? 'first' : 'last']: pageSize,
+            [revert ? 'after' : 'before']: pageInfo?.startCursor as string,
           })
+        } else if (onPageChange && cursorHistory.length > 0) {
+          cursorHistory.pop()
+          const prevCursor = cursorHistory.getLast()
+
+          if (prevCursor) {
+            ;(onPageChange as CursorOnPageChange)({
+              [revert ? 'last' : 'first']: pageSize,
+              [revert ? 'before' : 'after']: prevCursor,
+            })
+          } else {
+            ;(onPageChange as CursorOnPageChange)({
+              [revert ? 'last' : 'first']: pageSize,
+            })
+          }
         }
       },
       nextPage: () => {
         if (onPageChange && pageInfo?.hasNextPage) {
+          cursorHistory.push(pageInfo?.endCursor as any)
           ;(onPageChange as CursorOnPageChange)({
-            first: pageSize,
-            after: pageInfo?.endCursor as string,
+            [revert ? 'last' : 'first']: pageSize,
+            [revert ? 'before' : 'after']: pageInfo?.endCursor as string,
           })
         }
       },
+      backToTop: () => {
+        if (onPageChange) {
+          cursorHistory.reset()
+          ;(onPageChange as CursorOnPageChange)({
+            [revert ? 'last' : 'first']: pageSize,
+          })
+        }
+      },
+      state: {
+        ...tableInstance.state,
+        // pageIndex:
+        //   !(rest as CursorPagination)?.page && total
+        //     ? 0
+        //     : (rest as CursorPagination)?.page
+        //     ? ((rest as CursorPagination)?.page || 1) - 1
+        //     : undefined,
+        pageIndex: cursorHistory.length,
+        ciao: 'Prova',
+      },
+      pageCount,
     }
+    // Re-enable this rule when you need to check for new dependencies
   }, [
-    onPageChange,
-    pageCount,
-    pageInfo?.endCursor,
+    paginationMode,
+    rest,
+    total,
+    cursorHistory,
     pageInfo?.hasNextPage,
     pageInfo?.hasPreviousPage,
     pageInfo?.startCursor,
+    pageInfo?.endCursor,
+    tableInstance.state,
+    pageCount,
+    onPageChange,
+    revert,
     pageSize,
-    paginationMode,
-    total,
   ])
+
+  console.log(
+    'state',
+    {
+      foundedColumns,
+      ...tableInstance,
+      ...additonalProps,
+    },
+    cursorHistory.length
+  )
 
   return {
     foundedColumns,
