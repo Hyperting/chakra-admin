@@ -12,7 +12,7 @@ const QUERY_GET_COMPANIES = gql`
     $sortBy: CompaniesSortByKeys
     $filters: CompanyFilterInput
   ) {
-    results: cursorCompanies(
+    result: cursorCompanies(
       after: $after
       before: $before
       first: $first

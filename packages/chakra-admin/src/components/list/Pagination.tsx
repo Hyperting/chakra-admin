@@ -59,7 +59,7 @@ export const Pagination: FC<Props> = ({
       <Trans
         i18nKey="ca.pagination.page_info"
         components={{
-          strong: <Text fontWeight="bold" mx={1} />,
+          strong: <Text fontWeight={typeof totalRows === 'number' ? 'bold' : 'normal'} mx={1} />,
         }}
         values={{
           from,

@@ -30,6 +30,7 @@ export class ExampleListStrategy implements ListStrategy {
 
   getList({ data }: QueryResult<any, OperationVariables>, paginationMode: PaginationMode): Record<string, any>[] {
     if (paginationMode === 'offset') {
+      console.log(data, Object.keys(data), 'dataKeys')
       return data && Object.keys(data).length > 0 && (data as any)[Object.keys(data)[0]]
       ? (data as any)[Object.keys(data)[0]].data
       : []
@@ -42,8 +43,16 @@ export class ExampleListStrategy implements ListStrategy {
 
   getTotal(result: QueryResult<any, OperationVariables>) {
     if ((result.data as any)?.total) {
-      console.log((result.data as any).total, 'dataKeys total')
       return (result.data as any).total as number
+    } else {
+      const dataKeys = Object.keys(result.data)
+      if (
+        dataKeys.length > 0 &&
+        (result.data as any)[dataKeys[0]] &&
+        (result.data as any)[dataKeys[0]].total
+      ) {
+        return (result.data as any)[dataKeys[0]].total as number
+      }
     }
     
     return undefined

@@ -97,6 +97,7 @@ type Query {
   employees: [Employee!]
   company(id: ID): Company
   companies(sort: CompanySortInput, filters: CompanyFilterInput, pagination: PaginationInput): CompanyListResponse!
+  companiesCount(filters: CompanyFilterInput): Int!
   cursorCompanies(
     after: String
     before: String
