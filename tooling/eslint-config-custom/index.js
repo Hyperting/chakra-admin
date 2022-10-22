@@ -10,8 +10,7 @@ module.exports = {
   ignorePatterns: [
     '.eslintrc.js',
     'eslint-preset.js',
-    'packages/eslint-config-custom/index.js',
-    'packages/tsup-config/*.js',
+    'tooling/**/*.js',
     '**/tsup.config.js',
     '**/next.config.js'
   ],

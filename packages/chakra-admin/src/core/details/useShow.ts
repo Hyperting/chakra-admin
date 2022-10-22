@@ -11,10 +11,11 @@ import {
   useQuery,
 } from '@apollo/client'
 import { useToast } from '@chakra-ui/react'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGqlBuilder } from '../graphql/gql-builder'
 import { ShowProps } from '../../components/details/Show'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
+import { useVersionStateValue } from '../admin'
 
 const EMPTY_QUERY = gql`
   query EmptyQuery {
@@ -115,6 +116,15 @@ export const useShow = <
     },
     [id, strategy?.show, executeMutation, notify, resource, data]
   )
+
+  const version = useVersionStateValue()
+
+  useEffect(() => {
+    if (data?.refetch) {
+      data.refetch()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [version])
 
   return {
     item,
