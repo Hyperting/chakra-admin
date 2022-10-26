@@ -1,6 +1,6 @@
 {
   "name": "chakra-admin",
-  "version": "0.0.2-dev.15",
+  "version": "0.0.2-dev.16",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
@@ -91,6 +91,6 @@
     "@chakra-ui/icons": "^2.0.11"
   },
   "publishConfig": {
-    "registry": "http://localhost:4873"
+    "registry": "https://registry.npmjs.org"
   }
 }

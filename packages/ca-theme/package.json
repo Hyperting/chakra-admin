@@ -1,6 +1,6 @@
 {
   "name": "ca-theme",
-  "version": "0.0.2-dev.15",
+  "version": "0.0.2-dev.16",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -42,6 +42,6 @@
     "tsup": "^6.2.3"
   },
   "publishConfig": {
-    "registry": "http://localhost:4873"
+    "registry": "https://registry.npmjs.org"
   }
 }

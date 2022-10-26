@@ -1,6 +1,6 @@
 {
   "name": "ca-i18n",
-  "version": "0.0.2-dev.15",
+  "version": "0.0.2-dev.16",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -47,6 +47,6 @@
     "@types/react": "^18.0.21"
   },
   "publishConfig": {
-    "registry": "http://localhost:4873"
+    "registry": "https://registry.npmjs.org"
   }
 }

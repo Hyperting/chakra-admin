@@ -1,6 +1,6 @@
 {
   "name": "ca-system",
-  "version": "0.0.2-dev.15",
+  "version": "0.0.2-dev.16",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -51,6 +51,6 @@
     "@types/inflection": "^1.13.0"
   },
   "publishConfig": {
-    "registry": "http://localhost:4873"
+    "registry": "https://registry.npmjs.org"
   }
 }

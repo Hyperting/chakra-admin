@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.0.2-dev.16
+
+### Patch Changes
+
+- Merge old main branch
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.16
+  - ca-theme@0.0.2-dev.16
+  - ca-system@0.0.2-dev.16
+
 ## 0.0.2-dev.15
 
 ### Patch Changes
