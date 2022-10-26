@@ -1,14 +1,6 @@
 /* eslint-disable global-require */
 import React, { FC } from 'react'
-import {
-  Button,
-  LinkBox,
-  LinkOverlay,
-  Icon,
-  Skeleton,
-  useDisclosure,
-  chakra,
-} from '@chakra-ui/react'
+import { Button, LinkBox, LinkOverlay, Icon, Skeleton, useDisclosure, chakra } from '@chakra-ui/react'
 import { FiMoreVertical } from 'react-icons/fi'
 import { UserSettingsDrawer } from '../layout/UserSettingsDrawer'
 import { useAuthUser } from '../../core/auth/useAuthUser'

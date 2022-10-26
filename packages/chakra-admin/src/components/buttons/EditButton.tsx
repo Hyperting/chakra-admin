@@ -35,8 +35,14 @@ export const EditButton: FC<Props> = ({
   data,
   error,
   loading,
-  limit,
-  offset,
+  page,
+  perPage,
+  after,
+  before,
+  first,
+  last,
+  revert,
+  onPageChange,
   onFiltersChange,
   onPaginationChange,
   onSortChange,
@@ -56,14 +62,9 @@ export const EditButton: FC<Props> = ({
   children,
   openAsModal = false,
   ...rest
-}) => {
+}: any) => {
   const t = useTranslate()
-  const to = useMemo(() => toProp || `${basePath}${resource}/${id}`, [
-    basePath,
-    id,
-    resource,
-    toProp,
-  ])
+  const to = useMemo(() => toProp || `${basePath}${resource}/${id}`, [basePath, id, resource, toProp])
   const getResourceLabel = useGetResourceLabel()
   const location = useLocation()
 

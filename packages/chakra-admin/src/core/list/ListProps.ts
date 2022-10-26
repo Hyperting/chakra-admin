@@ -1,27 +1,37 @@
 import React, { ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
-import {
-  MutationHookOptions,
-  OperationVariables,
-  QueryHookOptions,
-  TypedDocumentNode,
-} from '@apollo/client'
-import { SortType } from './SortType'
+import { MutationHookOptions, OperationVariables, QueryHookOptions, TypedDocumentNode } from '@apollo/client'
+import { OffsetSortType } from './SortType'
 import { ListStrategy } from '../admin/Strategy'
 import { PageLayoutProps } from '../../components/details/PageLayout'
-import { NestedKeyOf } from '../react/nested-key'
+import { NestedKeyOf } from 'ca-system'
+
+export type PaginationMode = 'offset' | 'cursor'
 
 export type ListProps<
   TQuery = Record<string, any>,
-  TItem = Record<string, any>,
+  TItem extends Record<string, any> = Record<string, any>,
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
   DeleteTVariables = OperationVariables
 > = {
+  paginationMode?: PaginationMode
   resource?: string
   basePath?: string
-  defaultSorting?: SortType<any>
+  /**
+   * @deprecated
+   * use defaultSort instead
+   */
+  defaultSorting?: OffsetSortType<TItem>
+  /**
+   * offset based pagination default sort
+   */
+  defaultSort?: OffsetSortType<TItem>
+  /**
+   * cursor based pagination default sort
+   */
+  defaultSortBy?: keyof TItem
   defaultFilters?: Record<string, any>
   filtersComponent?: React.ReactNode
   toolbarComponent?: React.ReactNode
@@ -42,4 +52,5 @@ export type ListProps<
   layout?: ReactElement<PageLayoutProps, any>
   fields?: NestedKeyOf<Required<TItem>>[]
   refetchOnDefaultFiltersChange?: boolean
+  defaultPerPage?: number
 } & Pick<PageLayoutProps, 'title'>

@@ -1,14 +1,14 @@
 import React, { ChangeEventHandler, useCallback, useMemo } from 'react'
 import { Select, SelectProps } from '@chakra-ui/react'
 import { OperationVariables } from '@apollo/client'
-import { Controller, useController } from 'react-hook-form'
+import { Controller, FieldValues, useController } from 'react-hook-form'
 import { FilterInputProps } from './FilterInputProps'
 import { Query, QueryProps } from '../graphql/Query'
-import { CAInputProps } from '../../core/react/system-form'
+import { CAInputProps } from 'ca-system'
 
 export type SelectInputProps<
   TQuery = Record<string, any>,
-  TData = any,
+  TData extends FieldValues = any,
   TQueryData = any,
   TQueryVariables = OperationVariables
 > = FilterInputProps &
@@ -22,7 +22,7 @@ export type SelectInputProps<
 
 export function SelectInput<
   TQuery = Record<string, any>,
-  TData = any,
+  TData extends FieldValues = any,
   TQueryData = any,
   TQueryVariables = OperationVariables
 >({
@@ -91,7 +91,7 @@ export function SelectInput<
               minLength,
               pattern,
               validate,
-              value,
+              // value,
               shouldUnregister,
               // onChange,
             }}
@@ -159,7 +159,7 @@ export function SelectInput<
           minLength,
           pattern,
           validate,
-          value,
+          // value,
           shouldUnregister,
           // onChange,
         }}
@@ -192,30 +192,22 @@ const SelectWithEntries = React.forwardRef<
     showEmpty?: boolean
     emptyLabel?: string
   }
->(
-  (
-    { loading, entries: entriesProps = [], getOption, children, showEmpty, emptyLabel, ...props },
-    ref
-  ) => {
-    const entries = useMemo(() => (entriesProps || []).map(getOption as any), [
-      entriesProps,
-      getOption,
-    ])
+>(({ loading, entries: entriesProps = [], getOption, children, showEmpty, emptyLabel, ...props }, ref) => {
+  const entries = useMemo(() => (entriesProps || []).map(getOption as any), [entriesProps, getOption])
 
-    // if (loading) {
-    //   return <Skeleton w="100%" h="40px" />
-    // }
-    return (
-      <Select ref={ref as any} {...props}>
-        {showEmpty && <option value="">{emptyLabel}</option>}
-        {entries?.map((item: any, index) => {
-          return (
-            <option key={index} value={item.value}>
-              {item.label}
-            </option>
-          )
-        })}
-      </Select>
-    )
-  }
-)
+  // if (loading) {
+  //   return <Skeleton w="100%" h="40px" />
+  // }
+  return (
+    <Select ref={ref as any} {...props}>
+      {showEmpty && <option value="">{emptyLabel}</option>}
+      {entries?.map((item: any, index) => {
+        return (
+          <option key={index} value={item.value}>
+            {item.label}
+          </option>
+        )
+      })}
+    </Select>
+  )
+})

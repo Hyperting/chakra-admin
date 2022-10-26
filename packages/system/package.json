@@ -1,0 +1,56 @@
+{
+  "name": "ca-system",
+  "version": "0.0.2-dev.15",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "dev": "npm run build -- -w"
+  },
+  "author": "Hyperting S.r.l.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyperting/chakra-admin.git",
+    "directory": "packages/system"
+  },
+  "peerDependencies": {
+    "@chakra-ui/react": ">= 2",
+    "react": ">= 18"
+  },
+  "dependencies": {
+    "ts-transformer-keys": "^0.4.3",
+    "inflection": "^1.13.4",
+    "ca-i18n": "workspace:*",
+    "lodash.get": "^4.4.2"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^4.5.2",
+    "@chakra-ui/react": "^2.3.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "framer-motion": "^6.5.1",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@babel/core": "^7.15.5",
+    "eslint": "^8.25.0",
+    "rollup": "^3.2.3",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "@rollup/plugin-commonjs": "^23.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@types/lodash.get": "^4.4.7",
+    "@types/inflection": "^1.13.0"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:4873"
+  }
+}

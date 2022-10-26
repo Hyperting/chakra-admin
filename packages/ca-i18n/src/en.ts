@@ -25,6 +25,8 @@ export const en = {
       },
       pagination: {
         page_info: '<strong>%{from}-%{to}</strong> of <strong>%{total}</strong>',
+        many: 'many',
+        back_to_top: 'Back to top',
       },
       message: {
         delete_title: 'Delete %{name} #%{id}',

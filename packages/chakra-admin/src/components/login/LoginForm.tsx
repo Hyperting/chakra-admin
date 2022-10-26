@@ -27,10 +27,7 @@ type Props = {
   title?: string
   caption?: string
 }
-export const LoginForm: FC<Props> = ({
-  title = 'Entra nel gestionale',
-  caption = 'Inserisci email e password',
-}) => {
+export const LoginForm: FC<Props> = ({ title = 'Entra nel gestionale', caption = 'Inserisci email e password' }) => {
   const authProvider = useAuthProvider()
   if (!authProvider) {
     throw new Error('AuthProvider is not available in LoginForm')
@@ -58,12 +55,7 @@ export const LoginForm: FC<Props> = ({
   })
 
   return (
-    <chakra.form
-      w={{ base: '100%', lg: undefined }}
-      onSubmit={onSubmit}
-      display="flex"
-      flexDir={{ base: 'column' }}
-    >
+    <chakra.form w={{ base: '100%', lg: undefined }} onSubmit={onSubmit} display="flex" flexDir={{ base: 'column' }}>
       <chakra.div minW={{ base: undefined, lg: '474px' }} w={{ base: '100%', lg: '474px' }}>
         {title && <Text textStyle="h1">{title}</Text>}
         {caption && (
@@ -182,14 +174,7 @@ export const LoginForm: FC<Props> = ({
       </Button>
       <Flex alignItems="center">
         <Text textStyle="description">Don’t have an account?</Text>
-        <Text
-          textStyle="description"
-          fontWeight="600"
-          color="red.700"
-          as="button"
-          ml="2"
-          _hover={{ color: 'red.500' }}
-        >
+        <Text textStyle="description" fontWeight="600" color="red.700" as="button" ml="2" _hover={{ color: 'red.500' }}>
           Sign up
         </Text>
       </Flex>

@@ -1,5 +1,4 @@
 export * from './ListProps'
-export * from './PaginationType'
 export * from './SortType'
 export * from './removeListProps'
 export * from './useDataTable'

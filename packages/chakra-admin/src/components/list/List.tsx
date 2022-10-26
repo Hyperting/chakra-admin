@@ -9,7 +9,7 @@ import { PageTitle } from '../details/PageTitle'
 import { ListToolbar } from './ListToolbar'
 import { TreeRenderer } from '../details/TreeRenderer'
 
-export function List<TQuery = Record<string, any>, TItem = Record<string, any>>(
+export function List<TQuery = Record<string, any>, TItem extends Record<string, any> = Record<string, any>>(
   props: ListProps<TQuery, TItem>
 ) {
   const {

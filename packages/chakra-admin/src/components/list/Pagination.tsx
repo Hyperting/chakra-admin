@@ -1,12 +1,15 @@
 /* eslint-disable no-restricted-globals */
-import { IconButton, Text, chakra } from '@chakra-ui/react'
+import { IconButton, Text, chakra, Button } from '@chakra-ui/react'
 import React, { FC, useMemo } from 'react'
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { Trans } from 'ca-i18n'
+import { ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon } from '@chakra-ui/icons'
+import { Trans, useTranslate } from 'ca-i18n'
 import { Row } from 'react-table'
+import { PaginationMode } from '../../core'
 
 type Props = {
   page: Row<object>[]
+  paginationMode: PaginationMode
+  showBackToTop?: boolean
   pageCount: number
   pageSize: number
   pageIndex: number
@@ -17,12 +20,15 @@ type Props = {
   previousPage: () => void
   nextPage: () => void
   setPageSize: (pageSize: number) => void
+  backToTop: () => void
   fetching?: boolean
-  totalRows: number
-  offset?: number
+  totalRows?: number
 }
 
 export const Pagination: FC<Props> = ({
+  paginationMode,
+  showBackToTop,
+  backToTop,
   pageCount,
   pageIndex,
   pageSize,
@@ -31,26 +37,29 @@ export const Pagination: FC<Props> = ({
   nextPage,
   canPreviousPage,
   previousPage,
-  totalRows: total,
-  offset,
+  totalRows,
+  page,
 }) => {
-  const from = useMemo(() => (total === 0 ? 0 : pageIndex * pageSize + 1), [
-    pageIndex,
-    pageSize,
-    total,
-  ])
-  const to = useMemo(() => (pageSize === 0 ? total : Math.min(total, (pageIndex + 1) * pageSize)), [
-    pageIndex,
-    pageSize,
-    total,
-  ])
+  const t = useTranslate()
+  const from = useMemo(() => (totalRows === 0 ? 0 : pageIndex * pageSize + 1), [pageIndex, pageSize, totalRows])
+  const to = useMemo(
+    () =>
+      pageSize === 0
+        ? totalRows || page.length
+        : paginationMode === 'offset'
+        ? Math.min(totalRows || 0, (pageIndex + 1) * pageSize)
+        : (pageIndex + 1) * pageSize,
+    [page.length, pageIndex, pageSize, paginationMode, totalRows]
+  )
+
+  const total = useMemo(() => (typeof totalRows === 'number' ? totalRows : t('ca.pagination.many')), [t, totalRows])
 
   return (
     <chakra.div display="flex" alignItems="center">
       <Trans
         i18nKey="ca.pagination.page_info"
         components={{
-          strong: <Text fontWeight="bold" mx={1} />,
+          strong: <Text fontWeight={typeof totalRows === 'number' ? 'bold' : 'normal'} mx={1} />,
         }}
         values={{
           from,
@@ -59,30 +68,42 @@ export const Pagination: FC<Props> = ({
         }}
       >
         <strong>
-          {{ from }}-{{ to }}
+          <>
+            {{ from }}-{{ to }}
+          </>
         </strong>
         of
-        <strong>{{ total }}</strong>
+        <strong>
+          <>{{ total }}</>
+        </strong>
       </Trans>
 
-      <IconButton
-        ml={5}
-        size="sm"
-        aria-label="vai alla pagina precedente"
-        icon={<ChevronLeftIcon />}
-        onClick={previousPage}
-        variant="outline"
-        disabled={!canPreviousPage}
-      />
-      <IconButton
-        ml={2}
-        size="sm"
-        aria-label="vai alla pagina successiva"
-        icon={<ChevronRightIcon />}
-        onClick={nextPage}
-        variant="outline"
-        disabled={!canNextPage}
-      />
+      {showBackToTop ? (
+        <Button size="sm" aria-label="Back to top" leftIcon={<ChevronUpIcon />} variant="outline" onClick={backToTop}>
+          {t('ca.pagination.back_to_top')}
+        </Button>
+      ) : (
+        <>
+          <IconButton
+            ml={5}
+            size="sm"
+            aria-label="vai alla pagina precedente"
+            icon={<ChevronLeftIcon />}
+            onClick={previousPage}
+            variant="outline"
+            disabled={!canPreviousPage}
+          />
+          <IconButton
+            ml={2}
+            size="sm"
+            aria-label="vai alla pagina successiva"
+            icon={<ChevronRightIcon />}
+            onClick={nextPage}
+            variant="outline"
+            disabled={!canNextPage}
+          />
+        </>
+      )}
     </chakra.div>
   )
 }

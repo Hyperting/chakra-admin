@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react'
 import { Box, Input, InputProps } from '@chakra-ui/react'
 import { DatetimepickerProps } from 'react-datetime'
-import { ca } from '../../core'
+import { ca } from 'ca-system'
 
 const Datetime = require('react-datetime').default
 
@@ -17,7 +17,7 @@ export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
   return (
     <Box
       __css={{
-        /*!
+        /* !
          * https://github.com/arqex/react-datetime
          */
 
@@ -59,10 +59,11 @@ export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
           cursor: 'pointer',
         },
 
-        '.rdtPicker td.rdtDay:hover, .rdtPicker td.rdtHour:hover, .rdtPicker td.rdtMinute:hover, .rdtPicker td.rdtSecond:hover, .rdtPicker .rdtTimeToggle:hover': {
-          background: '#eeeeee',
-          cursor: 'pointer',
-        },
+        '.rdtPicker td.rdtDay:hover, .rdtPicker td.rdtHour:hover, .rdtPicker td.rdtMinute:hover, .rdtPicker td.rdtSecond:hover, .rdtPicker .rdtTimeToggle:hover':
+          {
+            background: '#eeeeee',
+            cursor: 'pointer',
+          },
 
         '.rdtPicker td.rdtOld, .rdtPicker td.rdtNew': {
           color: '#999999',

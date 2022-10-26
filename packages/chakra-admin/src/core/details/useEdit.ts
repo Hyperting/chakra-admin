@@ -46,10 +46,7 @@ export const useEdit = <
   onSuccess,
 }: EditProps<ItemTData, ItemTVariables, EditTData, EditTVariables>): UseEditResult => {
   const strategy = useGlobalStrategy()
-  const queryVariables = useMemo(() => (id ? strategy?.edit.getItemVariables(id) : undefined), [
-    id,
-    strategy?.edit,
-  ])
+  const queryVariables = useMemo(() => (id ? strategy?.edit.getItemVariables(id) : undefined), [id, strategy?.edit])
 
   const [executeMutation, mutationResult] = useMutation<EditTData, EditTVariables>(mutation)
   const data = useQuery<ItemTData, ItemTVariables>(query, {
@@ -58,10 +55,7 @@ export const useEdit = <
     skip: !id,
   })
 
-  const item = useMemo(() => (data.data ? strategy?.edit.getItem(data) : undefined), [
-    data,
-    strategy?.edit,
-  ])
+  const item = useMemo(() => (data.data ? strategy?.edit.getItem(data as any) : undefined), [data, strategy?.edit])
 
   const navigate = useNavigate()
   const notify = useToast()
@@ -135,5 +129,5 @@ export const useEdit = <
     mutationResult,
     onSubmit,
     ...data,
-  }
+  } as any
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { DocumentNode, gql, OperationVariables, TypedDocumentNode } from '@apollo/client'
 import Fields from 'gql-query-builder/build/Fields'
 import { GQLOperation, GqlGenerator, OperationType } from './types'
-import { deepForEach } from '../details/deep-map'
+import { deepForEach } from 'ca-system'
 
 export const EMPTY_QUERY = gql`
   query EmptyQuery {
@@ -74,11 +74,7 @@ export function generateFields(
   return newFields
 }
 
-export type UseGQLBuilderParams<
-  TOperations = Record<string, any>,
-  TData = any,
-  TVariables = OperationVariables
-> = {
+export type UseGQLBuilderParams<TOperations = Record<string, any>, TData = any, TVariables = OperationVariables> = {
   resource?: string
   type: OperationType
   operation: GQLOperation<TOperations, TData, TVariables>
@@ -96,11 +92,7 @@ export type UseGQLBuilderResult<TData = any, TVariables = OperationVariables> = 
   selectionSet: string[]
 }
 
-export function useGqlBuilder<
-  TOperations = Record<string, any>,
-  TData = any,
-  TVariables = OperationVariables
->({
+export function useGqlBuilder<TOperations = Record<string, any>, TData = any, TVariables = OperationVariables>({
   operation,
   resource,
   generateGql,
@@ -112,9 +104,7 @@ export function useGqlBuilder<
   const [initialized, setInitialized] = useState(false)
   const [selectionSet, setSelectionSet] = useState<string[]>([])
 
-  const finalOperation = useMemo<
-    DocumentNode | TypedDocumentNode<TData, TVariables> | undefined
-  >(() => {
+  const finalOperation = useMemo<DocumentNode | TypedDocumentNode<TData, TVariables> | undefined>(() => {
     if (typeof operation === 'string' && !generateGql) {
       throw new Error(
         'You must provide a getQuery function in your strategy if you want to generate the query from a string'
@@ -125,7 +115,7 @@ export function useGqlBuilder<
       return generateGql!(
         resource!,
         operation,
-        variables,
+        variables as any,
         Array.from(new Set([...(selectionSet || []), ...(additionalFields || [])]))
       )
     }

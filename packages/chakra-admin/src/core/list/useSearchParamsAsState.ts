@@ -1,11 +1,14 @@
-import { useEffect, useState, useContext } from 'react'
-import { useLocation, useSearchParams, UNSAFE_NavigationContext } from 'react-router-dom'
+import { useContext } from 'react'
+import { useSearchParams, UNSAFE_NavigationContext, URLSearchParamsInit } from 'react-router-dom'
 import { QueryParamConfig, StringParam } from 'serialize-query-params'
 import { isString } from 'lodash'
 
 export const useSearchParamsAsState = (
   initialState: Record<string, string> = {}
-): [Record<string, string>, (newSearchParams: Record<string, string>) => void] => {
+): [
+  Record<string, string>,
+  (nextInit?: URLSearchParamsInit | ((prev: URLSearchParams) => URLSearchParamsInit)) => void
+] => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   //   const [searchParamsState, setSearchParamsState] = useState<Record<string, string>>(initialState)
@@ -24,15 +27,17 @@ export const useSearchParamsAsState = (
     // ...Object.fromEntries(searchParams.entries()),
   }
 
-  return [searchParamsAsObj, setSearchParams]
+  const setSearchParamsChanged = (newS: any): void => {
+    console.log(newS, 'new')
+    setSearchParams(newS)
+  }
+
+  return [searchParamsAsObj, setSearchParamsChanged]
 }
 
 export type NewValueType<D> = D | ((latestValue: D) => D)
 export type UrlUpdateType = 'replace' | 'push' | undefined
-export type UseSearchParam<D, D2 = D> = [
-  D2,
-  (newValue: NewValueType<D>, updateType?: UrlUpdateType) => void
-]
+export type UseSearchParam<D, D2 = D> = [D2, (newValue: NewValueType<D>, updateType?: UrlUpdateType) => void]
 
 export function useSearchParam<D, D2 = D>(
   name: string,
@@ -55,7 +60,7 @@ export function useSearchParam<D, D2 = D>(
     const params = new URLSearchParams((navigator as any).location.search)
 
     if (isString(encodedValue)) {
-      params.set(name, encodedValue)
+      params.set(name, encodedValue as any)
     } else {
       params.delete(name)
     }

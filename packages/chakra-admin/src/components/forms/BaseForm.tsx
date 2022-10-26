@@ -5,7 +5,7 @@ import { UseCreateResult } from '../../core/details/useCreate'
 import { UseEditResult } from '../../core/details/useEdit'
 import { CancelButton } from '../buttons/CancelButton'
 import { SubmitButton } from '../buttons/SubmitButton'
-import { filterChakraProps } from '../../core/react/system-utils'
+import { filterChakraProps } from 'ca-system'
 import { TreeRenderer } from '../details/TreeRenderer'
 
 type BaseFormProps = {

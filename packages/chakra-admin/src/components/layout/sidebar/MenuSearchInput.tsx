@@ -8,12 +8,7 @@ export type MenuSearchInputProps = {
   value?: string
 } & InputGroupProps
 
-export const MenuSearchInput: FC<MenuSearchInputProps> = ({
-  placeholder,
-  onChange,
-  value,
-  ...props
-}) => {
+export const MenuSearchInput: FC<MenuSearchInputProps> = ({ placeholder, onChange, value, ...props }) => {
   return (
     <InputGroup {...props}>
       <Input

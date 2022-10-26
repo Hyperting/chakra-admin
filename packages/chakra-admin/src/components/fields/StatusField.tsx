@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react'
 import { Icon, ThemingProps, Text, ColorProps, BoxProps, Box } from '@chakra-ui/react'
 import { FaCircle } from 'react-icons/fa'
-import get from 'lodash.get'
-import { CAFieldProps } from '../../core/react/system-field'
-import { useField } from '../../core/fields/useField'
+import { CAFieldProps, useField } from 'ca-system'
 
 export type StatusOptions = {
   statusColor?: ColorProps['color']
@@ -30,12 +28,7 @@ export function StatusField<TItem extends object = Record<string, any>>({
   return (
     <Box display="inline-flex" alignItems="baseline" {...rest}>
       <Icon as={FaCircle} fontSize="xx-small" color={statusOptions?.statusColor} />
-      <Text
-        fontSize="sm"
-        ml={2}
-        color={statusOptions?.textColor}
-        colorScheme={statusOptions?.textColorScheme}
-      >
+      <Text fontSize="sm" ml={2} color={statusOptions?.textColor} colorScheme={statusOptions?.textColorScheme}>
         {statusOptions?.label || JSON.stringify(value)}
       </Text>
     </Box>

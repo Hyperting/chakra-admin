@@ -32,9 +32,9 @@ import {
   CalendarContext,
 } from '@uselessdev/datepicker'
 import { format, isValid, startOfWeek, addDays, Locale } from 'date-fns'
-import { useController } from 'react-hook-form'
+import { FieldValues, useController } from 'react-hook-form'
 import { BsCalendar2EventFill } from 'react-icons/bs'
-import { CAInputProps } from '../../core/react/system-form'
+import { CAInputProps } from 'ca-system'
 
 function weekdays(weekdayFormat: string, locale?: Locale) {
   const start = startOfWeek(new Date(), { locale })
@@ -57,13 +57,13 @@ export function CalendarWeek() {
   )
 }
 
-type DateInputProps<TItem> = {
+type DateInputProps<TItem extends FieldValues> = {
   locale?: Locale
   placeholder?: string
 } & CAInputProps<TItem> &
   BoxProps
 
-export function DateInput<TItem = Record<string, any>>({
+export function DateInput<TItem extends FieldValues = Record<string, any>>({
   source,
   label,
   resource,
@@ -147,22 +147,11 @@ export function DateInput<TItem = Record<string, any>>({
   }, [value])
 
   return (
-    <Popover
-      placement="bottom"
-      isOpen={isOpen}
-      onClose={onClose}
-      initialFocusRef={initialRef}
-      isLazy
-    >
+    <Popover placement="bottom" isOpen={isOpen} onClose={onClose} initialFocusRef={initialRef} isLazy>
       <PopoverTrigger>
         <Box onClick={onOpen} ref={initialRef} flex="1" {...rest}>
           <InputGroup>
-            <Input
-              ref={ref}
-              placeholder={placeholder}
-              value={textValue}
-              onChange={handleInputChange}
-            />
+            <Input ref={ref} placeholder={placeholder} value={textValue} onChange={handleInputChange} />
             <InputRightElement children={<Icon color="gray.300" as={BsCalendar2EventFill} />} />
           </InputGroup>
         </Box>

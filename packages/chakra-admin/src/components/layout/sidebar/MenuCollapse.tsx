@@ -1,14 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import {
-  Button,
-  Collapse,
-  Icon,
-  Text,
-  Box,
-  BoxProps,
-  UseDisclosureProps,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Button, Collapse, Icon, Text, Box, BoxProps, UseDisclosureProps, useDisclosure } from '@chakra-ui/react'
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
 import { useLocalStorage } from '../../../core/store/useLocalStorage'
 
@@ -33,12 +24,11 @@ export const MenuCollapseView: FC<MenuCollapseViewProps> = ({
     <Box w="100%">
       <Button
         variant="ghost"
-        isFullWidth
         pl={6}
         pr={8}
         mt={4}
         mb={1}
-        d="flex"
+        display="flex"
         size="sm"
         borderRadius="none"
         justifyContent="space-between"
@@ -51,7 +41,7 @@ export const MenuCollapseView: FC<MenuCollapseViewProps> = ({
           {label}
         </Text>
 
-        <Box d="flex" alignItems="center" as="span">
+        <Box display="flex" alignItems="center" as="span">
           {additionalElement && additionalElement}
           <Icon as={isOpen ? BsChevronUp : BsChevronDown} color="gray.500" />
         </Box>
@@ -65,8 +55,7 @@ export const MenuCollapseView: FC<MenuCollapseViewProps> = ({
   )
 }
 
-export type MenuCollapseProps = Omit<MenuCollapseViewProps, 'onToggle' | 'isOpen'> &
-  UseDisclosureProps
+export type MenuCollapseProps = Omit<MenuCollapseViewProps, 'onToggle' | 'isOpen'> & UseDisclosureProps
 
 export const MenuCollapse: FC<MenuCollapseProps> = ({
   id,
@@ -92,15 +81,8 @@ export type StoredMenuCollapseProps = Omit<MenuCollapseViewProps, 'id' | 'onTogg
   defaultIsOpen?: boolean
 }
 
-export const StoredMenuCollapse: FC<StoredMenuCollapseProps> = ({
-  id,
-  defaultIsOpen = true,
-  ...rest
-}) => {
-  const [isOpen, setIsOpen] = useLocalStorage<boolean>(
-    `ca-menu-collapse-${id}-is-open`,
-    defaultIsOpen
-  )
+export const StoredMenuCollapse: FC<StoredMenuCollapseProps> = ({ id, defaultIsOpen = true, ...rest }) => {
+  const [isOpen, setIsOpen] = useLocalStorage<boolean>(`ca-menu-collapse-${id}-is-open`, defaultIsOpen)
 
   const handleToggle = useCallback(() => {
     setIsOpen((prev) => !prev)

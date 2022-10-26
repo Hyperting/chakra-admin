@@ -17,7 +17,7 @@ export const Login: FC<Props> = ({ applicationIcon, applicationImageUrl }) => {
       w={{ base: '100%', md: '50%' }}
       my={{ base: 10, md: 0 }}
     >
-      <chakra.div d="flex" flexDir="column" w={{ base: '100%', md: 'auto' }}>
+      <chakra.div display="flex" flexDir="column" w={{ base: '100%', md: 'auto' }}>
         <LoginForm />
       </chakra.div>
     </Container>
