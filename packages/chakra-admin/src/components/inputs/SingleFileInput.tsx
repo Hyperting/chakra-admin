@@ -3,10 +3,10 @@ import { Box, Text, Icon, BoxProps } from '@chakra-ui/react'
 import { useDropzone } from 'react-dropzone'
 import { useTranslate } from 'ca-i18n'
 import { FaUpload } from 'react-icons/fa'
-import { useController } from 'react-hook-form'
-import { CAInputProps } from '../../core/react/system-form'
+import { FieldValues, useController } from 'react-hook-form'
+import { CAInputProps } from 'ca-system'
 
-type SingleFileInputProps<TItem = Record<string, any>> = {} & CAInputProps<TItem> & BoxProps
+type SingleFileInputProps<TItem extends FieldValues = Record<string, any>> = {} & CAInputProps<TItem> & BoxProps
 
 interface FileWithPreview extends File {
   // preview?: string
@@ -20,7 +20,7 @@ interface FileWithPreview extends File {
  *
  * <SingleImageInput source="image" />
  */
-export function SingleFileInput<TItem = Record<string, any>>({
+export function SingleFileInput<TItem extends FieldValues = Record<string, any>>({
   source,
   label,
   resource,
@@ -103,7 +103,7 @@ export function SingleFileInput<TItem = Record<string, any>>({
       {!value || isDragActive ? (
         <Box
           pos="absolute"
-          d="flex"
+          display="flex"
           flexDir="column"
           alignItems="center"
           justifyContent="center"
@@ -121,7 +121,7 @@ export function SingleFileInput<TItem = Record<string, any>>({
       ) : (
         <Box
           pos="absolute"
-          d="flex"
+          display="flex"
           flexDir="column"
           alignItems="center"
           justifyContent="center"

@@ -10,9 +10,7 @@ export const ResourcesNavMenu: FC<NavMenuProps> = (props) => {
   const { registeredResources, initialized } = useAdminStateValue()
   const getResourceLabel = useGetResourceLabel()
 
-  const registeredResourcesKeys = useMemo(() => Object.keys(registeredResources).sort(), [
-    registeredResources,
-  ])
+  const registeredResourcesKeys = useMemo(() => Object.keys(registeredResources).sort(), [registeredResources])
 
   if (!initialized) {
     return null
@@ -27,10 +25,7 @@ export const ResourcesNavMenu: FC<NavMenuProps> = (props) => {
           icon={
             registeredResources[resourceName]?.iconName &&
             registeredIcons[registeredResources[resourceName]?.iconName] ? (
-              <Icon
-                as={registeredIcons[registeredResources[resourceName]?.iconName] as any}
-                fontSize="10px"
-              />
+              <Icon as={registeredIcons[registeredResources[resourceName]?.iconName] as any} fontSize="10px" />
             ) : undefined
           }
           to={`/${resourceName}`}

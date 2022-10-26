@@ -1,0 +1,119 @@
+input PaginationInput {
+  limit: Int
+  offset: Int
+}
+
+type Company {
+  id: ID
+  name: String @fake(type: companyName)
+  industry: String @examples(values: ["IT", "Manufacturing", "Medicine", "Media"])
+  employees: [Employee!] @listLength(min: 5, max: 10)
+}
+
+input CreateCompanyInput {
+  name: String!
+  industry: String
+  employees: [ID]
+}
+
+input UpdateCompanyInput {
+  name: String
+  industry: String
+  employees: [ID]
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+enum CompaniesSortByKeys {
+  id
+  name
+}
+
+input CompanySortInput {
+  id: SortDirection
+  name: SortDirection
+}
+
+input CompanyFilterInput {
+  id: ID
+  name: String
+  industry: String
+  employees: [ID]
+}
+
+type Employee {
+  id: ID
+  firstName: String @fake(type: firstName, locale: en_US)
+  lastName: String @fake(type: lastName, locale: en_US)
+  address: String @fake(type: streetAddress, options: { useFullAddress: true })
+  subordinates: [Employee!] @listLength(min: 0, max: 3)
+  company: Company
+}
+
+input CreateEmployeeInput {
+  firstName: String!
+  lastName: String
+  address: String
+  subordinates: [ID]
+  companyId: ID
+}
+
+input UpdateEmployeeInput {
+  firstName: String
+  lastName: String
+  address: String
+  subordinates: [ID]
+  companyId: ID
+}
+
+type CompanyListResponse {
+  data: [Company!]
+  total: Int
+}
+
+type PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor: ID
+  endCursor: ID
+}
+
+type CompanyEdge {
+  cursor: ID
+  node: Company
+}
+
+type CompanyConnection {
+  pageInfo: PageInfo!
+  edges: [CompanyEdge!]!
+  nodes: [Company!]!
+}
+
+type Query {
+  employee(id: ID): Employee
+  employees: [Employee!]
+  company(id: ID): Company
+  companies(sort: CompanySortInput, filters: CompanyFilterInput, pagination: PaginationInput): CompanyListResponse!
+  companiesCount(filters: CompanyFilterInput): Int!
+  cursorCompanies(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    revert: Boolean
+    sortBy: CompaniesSortByKeys
+    filters: CompanyFilterInput
+  ): CompanyConnection!
+}
+
+type Mutation {
+  createCompany(data: CreateCompanyInput!): Company
+  updateCompany(id: ID!, data: UpdateCompanyInput!): Company
+  deleteCompany(id: ID!): Boolean
+  createEmployee(data: CreateEmployeeInput!): Employee
+  updateEmployee(id: ID!, data: UpdateEmployeeInput!): Employee
+  deleteEmployee(id: ID!): Boolean
+}

@@ -40,9 +40,7 @@ export const useCreate = <
   redirect = true,
   onSuccess,
 }: CreateProps): UseCreateResult<TData, TVariables, TContext, TCache> => {
-  const [executeMutation, mutationResult] = useMutation<TData, TVariables, TContext, TCache>(
-    mutation
-  )
+  const [executeMutation, mutationResult] = useMutation<TData, TVariables, TContext, TCache>(mutation)
   const navigate = useNavigate()
   const notify = useToast()
   const strategy = useGlobalStrategy()
@@ -95,16 +93,7 @@ export const useCreate = <
         })
       }
     },
-    [
-      executeMutation,
-      navigate,
-      nextVersion,
-      notify,
-      onSuccess,
-      redirect,
-      resource,
-      strategy?.create,
-    ]
+    [executeMutation, navigate, nextVersion, notify, onSuccess, redirect, resource, strategy?.create]
   )
 
   return {

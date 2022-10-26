@@ -1,8 +1,6 @@
 import React, { Children, isValidElement, useEffect, useMemo, useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Location } from 'react-router-dom'
 import Container from 'typedi'
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Location } from 'history'
 import { AdminCoreProps } from '../../components/admin/AdminCore'
 import { AuthProvider } from '../auth/AuthProvider'
 import { DefaultStrategy } from './Strategy'
@@ -43,9 +41,7 @@ export const useAdminCore = ({
   const navigate = useNavigate()
   const location = useLocation()
 
-  const background = useMemo(() => (location?.state as { background?: Location })?.background, [
-    location?.state,
-  ])
+  const background = useMemo(() => (location?.state as { background?: Location })?.background, [location?.state])
 
   useEffect(() => {
     if (childrenCount > 0) {
@@ -75,10 +71,7 @@ export const useAdminCore = ({
 
       // register icons
       Children.toArray(children).forEach((child) => {
-        if (
-          (child as React.ReactElement).props.icon?.displayName ||
-          (child as React.ReactElement).props.icon?.name
-        ) {
+        if ((child as React.ReactElement).props.icon?.displayName || (child as React.ReactElement).props.icon?.name) {
           const { icon } = (child as React.ReactElement).props
           registeredIcons[icon.displayName || icon.name] = icon
         }

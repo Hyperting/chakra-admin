@@ -11,10 +11,11 @@ import {
   useQuery,
 } from '@apollo/client'
 import { useToast } from '@chakra-ui/react'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGqlBuilder } from '../graphql/gql-builder'
 import { ShowProps } from '../../components/details/Show'
 import { useGlobalStrategy } from '../admin/useGlobalStrategy'
+import { useVersionStateValue } from '../admin'
 
 const EMPTY_QUERY = gql`
   query EmptyQuery {
@@ -52,10 +53,7 @@ export const useShow = <
   queryOptions,
 }: ShowProps<ItemTData, ItemTVariables, ShowTData, ShowTVariables>): UseShowResult => {
   const strategy = useGlobalStrategy()
-  const queryVariables = useMemo(() => (id ? strategy?.show.getItemVariables(id) : undefined), [
-    id,
-    strategy?.show,
-  ])
+  const queryVariables = useMemo(() => (id ? strategy?.show.getItemVariables(id) : undefined), [id, strategy?.show])
 
   const { operation, initialized } = useGqlBuilder({
     type: 'query',
@@ -75,10 +73,7 @@ export const useShow = <
       ? !id || !initialized || !operation || !queryVariables || queryOptions.skip
       : !id || !initialized || !operation || !queryVariables,
   })
-  const item = useMemo(() => (data.data ? strategy?.show.getItem(data) : undefined), [
-    data,
-    strategy?.show,
-  ])
+  const item = useMemo(() => (data.data ? strategy?.show.getItem(data as any) : undefined), [data, strategy?.show])
 
   const notify = useToast()
 
@@ -122,11 +117,20 @@ export const useShow = <
     [id, strategy?.show, executeMutation, notify, resource, data]
   )
 
+  const version = useVersionStateValue()
+
+  useEffect(() => {
+    if (data?.refetch) {
+      data.refetch()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [version])
+
   return {
     item,
     executeMutation: executeMutation as any,
     mutationResult,
     onSubmit,
     ...data,
-  }
+  } as any
 }

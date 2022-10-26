@@ -1,7 +1,12 @@
-import { extendTheme, Theme } from '@chakra-ui/react'
+import { extendTheme } from '@chakra-ui/react'
 import { CalendarDefaultTheme } from '@uselessdev/datepicker'
 
-export const theme = extendTheme({
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Dict<T = any> = {
+  [x: string]: T
+}
+
+export const theme: Dict = extendTheme({
   components: {
     ...CalendarDefaultTheme.components,
     Switch: {

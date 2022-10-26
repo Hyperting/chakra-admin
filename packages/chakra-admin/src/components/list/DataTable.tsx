@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-key */
 import React, { cloneElement, isValidElement, useCallback } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { chakra, Table, Tbody, Td, Th, Thead, Tr, useBreakpointValue } from '@chakra-ui/react'
+import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
 import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
 import { ListProps } from '../../core/list/ListProps'
@@ -20,9 +20,7 @@ export type RowClick<T> = 'show' | 'edit' | false | ((item: T) => string)
 
 export type DataTableProps<TItem> = Partial<UseListReturn> &
   Partial<ListProps> & {
-    children?:
-      | React.ReactElement<DataTableValueProps<TItem>>[]
-      | React.ReactElement<DataTableValueProps<TItem>>
+    children?: React.ReactElement<DataTableValueProps<TItem>>[] | React.ReactElement<DataTableValueProps<TItem>>
     filtersComponent?: React.ReactNode
     moreMenuHeaderComponent?: Renderer<HeaderProps<any>> | string
     moreMenuComponent?: Renderer<CellProps<any, any>>
@@ -45,17 +43,7 @@ function getRowClickRedirect<T>(
 }
 
 export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
-  const {
-    loading,
-    filtersComponent,
-    total,
-    offset,
-    resource,
-    expandComponent,
-    hasEdit,
-    hasShow,
-    rowClick = 'edit',
-  } = props
+  const { loading, filtersComponent, total, resource, expandComponent, hasEdit, hasShow, rowClick = 'edit' } = props
 
   // useRegisterLayoutComponent(DataTable as any)
 
@@ -75,6 +63,8 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
     previousPage,
     setPageSize,
     visibleColumns,
+    showBackToTop,
+    backToTop,
     state: { pageIndex, pageSize },
   } = useDataTable<TItem>(props)
   const location = useLocation()
@@ -135,6 +125,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           })}
         <Pagination
           page={page}
+          paginationMode={props.paginationMode!}
           fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
@@ -146,8 +137,9 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           setPageSize={setPageSize}
           pageIndex={pageIndex}
           pageSize={pageSize}
-          totalRows={total || 0}
-          offset={offset}
+          totalRows={total}
+          showBackToTop={showBackToTop}
+          backToTop={backToTop}
         />
       </chakra.div>
       <chakra.div maxW="100%" overflowX="auto">
@@ -161,13 +153,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
         >
           <Thead>
             {headerGroups.map((headerGroup, index) => (
-              <Tr
-                bgColor="white"
-                my={5}
-                boxShadow="sm"
-                borderRadius="md"
-                {...headerGroup.getHeaderGroupProps()}
-              >
+              <Tr bgColor="white" my={5} boxShadow="sm" borderRadius="md" {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column, columnIndex) => (
                   <Th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -247,6 +233,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
       <chakra.div display="flex" justifyContent="flex-end" py={5}>
         <Pagination
           page={page}
+          paginationMode={props.paginationMode!}
           fetching={loading}
           canPreviousPage={canPreviousPage}
           canNextPage={canNextPage}
@@ -258,8 +245,9 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           setPageSize={setPageSize}
           pageIndex={pageIndex}
           pageSize={pageSize}
-          totalRows={total || 0}
-          offset={offset}
+          totalRows={total}
+          showBackToTop={showBackToTop}
+          backToTop={backToTop}
         />
       </chakra.div>
     </chakra.div>

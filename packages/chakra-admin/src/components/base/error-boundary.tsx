@@ -1,7 +1,7 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from '@chakra-ui/react'
 import React, { Component } from 'react'
 
-export class ErrorBoundary extends Component<{}, { hasError: boolean; error?: any }> {
+export class ErrorBoundary extends Component<{ children?: React.ReactElement }, { hasError: boolean; error?: any }> {
   constructor(props) {
     super(props)
     this.state = { hasError: false }

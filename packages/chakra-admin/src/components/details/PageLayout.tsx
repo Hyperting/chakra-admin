@@ -19,12 +19,8 @@ export const PageLayout: FC<PageLayoutProps> = ({
   if (renderingInModal) {
     return (
       <>
-        {typeof title === 'string' ? (
-          <PageTitle label={title} renderingInModal={renderingInModal} />
-        ) : (
-          title || null
-        )}
-        <DrawerBody {...rest}>{children}</DrawerBody>
+        {typeof title === 'string' ? <PageTitle label={title} renderingInModal={renderingInModal} /> : title || null}
+        <Box {...rest}>{children}</Box>
       </>
     )
   }
@@ -43,11 +39,7 @@ export const PageLayout: FC<PageLayoutProps> = ({
         // bgColor="gray.50"
         // border={chechScroll ? '2px solid red' : '2px solid blue'}
       >
-        {typeof title === 'string' ? (
-          <PageTitle label={title} renderingInModal={renderingInModal} />
-        ) : (
-          title || null
-        )}
+        {typeof title === 'string' ? <PageTitle label={title} renderingInModal={renderingInModal} /> : title || null}
         {topToolbar}
       </Flex>
       {children}

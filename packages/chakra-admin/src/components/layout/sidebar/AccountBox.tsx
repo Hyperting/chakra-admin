@@ -42,11 +42,7 @@ export const AccountBox: FC<Props> = ({ ...props }) => {
         </Box>
       </Flex>
 
-      <LogoutButton
-        icon={<Icon as={FiLogOut} color="black" w={5} h={5} />}
-        label=""
-        colorScheme="whiteAlpha"
-      />
+      <LogoutButton icon={<Icon as={FiLogOut} color="black" w={5} h={5} />} label="" colorScheme="whiteAlpha" />
     </Flex>
   )
 }

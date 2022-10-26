@@ -3,17 +3,11 @@ import { BrowserRouter as Router, useLocation, useNavigate } from 'react-router-
 import { RecoilRoot } from 'recoil'
 import { ApolloClient, ApolloProvider } from '@apollo/client'
 import { QueryParamProvider } from 'use-query-params'
-import {
-  I18nProvider,
-  I18nProviderProps,
-  defaultI18n,
-  getDefaultI18nOptions,
-  en as enLanguage,
-} from 'ca-i18n'
+import { I18nProvider, I18nProviderProps, defaultI18n, getDefaultI18nOptions, en as enLanguage } from 'ca-i18n'
 import { AdminCore, AdminCoreProps } from './AdminCore'
 import { ErrorBoundary } from '../base/error-boundary'
 
-const RouteAdapter: FC = ({ children }) => {
+const RouteAdapter: FC<{ children?: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate()
   const location = useLocation()
 

@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Stack, StackProps } from '@chakra-ui/react'
 import { TreeRenderer } from '..'
-import { filterChakraProps } from '../../core/react/system-utils'
+import { filterChakraProps } from 'ca-system'
 
 export type ArrayFieldProps<TItem = Record<string, any>> = {
   entries?: TItem[]

@@ -64,12 +64,7 @@ export const DeleteModal: FC<DeleteModalProps> = ({
           <Button disabled={deleting} mr={3} onClick={props.onClose}>
             {t('ca.action.cancel')}
           </Button>
-          <Button
-            onClick={handleDeleteConfirm}
-            isLoading={deleting}
-            disabled={deleting}
-            colorScheme="red"
-          >
+          <Button onClick={handleDeleteConfirm} isLoading={deleting} disabled={deleting} colorScheme="red">
             {confirmDeleteButtonLabel ||
               t('ca.action.confirm_delete', {
                 name: resource ? getResourceLabel(resource, 1) : undefined,

@@ -15,7 +15,6 @@ export const MenuItemLink: FC<Props> = ({ to, label, icon, ...rest }) => {
     <chakra.div as="li" userSelect="none" listStyleType="none">
       <Button
         variant="ghost"
-        isFullWidth
         as={Link}
         to={to}
         pr={4}

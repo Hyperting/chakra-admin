@@ -6,10 +6,7 @@ export interface DefaultUserIdentity {
   [prop: string]: any
 }
 
-export interface AuthProvider<
-  LoginParams = Record<string, any>,
-  UserIdentity = DefaultUserIdentity
-> {
+export interface AuthProvider<LoginParams = Record<string, any>, UserIdentity = DefaultUserIdentity> {
   init: () => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   login: (params: LoginParams) => Promise<void>
