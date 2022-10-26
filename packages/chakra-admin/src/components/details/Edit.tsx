@@ -2,7 +2,7 @@ import React, { cloneElement, FC, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
 import { MutationResult, OperationVariables, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
-import { deepMap } from '../../core/details/deep-map'
+import { deepMap } from 'ca-system'
 import { useEdit } from '../../core/details/useEdit'
 import { NavigateBehavior } from '../../core/details/navigateBehavior'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
@@ -24,10 +24,9 @@ export type EditProps<
   filtersComponent?: React.ReactNode
   renderingInModal?: boolean
   layout?: ReactElement<PageLayoutProps, any>
-  onSuccess?:
-    | ((data: MutationResult<EditTData>) => void)
-    | ((data: MutationResult<EditTData>) => Promise<void>)
+  onSuccess?: ((data: MutationResult<EditTData>) => void) | ((data: MutationResult<EditTData>) => Promise<void>)
   redirect?: NavigateBehavior
+  children?: React.ReactNode
 } & Pick<PageLayoutProps, 'title'>
 
 export const Edit: FC<EditProps> = (props) => {

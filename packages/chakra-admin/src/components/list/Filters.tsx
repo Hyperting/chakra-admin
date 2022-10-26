@@ -65,11 +65,12 @@ export const Filters: FC<FiltersProps> = ({
   const { isOpen, onClose, onOpen } = useDisclosure()
   const isMobile = useBreakpointValue({ base: true, lg: false })
   const handleFilterChange = useCallback(
-    (source, parse?) => (value: string): void => {
-      if (onFiltersChange) {
-        onFiltersChange({ ...currentFilters, [source]: parse ? parse(value) : value })
-      }
-    },
+    (source, parse?) =>
+      (value: string): void => {
+        if (onFiltersChange) {
+          onFiltersChange({ ...currentFilters, [source]: parse ? parse(value) : value })
+        }
+      },
     [currentFilters, onFiltersChange]
   )
 
@@ -80,10 +81,7 @@ export const Filters: FC<FiltersProps> = ({
   }, [onFiltersChange])
 
   const activeFiltersCount = useMemo<number>(
-    () =>
-      currentFilters
-        ? Object.keys(currentFilters || {}).length - Object.keys(defaultFilters || {}).length
-        : 0,
+    () => (currentFilters ? Object.keys(currentFilters || {}).length - Object.keys(defaultFilters || {}).length : 0),
     [currentFilters, defaultFilters]
   )
 
@@ -111,7 +109,7 @@ export const Filters: FC<FiltersProps> = ({
           Children.map(alwaysOnFilters, (child, index) => {
             if (isValidElement(child)) {
               return cloneElement(child, {
-                onChange: handleFilterChange(child.props.source, child.props.parse),
+                onChange: handleFilterChange(child.props.source, child.props.parse) as unknown as any,
                 value:
                   child.props.format && currentFilters && currentFilters[child.props.source]
                     ? child.props.format(currentFilters[child.props.source])
@@ -120,18 +118,12 @@ export const Filters: FC<FiltersProps> = ({
                 mr: 4,
                 key: `filter-input-${index}`,
                 variant: 'filled',
-              })
+              } as any)
             }
             return null
           })}
         {(isMobile && hiddenFilters.length === 0) || hiddenFilters.length > 0 ? (
-          <Button
-            pos="relative"
-            variant="outline"
-            onClick={onOpen}
-            rightIcon={<Icon as={MdFilterList} />}
-            role="group"
-          >
+          <Button pos="relative" variant="outline" onClick={onOpen} rightIcon={<Icon as={MdFilterList} />} role="group">
             {activeFiltersCount > 0 && (
               <Badge
                 pos="absolute"
@@ -198,12 +190,10 @@ export const Filters: FC<FiltersProps> = ({
                           {cloneElement(child, {
                             onChange: handleFilterChange(child.props.source, child.props.parse),
                             value:
-                              child.props.format &&
-                              currentFilters &&
-                              currentFilters[child.props.source]
+                              child.props.format && currentFilters && currentFilters[child.props.source]
                                 ? child.props.format(currentFilters[child.props.source])
                                 : (currentFilters || {})[child.props.source] || undefined,
-                          })}
+                          } as any)}
                         </InDrawerInputControl>
                       )
                     }
@@ -216,12 +206,10 @@ export const Filters: FC<FiltersProps> = ({
                           {cloneElement(child, {
                             onChange: handleFilterChange(child.props.source, child.props.parse),
                             value:
-                              child.props.format &&
-                              currentFilters &&
-                              currentFilters[child.props.source]
+                              child.props.format && currentFilters && currentFilters[child.props.source]
                                 ? child.props.format(currentFilters[child.props.source])
                                 : (currentFilters || {})[child.props.source] || undefined,
-                          })}
+                          } as any)}
                         </InDrawerInputControl>
                       )
                     }

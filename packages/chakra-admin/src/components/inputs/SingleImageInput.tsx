@@ -3,10 +3,10 @@ import { Box, Text, Icon, BoxProps } from '@chakra-ui/react'
 import { useDropzone } from 'react-dropzone'
 import { useTranslate } from 'ca-i18n'
 import { FaUpload } from 'react-icons/fa'
-import { useController } from 'react-hook-form'
-import { CAInputProps } from '../../core/react/system-form'
+import { FieldValues, useController } from 'react-hook-form'
+import { CAInputProps } from 'ca-system'
 
-type SingleImageInputProps<TItem = Record<string, any>> = {} & CAInputProps<TItem> & BoxProps
+type SingleImageInputProps<TItem extends FieldValues = Record<string, any>> = {} & CAInputProps<TItem> & BoxProps
 
 interface FileWithPreview extends File {
   preview?: string
@@ -20,7 +20,7 @@ interface FileWithPreview extends File {
  *
  * <SingleImageInput source="image" />
  */
-export function SingleImageInput<TItem = Record<string, any>>({
+export function SingleImageInput<TItem extends FieldValues = Record<string, any>>({
   source,
   label,
   resource,
@@ -89,9 +89,7 @@ export function SingleImageInput<TItem = Record<string, any>>({
       borderWidth="1px"
       borderStyle="dashed"
       borderColor={invalid ? 'red.500' : isDragActive ? 'gray.900' : 'gray.200'}
-      bgImage={
-        (value as FileWithPreview)?.preview ? `url(${(value as FileWithPreview).preview})` : 'none'
-      }
+      bgImage={(value as FileWithPreview)?.preview ? `url(${(value as FileWithPreview).preview})` : 'none'}
       bgPos={['center', 'center']}
       bgSize="cover"
       cursor="pointer"
@@ -106,7 +104,7 @@ export function SingleImageInput<TItem = Record<string, any>>({
       {(!value || isDragActive) && (
         <Box
           pos="absolute"
-          d="flex"
+          display="flex"
           flexDir="column"
           alignItems="center"
           justifyContent="center"

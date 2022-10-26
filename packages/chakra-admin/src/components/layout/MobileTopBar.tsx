@@ -56,24 +56,12 @@ export const MobileTopBar: FC<Props> = () => {
           />
 
           {!initialized ? (
-            <chakra.div
-              ml={5}
-              display="flex"
-              flexDir="column"
-              alignItems="flex-start"
-              justifyContent="center"
-            >
+            <chakra.div ml={5} display="flex" flexDir="column" alignItems="flex-start" justifyContent="center">
               <Skeleton h="10px" w="50px" />
               <Skeleton h="12px" w="80px" />
             </chakra.div>
           ) : user && user.salesPoint && user.salesPoint.name ? (
-            <chakra.div
-              ml={5}
-              display="flex"
-              flexDir="column"
-              alignItems="flex-start"
-              justifyContent="center"
-            >
+            <chakra.div ml={5} display="flex" flexDir="column" alignItems="flex-start" justifyContent="center">
               <chakra.span
                 display="inline-flex"
                 justifyContent="center"

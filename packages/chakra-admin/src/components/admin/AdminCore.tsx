@@ -20,7 +20,7 @@ export type AdminCoreProps = {
   children?: React.ReactNode
 }
 
-const WithIdParam: FC = ({ children }) => {
+const WithIdParam: FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { id } = useParams()
   return cloneElement(Children.only(children) as React.ReactElement, {
     id,
@@ -43,9 +43,8 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
 
   const hasIndex = useMemo(
     () =>
-      Children.toArray(props.children).filter(
-        (c: any) => c.type === Route && (c.props?.index || c.props?.path === '/')
-      ).length > 0,
+      Children.toArray(props.children).filter((c: any) => c.type === Route && (c.props?.index || c.props?.path === '/'))
+        .length > 0,
     [props.children]
   )
 
@@ -56,9 +55,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
   return (
     <>
       <Routes location={background || location}>
-        {isValidElement(loginComponent) && (
-          <Route path="login" element={cloneElement(loginComponent, {})} />
-        )}
+        {isValidElement(loginComponent) && <Route path="login" element={cloneElement(loginComponent, {})} />}
 
         {Children.map(props.children, (child: React.ReactNode, index) => {
           if (isValidElement(child) && child.type === Route) {
@@ -87,36 +84,20 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
               if (crud.hasList) {
                 return (
                   <Route path={child.props.overrideName || child.props.name}>
-                    {crud.hasList && (
-                      <Route
-                        index
-                        element={createElement(child.props.list, { ...resourceProps })}
-                      />
-                    )}
+                    {crud.hasList && <Route index element={createElement(child.props.list, { ...resourceProps })} />}
                     {crud.hasCreate && (
-                      <Route
-                        path="create/*"
-                        element={createElement(child.props.create, { ...resourceProps })}
-                      />
+                      <Route path="create/*" element={createElement(child.props.create, { ...resourceProps })} />
                     )}
                     {crud.hasEdit && (
                       <Route
                         path=":id/*"
-                        element={
-                          <WithIdParam>
-                            {createElement(child.props.edit, { ...resourceProps })}
-                          </WithIdParam>
-                        }
+                        element={<WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>}
                       />
                     )}
                     {crud.hasShow && (
                       <Route
                         path=":id/show/*"
-                        element={
-                          <WithIdParam>
-                            {createElement(child.props.show, { ...resourceProps })}
-                          </WithIdParam>
-                        }
+                        element={<WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>}
                       />
                     )}
                   </Route>
@@ -169,34 +150,20 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
 
               if (crud.hasCreate || crud.hasEdit || crud.hasShow) {
                 return (
-                  <Route
-                    path={child.props.overrideName || child.props.name}
-                    element={modalComponent}
-                  >
+                  <Route path={child.props.overrideName || child.props.name} element={modalComponent}>
                     {crud.hasCreate && (
-                      <Route
-                        path="create"
-                        element={createElement(child.props.create, { ...resourceProps })}
-                      />
+                      <Route path="create" element={createElement(child.props.create, { ...resourceProps })} />
                     )}
                     {crud.hasEdit && (
                       <Route
                         path=":id"
-                        element={
-                          <WithIdParam>
-                            {createElement(child.props.edit, { ...resourceProps })}
-                          </WithIdParam>
-                        }
+                        element={<WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>}
                       />
                     )}
                     {crud.hasShow && (
                       <Route
                         path=":id/show"
-                        element={
-                          <WithIdParam>
-                            {createElement(child.props.show, { ...resourceProps })}
-                          </WithIdParam>
-                        }
+                        element={<WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>}
                       />
                     )}
                   </Route>

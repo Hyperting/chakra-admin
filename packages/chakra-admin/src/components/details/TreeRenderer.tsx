@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
-import { deepMap } from '../../core/details/deep-map'
+import { deepMap } from 'ca-system'
 
 type Props = {
   propsOverride: any
+  children?: React.ReactNode
 }
 
 export const TreeRenderer: FC<Props> = ({ children, propsOverride }) => {

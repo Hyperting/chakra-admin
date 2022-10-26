@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
-import { CAFieldProps } from '../../core/react/system-field'
+import { CAFieldProps } from 'ca-system'
 
 export type DataTableValueProps<TItem> = {
   isNumeric?: boolean

@@ -44,9 +44,7 @@ export interface CUIAutoCompleteProps<T extends Item> extends UseComboboxProps<T
   label: string
   highlightItemBg?: string
   onCreateItem?: (item: T) => void
-  optionFilterFunc?:
-    | ((items: T[], inputValue: string) => T[])
-    | ((items: T[], inputValue: string) => Promise<T[]>)
+  optionFilterFunc?: ((items: T[], inputValue: string) => T[]) | ((items: T[], inputValue: string) => Promise<T[]>)
   itemRenderer?: (item: T) => string | JSX.Element
   labelStyleProps?: FormLabelProps
   inputStyleProps?: InputProps
@@ -188,15 +186,7 @@ export const CUIAutoComplete = <T extends Item>(
       setInputItems([{ label: `${inputValue}`, value: inputValue }])
       setHighlightedIndex(0)
     }
-  }, [
-    inputItems,
-    setIsCreating,
-    setHighlightedIndex,
-    inputValue,
-    disableCreateItem,
-    isCreating,
-    selectedItem,
-  ])
+  }, [inputItems, setIsCreating, setHighlightedIndex, inputValue, disableCreateItem, isCreating, selectedItem])
 
   useDeepCompareEffect(() => {
     setInputItems(items)

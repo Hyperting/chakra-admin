@@ -1,16 +1,5 @@
 import React, { FC } from 'react'
-import {
-  As,
-  DrawerHeader,
-  Heading,
-  Icon,
-  Center,
-  Flex,
-  ModalCloseButton,
-  Box,
-  BoxProps,
-  useBreakpointValue,
-} from '@chakra-ui/react'
+import { As, Heading, Icon, Center, Flex, Box, BoxProps, CloseButton } from '@chakra-ui/react'
 import { ShadowedBox } from '../layout/ShadowedBox'
 
 export type PageTitleProps = {
@@ -42,9 +31,9 @@ export const PageTitle: FC<PageTitleProps> = ({
 
   if (renderingInModal) {
     return (
-      <DrawerHeader
+      <Box
         fontSize="2xl"
-        d="flex"
+        display="flex"
         alignItems="center"
         justifyContent="space-between"
         // TODO: fix boxshadow color
@@ -62,8 +51,8 @@ export const PageTitle: FC<PageTitleProps> = ({
           {label}
         </Flex>
 
-        <ModalCloseButton pos="relative" top="none" insetEnd="none" />
-      </DrawerHeader>
+        <CloseButton pos="relative" top="none" insetEnd="none" />
+      </Box>
     )
   }
 

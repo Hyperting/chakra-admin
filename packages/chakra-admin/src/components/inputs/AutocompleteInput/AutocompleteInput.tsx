@@ -13,7 +13,7 @@ import { useApolloClient } from '@apollo/client'
 import { InputProps } from '../Input'
 import { Item, CUIAutoCompleteProps, CUIAutoComplete } from '../../../chakra-ui-autocomplete'
 import { useCreate } from '../../../core/details/useCreate'
-import { CAInputProps } from '../../../core/react/system-form'
+import { CAInputProps } from 'ca-system'
 
 export type AutocompleteInputProps = Omit<InputProps, 'source' | 'onChange'> &
   Omit<CUIAutoCompleteProps<Item>, 'placeholder' | 'items' | 'onChange'> & {
@@ -26,18 +26,12 @@ export type AutocompleteInputProps = Omit<InputProps, 'source' | 'onChange'> &
     inputValueToCreateVariables?: (inputValue: string) => Record<string, any>
     inputValueToFilters?: (value: string) => Record<string, any>
     emptyLabel?: string
-    dataItemToAutocompleteItem?: (
-      data: Record<string, any>,
-      index: number
-    ) => Item & { [x: string]: any }
+    dataItemToAutocompleteItem?: (data: Record<string, any>, index: number) => Item & { [x: string]: any }
     filterResult?: (items: Item) => boolean
     resetList?: number
   } & Omit<CAInputProps, 'onChange'>
 
-export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
-  any,
-  AutocompleteInputProps
->(
+export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<any, AutocompleteInputProps>(
   (
     {
       resource,
@@ -147,16 +141,7 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
         }
         return []
       },
-      [
-        client,
-        dataItemToAutocompleteItem,
-        emptyLabel,
-        filterResult,
-        inputValueToFilters,
-        notify,
-        query,
-        showEmptyState,
-      ]
+      [client, dataItemToAutocompleteItem, emptyLabel, filterResult, inputValueToFilters, notify, query, showEmptyState]
     )
 
     useEffect(() => {
@@ -230,9 +215,7 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<
               (data as any)[dataKeys[0]].data &&
               (data as any)[dataKeys[0]].data.length > 0
             ) {
-              setItems([
-                ...(data as any)[Object.keys(data)[0]].data.map(dataItemToAutocompleteItem),
-              ])
+              setItems([...(data as any)[Object.keys(data)[0]].data.map(dataItemToAutocompleteItem)])
             } else {
               // throw new Error('Error fetching data')
             }
@@ -307,10 +290,7 @@ export const AutocompleteWithCreate: FC<AutocompleteInputProps> = ({
       const keys = Object.keys(mutationResult.data)
       if (keys.length > 0 && (mutationResult.data as any)[keys[0]]) {
         if (rest?.onChange) {
-          rest?.onChange(
-            (mutationResult.data as any)[keys[0]]?.id as any,
-            (mutationResult.data as any)[keys[0]]
-          )
+          rest?.onChange((mutationResult.data as any)[keys[0]]?.id as any, (mutationResult.data as any)[keys[0]])
         }
       }
     }

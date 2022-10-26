@@ -1,12 +1,5 @@
 import React, { FC } from 'react'
-import {
-  Drawer,
-  DrawerContent,
-  DrawerOverlay,
-  DrawerFooter,
-  DrawerProps,
-  DrawerCloseButton,
-} from '@chakra-ui/react'
+import { Drawer, DrawerContent, DrawerOverlay, DrawerFooter, DrawerProps, DrawerCloseButton } from '@chakra-ui/react'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { LogoutButton } from '../buttons/LogoutButton'
 import { DrawerBody } from '../modal/DrawerBody'
@@ -30,7 +23,7 @@ export const UserSettingsDrawer: FC<Props> = ({ isOpen, onClose, ...rest }) => {
           <DrawerHeader title="Impostazioni Utente" />
           <DrawerBody></DrawerBody>
           <DrawerFooter>
-            <LogoutButton mb={4} isFullWidth />
+            <LogoutButton mb={4} />
           </DrawerFooter>
         </DrawerContent>
       </DrawerOverlay>

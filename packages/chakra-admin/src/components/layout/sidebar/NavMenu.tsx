@@ -4,6 +4,7 @@ import { MenuItemLink } from './MenuItemLink'
 
 export type NavMenuProps = {
   onItemClick?: () => void
+  children?: React.ReactNode
 }
 export const NavMenu: FC<NavMenuProps> = ({ onItemClick, children }) => {
   return (

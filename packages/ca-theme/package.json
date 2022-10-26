@@ -1,17 +1,17 @@
 {
   "name": "ca-theme",
-  "version": "0.0.1-dev.43",
+  "version": "0.0.2-dev.15",
   "description": "",
   "main": "lib/index.js",
-  "module": "lib/index.esm.js",
+  "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
   "files": [
     "lib"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
-    "start": "rollup -c -w"
+    "build": "tsup src/index.ts",
+    "dev": "npm run build -- --watch"
   },
   "author": "Hyperting S.r.l.",
   "license": "MIT",
@@ -21,12 +21,27 @@
     "directory": "packages/ca-theme"
   },
   "peerDependencies": {
-    "@chakra-ui/react": ">= 1.0.0"
+    "@chakra-ui/react": ">= 2"
   },
   "dependencies": {
     "@uselessdev/datepicker": "^2.0.0"
   },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "tsup-config": "workspace:*",
+    "typescript": "^4.5.2",
+    "@chakra-ui/react": "^2.3.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "framer-motion": "^6.5.1",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@babel/core": "^7.15.5",
+    "eslint": "^8.25.0",
+    "tsup": "^6.2.3"
+  },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "http://localhost:4873"
   }
 }

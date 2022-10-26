@@ -1,0 +1,36 @@
+{
+  "mode": "pre",
+  "tag": "dev",
+  "initialVersions": {
+    "docs": "0.0.0",
+    "web": "0.0.0",
+    "ca-i18n": "0.0.1-dev.43",
+    "ca-theme": "0.0.2-dev.0",
+    "chakra-admin": "0.0.2-dev.0",
+    "ui": "0.0.0",
+    "ca-test-utils": "0.0.1-dev.43",
+    "eslint-config-custom": "0.0.0",
+    "tsconfig": "0.0.0",
+    "tsup-config": "0.0.0",
+    "ca-system": "0.0.2-dev.6",
+    "examples-api": "1.0.0",
+    "kitchen-sink": "0.0.0"
+  },
+  "changesets": [
+    "cuddly-cats-teach",
+    "eight-kiwis-fail",
+    "five-adults-beam",
+    "five-kids-search",
+    "giant-monkeys-check",
+    "happy-parrots-wink",
+    "khaki-wombats-dance",
+    "mighty-timers-act",
+    "modern-fishes-shake",
+    "new-hotels-attack",
+    "odd-radios-complain",
+    "perfect-waves-change",
+    "shy-actors-hang",
+    "three-seahorses-leave",
+    "violet-hats-flow"
+  ]
+}

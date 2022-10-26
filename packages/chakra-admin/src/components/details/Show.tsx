@@ -1,15 +1,14 @@
-import React, { cloneElement, FC, isValidElement, ReactElement } from 'react'
+import React, { cloneElement, isValidElement, ReactElement } from 'react'
 import { DocumentNode } from 'graphql'
 import { OperationVariables, QueryHookOptions, TypedDocumentNode } from '@apollo/client'
 import { useTranslate } from 'ca-i18n'
-import { deepMap } from '../../core/details/deep-map'
 import { useShow } from '../../core/details/useShow'
 import { useGetResourceLabel } from '../../core/admin/useGetResourceLabel'
 import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
 import { ShowToolbar } from './ShowToolbar'
-import { NestedKeyOf } from '../../core/react/nested-key'
+import { NestedKeyOf } from 'ca-system'
 import { TreeRenderer } from './TreeRenderer'
 
 export type ShowProps<
@@ -32,9 +31,7 @@ export type ShowProps<
 } & Pick<PageLayoutProps, 'title'>
 
 // export const Show: FC<ShowProps> = (props) => {
-export function Show<TQuery = Record<string, any>, TItem = Record<string, any>>(
-  props: ShowProps<TQuery, TItem>
-) {
+export function Show<TQuery = Record<string, any>, TItem = Record<string, any>>(props: ShowProps<TQuery, TItem>) {
   const {
     children,
     resource,

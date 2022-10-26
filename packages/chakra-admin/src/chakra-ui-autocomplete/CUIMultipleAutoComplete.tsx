@@ -1,31 +1,45 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react'
-import {
-  useCombobox,
-  useMultipleSelection,
-  UseMultipleSelectionProps
-} from 'downshift'
+import { useCombobox, useMultipleSelection, UseMultipleSelectionProps } from 'downshift'
 import { matchSorter } from 'match-sorter'
 import Highlighter from 'react-highlight-words'
 import useDeepCompareEffect from 'react-use/lib/useDeepCompareEffect'
 import { IconProps, CheckCircleIcon, ArrowDownIcon } from '@chakra-ui/icons'
-import { Button, ButtonProps, Input, InputProps, Tag, TagCloseButton, TagLabel, TagProps, ComponentWithAs, FormLabel, FormLabelProps, Text, Stack, Box, BoxProps, List, ListItem, ListIcon } from '@chakra-ui/react'
+import {
+  Button,
+  ButtonProps,
+  Input,
+  InputProps,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  TagProps,
+  ComponentWithAs,
+  FormLabel,
+  FormLabelProps,
+  Text,
+  Stack,
+  Box,
+  BoxProps,
+  List,
+  ListItem,
+  ListIcon,
+} from '@chakra-ui/react'
 import { useMemo } from 'react'
 import { Item } from './types/Item'
 
 function defaultCreateItemRenderer(value: string) {
   return (
     <Text>
-      <Box as='span'>Create</Box>{' '}
-      <Box as='span' bg='yellow.300' fontWeight='bold'>
+      <Box as="span">Create</Box>{' '}
+      <Box as="span" bg="yellow.300" fontWeight="bold">
         "{value}"
       </Box>
     </Text>
   )
-} 
+}
 
-export interface CUIMultipleAutoCompleteProps<T extends Item>
-  extends UseMultipleSelectionProps<T> {
+export interface CUIMultipleAutoCompleteProps<T extends Item> extends UseMultipleSelectionProps<T> {
   items: T[]
   placeholder: string
   label: string
@@ -87,13 +101,8 @@ export const CUIMultipleAutoComplete = <T extends Item>(
   const disclosureRef = React.useRef(null)
 
   /* Downshift Props */
-  const {
-    getSelectedItemProps,
-    getDropdownProps,
-    addSelectedItem,
-    removeSelectedItem,
-    selectedItems
-  } = useMultipleSelection(downshiftProps)
+  const { getSelectedItemProps, getDropdownProps, addSelectedItem, removeSelectedItem, selectedItems } =
+    useMultipleSelection(downshiftProps)
   const selectedItemValues = useMemo<string[]>(() => selectedItems.map((item) => item.value), [selectedItems])
 
   const {
@@ -107,7 +116,7 @@ export const CUIMultipleAutoComplete = <T extends Item>(
     getItemProps,
     openMenu,
     selectItem,
-    setHighlightedIndex
+    setHighlightedIndex,
   } = useCombobox({
     inputValue,
     selectedItem: undefined,
@@ -129,7 +138,7 @@ export const CUIMultipleAutoComplete = <T extends Item>(
         case useCombobox.stateChangeTypes.InputBlur:
           return {
             ...changes,
-            isOpen: false
+            isOpen: false,
           }
         case useCombobox.stateChangeTypes.InputKeyDownEnter:
         case useCombobox.stateChangeTypes.ItemClick:
@@ -137,12 +146,12 @@ export const CUIMultipleAutoComplete = <T extends Item>(
             ...changes,
             highlightedIndex: state.highlightedIndex,
             inputValue,
-            isOpen: true
+            isOpen: true,
           }
         case useCombobox.stateChangeTypes.FunctionSelectItem:
           return {
             ...changes,
-            inputValue
+            inputValue,
           }
         default:
           return changes
@@ -160,13 +169,13 @@ export const CUIMultipleAutoComplete = <T extends Item>(
             if (selectedItemValues.includes(selectedItem.value)) {
               removeSelectedItem(selectedItem)
             } else if (onCreateItem && isCreating) {
-                onCreateItem(selectedItem)
-                setIsCreating(false)
-                setInputItems(items)
-                setInputValue('')
-              } else {
-                addSelectedItem(selectedItem)
-              }
+              onCreateItem(selectedItem)
+              setIsCreating(false)
+              setInputItems(items)
+              setInputValue('')
+            } else {
+              addSelectedItem(selectedItem)
+            }
 
             // @ts-ignore
             selectItem(null)
@@ -175,7 +184,7 @@ export const CUIMultipleAutoComplete = <T extends Item>(
         default:
           break
       }
-    }
+    },
   })
 
   React.useEffect(() => {
@@ -202,7 +211,7 @@ export const CUIMultipleAutoComplete = <T extends Item>(
 
       {/* ---------Stack with Selected Menu Tags above the Input Box--------- */}
       {selectedItems && (
-        <Stack spacing={2} isInline flexWrap='wrap'>
+        <Stack spacing={2} isInline flexWrap="wrap">
           {selectedItems.map((selectedItem, index) => (
             <Tag
               mb={1}
@@ -216,7 +225,7 @@ export const CUIMultipleAutoComplete = <T extends Item>(
                   e.stopPropagation()
                   removeSelectedItem(selectedItem)
                 }}
-                aria-label='Remove menu selection badge'
+                aria-label="Remove menu selection badge"
               />
             </Tag>
           ))}
@@ -231,18 +240,14 @@ export const CUIMultipleAutoComplete = <T extends Item>(
           {...getInputProps(
             getDropdownProps({
               placeholder,
-              onClick: isOpen ? () => { } : openMenu,
-              onFocus: isOpen ? () => { } : openMenu,
-              ref: disclosureRef
+              onClick: isOpen ? () => {} : openMenu,
+              onFocus: isOpen ? () => {} : openMenu,
+              ref: disclosureRef,
             })
           )}
         />
         {!hideToggleButton && (
-          <Button
-            {...toggleButtonStyleProps}
-            {...getToggleButtonProps()}
-            aria-label='toggle menu'
-          >
+          <Button {...toggleButtonStyleProps} {...getToggleButtonProps()} aria-label="toggle menu">
             <ArrowDownIcon />
           </Button>
         )}
@@ -252,10 +257,10 @@ export const CUIMultipleAutoComplete = <T extends Item>(
       {/* -----------Section that renders the Menu Lists Component ----------------- */}
       <Box pb={4} mb={4}>
         <List
-          bg='white'
-          borderRadius='4px'
+          bg="white"
+          borderRadius="4px"
           border={isOpen && '1px solid rgba(0,0,0,0.1)'}
-          boxShadow='6px 5px 8px rgba(0,50,30,0.02)'
+          boxShadow="6px 5px 8px rgba(0,50,30,0.02)"
           {...listStyleProps}
           {...getMenuProps()}
         >
@@ -264,7 +269,7 @@ export const CUIMultipleAutoComplete = <T extends Item>(
               <ListItem
                 px={2}
                 py={1}
-                borderBottom='1px solid rgba(0,0,0,0.01)'
+                borderBottom="1px solid rgba(0,0,0,0.01)"
                 {...listItemStyleProps}
                 bg={highlightedIndex === index ? highlightItemBg : 'inherit'}
                 key={`${item.value}${index}`}
@@ -273,29 +278,29 @@ export const CUIMultipleAutoComplete = <T extends Item>(
                 {isCreating ? (
                   createItemRenderer(item.label)
                 ) : (
-                  <Box display='inline-flex' alignItems='center'>
+                  <Box display="inline-flex" alignItems="center">
                     {selectedItemValues.includes(item.value) && (
-                    <ListIcon
-                      as={icon || CheckCircleIcon}
-                      color='green.500'
-                      role='img'
-                      display='inline'
-                      aria-label='Selected'
-                      {...selectedIconProps}
-                    />
-                      )}
+                      <ListIcon
+                        as={icon || CheckCircleIcon}
+                        color="green.500"
+                        role="img"
+                        display="inline"
+                        aria-label="Selected"
+                        {...selectedIconProps}
+                      />
+                    )}
 
                     {itemRenderer ? (
-                        itemRenderer(item)
-                      ) : (
-                        <Highlighter
-                          autoEscape
-                          searchWords={[inputValue || '']}
-                          textToHighlight={defaultItemRenderer(item)}
-                        />
-                        )}
+                      itemRenderer(item)
+                    ) : (
+                      <Highlighter
+                        autoEscape
+                        searchWords={[inputValue || '']}
+                        textToHighlight={defaultItemRenderer(item)}
+                      />
+                    )}
                   </Box>
-                  )}
+                )}
               </ListItem>
             ))}
         </List>
