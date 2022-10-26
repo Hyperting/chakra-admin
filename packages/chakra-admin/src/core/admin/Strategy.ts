@@ -21,7 +21,7 @@ export type ListGetVariablesOffsetParams<TItem extends Record<string, any> = Rec
     paginationMode: 'offset'
     pagination: OffsetPaginationParam
     sort: OffsetSortType<TItem>
-    filters: TItem
+    filters: TItem | Record<string, any>
   }
 
 export type ListGetVariablesCursorParams<TItem extends Record<string, any> = Record<string, any>> =
