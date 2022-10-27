@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.0.2-dev.18
+
+### Patch Changes
+
+- [`905ae72`](https://github.com/it-nalon/chakra-admin/commit/905ae720bc21b00b528fd1fa713ee12b01194d68) Thanks [@it-nalon](https://github.com/it-nalon)! - Fix: ModalRouteLayout
+
+- Updated dependencies [[`905ae72`](https://github.com/it-nalon/chakra-admin/commit/905ae720bc21b00b528fd1fa713ee12b01194d68)]:
+  - ca-i18n@0.0.2-dev.18
+
 ## 0.0.2-dev.17
 
 ### Patch Changes
