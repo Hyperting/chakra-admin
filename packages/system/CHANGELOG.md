@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.0.2-dev.17
+
+### Patch Changes
+
+- Feat: AutocompleteInput works with cursor pagination
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.17
+
 ## 0.0.2-dev.16
 
 ### Patch Changes

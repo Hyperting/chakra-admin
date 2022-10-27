@@ -1,6 +1,6 @@
 {
   "name": "chakra-admin",
-  "version": "0.0.2-dev.16",
+  "version": "0.0.2-dev.17",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",

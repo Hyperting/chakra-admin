@@ -1,5 +1,11 @@
 # ca-test-utils
 
+## 0.0.2-dev.17
+
+### Patch Changes
+
+- Feat: AutocompleteInput works with cursor pagination
+
 ## 0.0.2-dev.16
 
 ### Patch Changes
