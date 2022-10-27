@@ -38,6 +38,8 @@ export const PageTitle: FC<PageTitleProps> = ({
         justifyContent="space-between"
         // TODO: fix boxshadow color
         boxShadow="0px 3px 12px rgba(37, 31, 30, 0.05)"
+        px={6}
+        py={4}
         {...rest}
       >
         <Flex alignItems="center">

@@ -20,7 +20,9 @@ export const PageLayout: FC<PageLayoutProps> = ({
     return (
       <>
         {typeof title === 'string' ? <PageTitle label={title} renderingInModal={renderingInModal} /> : title || null}
-        <Box {...rest}>{children}</Box>
+        <Box {...rest} overflowY="auto" px={6} pt={4}>
+          {children}
+        </Box>
       </>
     )
   }
