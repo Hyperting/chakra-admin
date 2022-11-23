@@ -9,6 +9,7 @@ import {
   DataTableValue as Field,
   ListToolbar,
   CreateButton,
+  AutocompleteInput,
 } from 'chakra-admin'
 import { gql } from '@apollo/client'
 
@@ -33,6 +34,25 @@ const MUTATION_DELETE_COMPANY = gql`
 const CompanyFilters: FC = (props) => (
   <Filters {...props}>
     <Input source="name" label="name" alwaysOn />
+    <AutocompleteInput
+      emptyLabel="Tutti gli account manager"
+      showEmptyState
+      query={QUERY_GET_COMPANIES}
+      source="accountManagerId"
+      label=""
+      placeholder="Cerca per account manager..."
+      labelStyleProps={{ fontSize: 'md', fontWeight: '600', mt: '2', pb: '2' }}
+      showFormControl={false}
+      alwaysOn
+      minW="300px"
+      inputValueToFilters={(q: string) => ({ q })}
+      dataItemToAutocompleteItem={(data) => ({
+        ...data,
+        label: `${data.firstName} ${data.lastName}`,
+        value: data.id,
+      })}
+      inputStyleProps={{ borderRadius: 'lg' }}
+    />
   </Filters>
 )
 
