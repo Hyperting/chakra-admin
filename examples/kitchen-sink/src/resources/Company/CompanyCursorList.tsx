@@ -67,10 +67,10 @@ const CompanyFilters: FC = (props) => (
       showFormControl={false}
       alwaysOn
       minW="300px"
-      inputValueToFilters={(q: string) => ({ q })}
+      inputValueToFilters={(name: string) => ({ name })}
       dataItemToAutocompleteItem={(data) => ({
         ...data,
-        label: `${data.firstName} ${data.lastName}`,
+        label: `${data.name}`,
         value: data.id,
       })}
       inputStyleProps={{ borderRadius: 'lg' }}
