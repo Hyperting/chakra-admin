@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.0.2-dev.19
+
+### Patch Changes
+
+- Feat: add support BrowserRouter props to <Admin />
+
 ## 0.0.2-dev.18
 
 ### Patch Changes

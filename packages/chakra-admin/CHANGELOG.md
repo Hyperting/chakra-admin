@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.0.2-dev.19
+
+### Patch Changes
+
+- Feat: add support BrowserRouter props to <Admin />
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.19
+  - ca-theme@0.0.2-dev.19
+  - ca-system@0.0.2-dev.19
+
 ## 0.0.2-dev.18
 
 ### Patch Changes
