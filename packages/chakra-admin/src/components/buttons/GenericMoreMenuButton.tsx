@@ -37,6 +37,7 @@ export type GenericMoreMenuButtonProps<Data = any, Variables = OperationVariable
   hideDelete?: boolean
   hideEdit?: boolean
   hideShow?: boolean
+  children?: React.ReactNode
 } & RouteAvailability &
   MenuButtonProps
 
@@ -58,6 +59,7 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
   hideShow,
   hideEdit,
   hideDelete,
+  children,
   ...props
 }) => {
   // const { isOpen, onClose, onOpen } = useDisclosure()
@@ -120,6 +122,15 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
                 {t('ca.action.delete')}
               </MenuItem>
             )}
+
+            {React.Children.map(children, (child) => {
+              return React.cloneElement(child as React.ReactElement<ButtonProps>, {
+                onClick: (event) => {
+                  onClose()
+                  ;(child as React.ReactElement<ButtonProps>).props.onClick?.(event)
+                },
+              })
+            })}
           </MenuList>
         </Portal>
       </Menu>

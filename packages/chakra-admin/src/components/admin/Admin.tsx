@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react'
-import { BrowserRouter as Router, useLocation, useNavigate } from 'react-router-dom'
+import { BrowserRouter as Router, BrowserRouterProps, useLocation, useNavigate } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { ApolloClient, ApolloProvider } from '@apollo/client'
 import { QueryParamProvider } from 'use-query-params'
@@ -29,7 +29,7 @@ export type AdminProps<TCache> = AdminCoreProps & {
   client: ApolloClient<TCache>
   loadingComponent?: React.ReactNode
   i18nProviderProps?: Omit<I18nProviderProps, 'fallback'>
-}
+} & Pick<BrowserRouterProps, 'basename' | 'window'>
 
 /**
  * Main entry point for the admin panel.
@@ -65,21 +65,23 @@ export const Admin: FC<AdminProps<any>> = ({
     i18n: defaultI18n,
     options: getDefaultI18nOptions({ en: enLanguage }),
   },
+  basename,
+  window,
   ...props
 }) => {
   return (
-    // <ErrorBoundary>
-    <RecoilRoot>
-      <ApolloProvider client={client}>
-        <I18nProvider {...(i18nProviderProps as any)} fallback={loadingComponent}>
-          <Router>
-            <QueryParamProvider ReactRouterRoute={RouteAdapter}>
-              <AdminCore {...props} />
-            </QueryParamProvider>
-          </Router>
-        </I18nProvider>
-      </ApolloProvider>
-    </RecoilRoot>
-    // </ErrorBoundary>
+    <ErrorBoundary>
+      <RecoilRoot>
+        <ApolloProvider client={client}>
+          <I18nProvider {...(i18nProviderProps as any)} fallback={loadingComponent}>
+            <Router basename={basename} window={window}>
+              <QueryParamProvider ReactRouterRoute={RouteAdapter}>
+                <AdminCore {...props} />
+              </QueryParamProvider>
+            </Router>
+          </I18nProvider>
+        </ApolloProvider>
+      </RecoilRoot>
+    </ErrorBoundary>
   )
 }

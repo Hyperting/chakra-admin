@@ -28,6 +28,9 @@ export type AutocompleteInputProps<
     onChange?: (newValue: string, item: any) => void
     // value?: Item & { [x: string]: any }
     showEmptyState?: boolean
+    /**
+     * The query to execute to get the items
+     */
     createMutation?: DocumentNode
     inputValueToCreateVariables?: (inputValue: string) => Record<string, any>
     inputValueToFilters?: (value: string) => Record<string, any>
@@ -393,6 +396,9 @@ export const AutocompleteWithCreate: FC<AutocompleteInputProps> = ({
   return <Autocomplete onCreateItem={handleCreateItem} resource={resource} {...rest} />
 }
 
+/**
+ * Autocomplete input component
+ */
 export const AutocompleteInput: FC<AutocompleteInputProps> = ({
   required,
   min,

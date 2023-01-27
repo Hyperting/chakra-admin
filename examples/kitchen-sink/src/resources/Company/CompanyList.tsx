@@ -9,6 +9,7 @@ import {
   DataTableValue as Field,
   ListToolbar,
   CreateButton,
+  AutocompleteInput,
 } from 'chakra-admin'
 import { gql } from '@apollo/client'
 
