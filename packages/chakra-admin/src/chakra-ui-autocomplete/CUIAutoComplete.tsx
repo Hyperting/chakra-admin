@@ -227,17 +227,23 @@ export const CUIAutoComplete = <T extends Item>(
       {/* -----------Section that renders the input element ----------------- */}
 
       {/* -----------Section that renders the Menu Lists Component ----------------- */}
-      <Box pb={4} mb={4}>
-        <List
-          bg="white"
+      {isOpen && (
+        <Box
+          position="absolute"
+          width="100%"
+          overflowY="hidden"
+          margin={0}
+          zIndex={1000}
+          mt={1}
+          maxHeight={listStyleProps?.maxHeight || '250px'}
           borderRadius="4px"
-          border={isOpen && '1px solid rgba(0,0,0,0.1)'}
+          border="1px solid rgba(0,0,0,0.1)"
           boxShadow="6px 5px 8px rgba(0,50,30,0.02)"
+          backgroundColor="white"
           {...listStyleProps}
-          {...getMenuProps()}
         >
-          {isOpen &&
-            inputItems.map((item, index) => (
+          <List overflow="auto" maxHeight={listStyleProps?.maxHeight || '250px'} {...getMenuProps()}>
+            {inputItems.map((item, index) => (
               <ListItem
                 px={2}
                 py={1}
@@ -275,8 +281,9 @@ export const CUIAutoComplete = <T extends Item>(
                 )}
               </ListItem>
             ))}
-        </List>
-      </Box>
+          </List>
+        </Box>
+      )}
       {/* ----------- End Section that renders the Menu Lists Component ----------------- */}
     </FormControl>
   )

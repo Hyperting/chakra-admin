@@ -176,7 +176,7 @@ export const Autocomplete: FC<AutocompleteInputProps> = React.forwardRef<any, Au
     const handleSelectedItemChange = (changes: UseComboboxStateChange<Item>) => {
       if (changes.selectedItem && onChange) {
         onChange(changes.selectedItem.value, changes.selectedItem)
-        // setSelectedItem(changes.selectedItem)
+        setSelectedItem(changes.selectedItem)
       }
       if (changes.selectedItem?.value === '' || changes.selectedItem?.value === null) {
         setSelectedItem(undefined)
