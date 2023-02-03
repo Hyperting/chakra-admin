@@ -1,6 +1,6 @@
 {
   "name": "kitchen-sink",
-  "version": "0.0.1-dev.7",
+  "version": "0.0.1-dev.8",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.3.6",

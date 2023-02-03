@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.0.2-dev.20
+
+### Patch Changes
+
+- fix: Autocomplete input
+
 ## 0.0.2-dev.19
 
 ### Patch Changes
