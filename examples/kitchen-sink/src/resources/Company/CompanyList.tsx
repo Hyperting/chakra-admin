@@ -34,6 +34,28 @@ const MUTATION_DELETE_COMPANY = gql`
 const CompanyFilters: FC = (props) => (
   <Filters {...props}>
     <Input source="name" label="name" alwaysOn />
+    <AutocompleteInput
+      alwaysOn
+      emptyLabel="Tutti i clienti"
+      showEmptyState
+      query={QUERY_GET_COMPANIES as any}
+      source="id"
+      label=""
+      placeholder="Cerca cliente"
+      perPage={20}
+      labelStyleProps={{ fontSize: 'md', fontWeight: '600', mt: '2', pb: '2' }}
+      showFormControl={false}
+      maxW="300px"
+      inputValueToFilters={(q: string) => ({ name: q })}
+      dataItemToAutocompleteItem={(data: any) => ({
+        ...data,
+        label: data.name || `${data.firstName} ${data.lastName}`,
+        value: data.id,
+      })}
+      inputStyleProps={{ borderRadius: 'lg' }}
+      listStyleProps={{ borderRadius: 'lg' }}
+    />
+    <div>Control</div>
   </Filters>
 )
 
