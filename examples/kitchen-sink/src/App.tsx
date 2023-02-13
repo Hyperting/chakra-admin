@@ -5,14 +5,20 @@ import { ExampleStrategy } from './ExampleStrategy'
 import { CursorCompanyList, CursorCompanyWithTotal, OffsetCompanyList } from './resources/Company'
 import { client } from './apolloClient'
 import { ExampleAuthProvider } from './ExampleAuth'
+import { Route } from 'react-router-dom'
+import { ApolloClient } from '@apollo/client'
+
+const routeMiddleware = (client: ApolloClient<any>) => {
+  return '/onboarding'
+}
 
 export const App = () => (
   <ChakraProvider theme={theme}>
     <Admin client={client} strategy={ExampleStrategy} authProvider={ExampleAuthProvider}>
       <Resource {...(OffsetCompanyList as any)} />
-      <Resource {...(CursorCompanyList as any)} />
+      <Resource {...(CursorCompanyList as any)} routeMiddleware={routeMiddleware} />
       <Resource {...(CursorCompanyWithTotal as any)} />
-      {/* <Route path="my-custom-route" element={<>My Custom Route</>} /> */}
+      <Route path="onboarding" element={<div>Onboarding Page!</div>} />
     </Admin>
   </ChakraProvider>
 )

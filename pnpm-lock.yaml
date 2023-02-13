@@ -14,8 +14,8 @@ importers:
       '@changesets/cli': 2.25.0
     devDependencies:
       eslint-config-custom: link:tooling/eslint-config-custom
-      prettier: 2.7.1
-      turbo: 1.6.1
+      prettier: 2.8.4
+      turbo: 1.7.4
 
   apps/docs:
     specifiers:
@@ -103,6 +103,7 @@ importers:
       react: ^18.2.0
       react-dom: ^18.2.0
       react-icons: ^3.11.0
+      react-router-dom: ^6.8.1
       react-scripts: 5.0.1
       typescript: ^4.8.4
       web-vitals: ^2.1.4
@@ -127,6 +128,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-icons: 3.11.0_react@18.2.0
+      react-router-dom: 6.8.1_biqbaboplfbrettd7655fr4n2y
       react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
       typescript: 4.8.4
       web-vitals: 2.1.4
@@ -246,7 +248,7 @@ importers:
       react-highlight-words: ^0.17.0
       react-hook-form: ^7.24.0
       react-icons: ^4.3.1
-      react-router-dom: 6.4.2
+      react-router-dom: ^6.8.1
       react-table: ^7.7.0
       react-use: ^17.3.2
       recoil: ^0.7.6
@@ -311,7 +313,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-icons: 4.6.0_react@18.2.0
-      react-router-dom: 6.4.2_biqbaboplfbrettd7655fr4n2y
+      react-router-dom: 6.8.1_biqbaboplfbrettd7655fr4n2y
       ts-patch: 2.0.2_typescript@4.8.4
       tsconfig: link:../../tooling/tsconfig
       tsup: 6.3.0_typescript@4.8.4
@@ -443,12 +445,12 @@ importers:
       eslint-config-next: 12.3.1_z4bbprzjrhnsfa24uvmcbu7f5q
       eslint-config-prettier: 8.5.0_eslint@8.25.0
       eslint-config-react-app: 7.0.1_phzljehkof6k3f3te43prkizey
-      eslint-config-turbo: 0.0.4_eslint@8.25.0
+      eslint-config-turbo: 0.0.7_eslint@8.25.0
       eslint-plugin-import: 2.26.0_zb5prbqp7qzcgafjm73dfpyyvm
-      eslint-plugin-prettier: 4.2.1_hvbqyfstm4urdpm6ffpwfka4e4
+      eslint-plugin-prettier: 4.2.1_fc3zrsv5ogy6uvc5ijxmaxdpb4
       eslint-plugin-react: 7.31.8_eslint@8.25.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.25.0
-      prettier: 2.7.1
+      prettier: 2.8.4
     devDependencies:
       typescript: 4.8.4
 
@@ -1139,7 +1141,6 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/helper-plugin-utils': 7.19.0
-    dev: false
 
   /@babel/plugin-syntax-jsx/7.18.6_@babel+core@7.19.3:
     resolution: {integrity: sha512-6mmljtAedFGTWu2p/8WIORGwy+61PLgOMPOdazc7YoJ9ZCWUyFy3A6CpPkRKLKD1ToAesxX8KGEViAiLo9N+7Q==}
@@ -2058,7 +2059,7 @@ packages:
       '@emotion/react': '>=10.0.35'
       react: '>=18'
     dependencies:
-      '@emotion/react': 11.10.4_b6k74wvxdvqypha4emuv7fd2ke
+      '@emotion/react': 11.10.4_iapumuv4e6jcjznwuxpf4tt22e
       react: 18.2.0
 
   /@chakra-ui/descendant/3.0.10_react@18.2.0:
@@ -2479,8 +2480,8 @@ packages:
       '@chakra-ui/react-env': 2.0.10_react@18.2.0
       '@chakra-ui/system': 2.3.0_hfzxdiydbrbhhfpkwuv3jhvwmq
       '@chakra-ui/utils': 2.0.11
-      '@emotion/react': 11.10.4_b6k74wvxdvqypha4emuv7fd2ke
-      '@emotion/styled': 11.10.4_hn2242ymjfeigbcxwpi42fjy6u
+      '@emotion/react': 11.10.4_iapumuv4e6jcjznwuxpf4tt22e
+      '@emotion/styled': 11.10.4_g3tud4ene45llglqap74b5kkse
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
 
@@ -2973,8 +2974,8 @@ packages:
       '@chakra-ui/styled-system': 2.3.4
       '@chakra-ui/theme-utils': 2.0.1
       '@chakra-ui/utils': 2.0.11
-      '@emotion/react': 11.10.4_b6k74wvxdvqypha4emuv7fd2ke
-      '@emotion/styled': 11.10.4_hn2242ymjfeigbcxwpi42fjy6u
+      '@emotion/react': 11.10.4_iapumuv4e6jcjznwuxpf4tt22e
+      '@emotion/styled': 11.10.4_g3tud4ene45llglqap74b5kkse
       react: 18.2.0
       react-fast-compare: 3.2.0
 
@@ -3177,7 +3178,7 @@ packages:
       fs-extra: 7.0.1
       lodash.startcase: 4.4.0
       outdent: 0.5.0
-      prettier: 2.7.1
+      prettier: 2.8.4
       resolve-from: 5.0.0
       semver: 5.7.1
     dev: false
@@ -3363,7 +3364,7 @@ packages:
       '@changesets/types': 5.2.0
       fs-extra: 7.0.1
       human-id: 1.0.2
-      prettier: 2.7.1
+      prettier: 2.8.4
     dev: false
 
   /@csstools/normalize.css/12.0.0:
@@ -3546,7 +3547,6 @@ packages:
       find-root: 1.1.0
       source-map: 0.5.7
       stylis: 4.0.13
-    dev: false
 
   /@emotion/babel-plugin/11.10.2_@babel+core@7.19.3:
     resolution: {integrity: sha512-xNQ57njWTFVfPAc3cjfuaPdsgLp5QOSuRsj9MA6ndEhH/AzuZM86qIQzt6rq+aGBwj3n5/TkLmU5lhAfdRmogA==}
@@ -3667,7 +3667,6 @@ packages:
       '@types/react': 18.0.21
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
-    dev: false
 
   /@emotion/serialize/1.1.0:
     resolution: {integrity: sha512-F1ZZZW51T/fx+wKbVlwsfchr5q97iW8brAnXmsskz4d0hVB4O3M/SiA3SaeH06x02lSNzkkQv+n3AX3kCXKSFA==}
@@ -3703,7 +3702,6 @@ packages:
       '@emotion/utils': 1.2.0
       '@types/react': 18.0.21
       react: 18.2.0
-    dev: false
 
   /@emotion/styled/11.10.4_hn2242ymjfeigbcxwpi42fjy6u:
     resolution: {integrity: sha512-pRl4R8Ez3UXvOPfc2bzIoV8u9P97UedgHS4FPX594ntwEuAMA114wlaHvOK24HB48uqfXiGlYIZYCxVJ1R1ttQ==}
@@ -4493,10 +4491,9 @@ packages:
   /@popperjs/core/2.11.6:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
 
-  /@remix-run/router/1.0.2:
-    resolution: {integrity: sha512-GRSOFhJzjGN+d4sKHTMSvNeUPoZiDHWmRnXfzaxrqe7dE/Nzlc8BiMSJdLDESZlndM7jIUrZ/F4yWqVYlI0rwQ==}
+  /@remix-run/router/1.3.2:
+    resolution: {integrity: sha512-t54ONhl/h75X94SWsHGQ4G/ZrCEguKSRQr7DrjTciJXW0YU1QhlwYeycvK5JgkzlxmvrK7wq1NB/PLtHxoiDcA==}
     engines: {node: '>=14'}
-    dev: true
 
   /@rollup/plugin-babel/5.3.1_vy4anxjpv2s44kyfi2kxqu576u:
     resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==}
@@ -7809,13 +7806,13 @@ packages:
       - supports-color
     dev: false
 
-  /eslint-config-turbo/0.0.4_eslint@8.25.0:
-    resolution: {integrity: sha512-HErPS/wfWkSdV9Yd2dDkhZt3W2B78Ih/aWPFfaHmCMjzPalh+5KxRRGTf8MOBQLCebcWJX0lP1Zvc1rZIHlXGg==}
+  /eslint-config-turbo/0.0.7_eslint@8.25.0:
+    resolution: {integrity: sha512-WbrGlyfs94rOXrhombi1wjIAYGdV2iosgJRndOZtmDQeq5GLTzYmBUCJQZWtLBEBUPCj96RxZ2OL7Cn+xv/Azg==}
     peerDependencies:
-      eslint: ^7.23.0 || ^8.0.0
+      eslint: '>6.6.0'
     dependencies:
       eslint: 8.25.0
-      eslint-plugin-turbo: 0.0.4_eslint@8.25.0
+      eslint-plugin-turbo: 0.0.7_eslint@8.25.0
     dev: false
 
   /eslint-import-resolver-node/0.3.6:
@@ -8059,7 +8056,7 @@ packages:
       semver: 6.3.0
     dev: false
 
-  /eslint-plugin-prettier/4.2.1_hvbqyfstm4urdpm6ffpwfka4e4:
+  /eslint-plugin-prettier/4.2.1_fc3zrsv5ogy6uvc5ijxmaxdpb4:
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -8072,7 +8069,7 @@ packages:
     dependencies:
       eslint: 8.25.0
       eslint-config-prettier: 8.5.0_eslint@8.25.0
-      prettier: 2.7.1
+      prettier: 2.8.4
       prettier-linter-helpers: 1.0.0
     dev: false
 
@@ -8121,10 +8118,10 @@ packages:
       - typescript
     dev: false
 
-  /eslint-plugin-turbo/0.0.4_eslint@8.25.0:
-    resolution: {integrity: sha512-dfmYE/iPvoJInQq+5E/0mj140y/rYwKtzZkn3uVK8+nvwC5zmWKQ6ehMWrL4bYBkGzSgpOndZM+jOXhPQ2m8Cg==}
+  /eslint-plugin-turbo/0.0.7_eslint@8.25.0:
+    resolution: {integrity: sha512-iajOH8eD4jha3duztGVBD1BEmvNrQBaA/y3HFHf91vMDRYRwH7BpHSDFtxydDpk5ghlhRxG299SFxz7D6z4MBQ==}
     peerDependencies:
-      eslint: ^7.23.0 || ^8.0.0
+      eslint: '>6.6.0'
     dependencies:
       eslint: 8.25.0
     dev: false
@@ -12283,8 +12280,8 @@ packages:
       fast-diff: 1.2.0
     dev: false
 
-  /prettier/2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
+  /prettier/2.8.4:
+    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
 
@@ -12762,28 +12759,26 @@ packages:
       use-callback-ref: 1.3.0_react@18.2.0
       use-sidecar: 1.1.2_react@18.2.0
 
-  /react-router-dom/6.4.2_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-yM1kjoTkpfjgczPrcyWrp+OuQMyB1WleICiiGfstnQYo/S8hPEEnVjr/RdmlH6yKK4Tnj1UGXFSa7uwAtmDoLQ==}
+  /react-router-dom/6.8.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-67EXNfkQgf34P7+PSb6VlBuaacGhkKn3kpE51+P6zYSG2kiRoumXEL6e27zTa9+PGF2MNXbgIUHTVlleLbIcHQ==}
     engines: {node: '>=14'}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
     dependencies:
-      '@remix-run/router': 1.0.2
+      '@remix-run/router': 1.3.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-router: 6.4.2_react@18.2.0
-    dev: true
+      react-router: 6.8.1_react@18.2.0
 
-  /react-router/6.4.2_react@18.2.0:
-    resolution: {integrity: sha512-Rb0BAX9KHhVzT1OKhMvCDMw776aTYM0DtkxqUBP8dNBom3mPXlfNs76JNGK8wKJ1IZEY1+WGj+cvZxHVk/GiKw==}
+  /react-router/6.8.1_react@18.2.0:
+    resolution: {integrity: sha512-Jgi8BzAJQ8MkPt8ipXnR73rnD7EmZ0HFFb7jdQU24TynGW1Ooqin2KVDN9voSC+7xhqbbCd2cjGUepb6RObnyg==}
     engines: {node: '>=14'}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      '@remix-run/router': 1.0.2
+      '@remix-run/router': 1.3.2
       react: 18.2.0
-    dev: true
 
   /react-scripts/5.0.1_uz2ogxeagc4rbieizlfzyaazee:
     resolution: {integrity: sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ==}
@@ -14513,65 +14508,65 @@ packages:
       yargs: 17.6.0
     dev: false
 
-  /turbo-darwin-64/1.6.1:
-    resolution: {integrity: sha512-xsItJ/hmnd6R8V60cCe0RAZQjO+En/LVXVkZhiw0Fyfxoo+iKcAA4sVeWkaL+cg5sQd5UWlWfD1EOKbHDjVb9Q==}
+  /turbo-darwin-64/1.7.4:
+    resolution: {integrity: sha512-ZyYrQlUl8K/mYN1e6R7bEhPPYjMakz0DYMaexkyD7TAijQtWmTSd4a+I7VknOYNEssnUZ/v41GU3gPV1JAzxxQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.6.1:
-    resolution: {integrity: sha512-wRfAJWCLYB29IGTx6sF6QvexK/89AbAgnfYA5yVcuUJT+xz2/zLeGcOODQBCnP4rB+vX5ipXLY0XjkLGl+z6fA==}
+  /turbo-darwin-arm64/1.7.4:
+    resolution: {integrity: sha512-CKIXg9uqp1a+Yeq/c4U0alPOqvwLUq5SBZf1PGYhGqJsfG0fRBtJfkUjHuBsuJIOGXg8rCmcGSWGIsIF6fqYuw==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.6.1:
-    resolution: {integrity: sha512-NZ88muC3hHbWW/cBgl9DFFbyzDcFVvZHQBXKTwVA8l2yLOOvesX+aQ2Knr4Pxu9Kb0F3t6ABsOSf8SbI7CpJsg==}
+  /turbo-linux-64/1.7.4:
+    resolution: {integrity: sha512-RIUl4RUFFyzD2T024vL7509Ygwcw+SEa8NOwPfaN6TtJHK7RZV/SBP3fLNVOptG9WRLnOWX3OvsLMbiOqDLLyA==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.6.1:
-    resolution: {integrity: sha512-HDgx+0ozqMpoDBOSzWz43nYMDp/+giEz8+vmLOB6mTQU/9IlZQVwachzwkqLRsJyBUhYALBlWGcuRWO3KqXMmg==}
+  /turbo-linux-arm64/1.7.4:
+    resolution: {integrity: sha512-Bg65F0AjYYYxqE6RPf2H5TIGuA/EyWMeGOATHVSZOWAbYcnG3Ly03GZii8AHnUi7ntWBdjwvXf/QbOS1ayNB6A==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.6.1:
-    resolution: {integrity: sha512-jnR0V0YBlFJKEoAeq0GQFLmZ1UNl6vh+RHTHX546+o5jKcE6nfp9oTOEwtR0PLutiuxxDDm6roAc+9mSfycffw==}
+  /turbo-windows-64/1.7.4:
+    resolution: {integrity: sha512-rTaV50XZ2BRxRHOHqt1UsWfeDmYLbn8UKE6g2D2ED+uW+kmnTvR9s01nmlGWd2sAuWcRYQyQ2V+O09VfKPKcQw==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.6.1:
-    resolution: {integrity: sha512-vOqw/iPgLjkwpni2vNFK9YO19lN9QZ8JG8v1unvL09/rnXyKpHygrYECj+efJptEVJKBG2xLIauJYmZ/2LV1Uw==}
+  /turbo-windows-arm64/1.7.4:
+    resolution: {integrity: sha512-h8sxdKPvHTnWUPtwnYszFMmSO0P/iUUwmYY9n7iYThA71zSao28UeZ0H0Gw75cY3MPjvkjn2C4EBAUGPjuZJLw==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.6.1:
-    resolution: {integrity: sha512-CkcJo17cbwfTzmxtxJo2AbbeVqaz1yQotBUqVwZDdcrVSNKci2nvw+JHJ3sy/z9YY9xOJmoRaZifbkja3UXUWA==}
+  /turbo/1.7.4:
+    resolution: {integrity: sha512-8RLedDoUL0kkVKWEZ/RMM70BvKLyDFen06QuKKhYC2XNOfNKqFDqzIdcY/vGick869bNIWalChoy4O07k0HLsA==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.6.1
-      turbo-darwin-arm64: 1.6.1
-      turbo-linux-64: 1.6.1
-      turbo-linux-arm64: 1.6.1
-      turbo-windows-64: 1.6.1
-      turbo-windows-arm64: 1.6.1
+      turbo-darwin-64: 1.7.4
+      turbo-darwin-arm64: 1.7.4
+      turbo-linux-64: 1.7.4
+      turbo-linux-arm64: 1.7.4
+      turbo-windows-64: 1.7.4
+      turbo-windows-arm64: 1.7.4
     dev: true
 
   /type-check/0.3.2:

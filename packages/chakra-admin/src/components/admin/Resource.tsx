@@ -1,7 +1,10 @@
 import React, { FC } from 'react'
+import { Middleware } from './RouteMiddleware'
 
 export type ResourceProps = {
   name: string
+  overrideName?: string
+  routeMiddleware?: Middleware
   icon?: React.ReactNode
   list?: React.ReactNode
   create?: React.ReactNode

@@ -11,6 +11,7 @@ import { RouteAvailability } from '../../core/admin/RouteAvailability.js'
 import { GlobalStrategy } from '../../core/admin/Strategy'
 import { ModalRouteLayout } from '../modal/ModalRouteLayout'
 import { RequireAuth } from './RequireAuth'
+import { Middleware, RouteMiddleware } from './RouteMiddleware'
 
 export type AdminCoreProps = {
   layoutComponent?: React.ReactNode
@@ -18,6 +19,7 @@ export type AdminCoreProps = {
   loginComponent?: React.ReactNode
   authProvider?: ClassType<AuthProvider>
   strategy?: ClassType<GlobalStrategy>
+  routeMiddleware?: Middleware
   children?: React.ReactNode
 }
 
@@ -35,6 +37,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
     modalComponent = <ModalRouteLayout />,
     strategy,
     authProvider,
+    routeMiddleware,
   } = props
 
   if (Children.count(props.children) === 0) {
@@ -91,7 +94,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         index
                         element={
                           <RequireAuth skip={!authProvider}>
-                            {createElement(child.props.list, { ...resourceProps })}
+                            <RouteMiddleware middleware={routeMiddleware || child.props.routeMiddleware}>
+                              {createElement(child.props.list, { ...resourceProps })}
+                            </RouteMiddleware>
                           </RequireAuth>
                         }
                       />
@@ -101,7 +106,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         path="create/*"
                         element={
                           <RequireAuth skip={!authProvider}>
-                            {createElement(child.props.create, { ...resourceProps })}
+                            <RouteMiddleware middleware={routeMiddleware || child.props.routeMiddleware}>
+                              {createElement(child.props.create, { ...resourceProps })}
+                            </RouteMiddleware>
                           </RequireAuth>
                         }
                       />
@@ -111,7 +118,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         path=":id/*"
                         element={
                           <RequireAuth skip={!authProvider}>
-                            <WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>
+                            <RouteMiddleware middleware={routeMiddleware || child.props.routeMiddleware}>
+                              <WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>
+                            </RouteMiddleware>
                           </RequireAuth>
                         }
                       />
@@ -121,7 +130,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         path=":id/show/*"
                         element={
                           <RequireAuth skip={!authProvider}>
-                            <WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>
+                            <RouteMiddleware middleware={routeMiddleware || child.props.routeMiddleware}>
+                              <WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>
+                            </RouteMiddleware>
                           </RequireAuth>
                         }
                       />
@@ -182,7 +193,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         path="create"
                         element={
                           <RequireAuth skip={!authProvider}>
-                            {createElement(child.props.create, { ...resourceProps })}
+                            <RouteMiddleware middleware={routeMiddleware || child.props.routeMiddleware}>
+                              {createElement(child.props.create, { ...resourceProps })}
+                            </RouteMiddleware>
                           </RequireAuth>
                         }
                       />
@@ -192,7 +205,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         path=":id"
                         element={
                           <RequireAuth skip={!authProvider}>
-                            <WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>
+                            <RouteMiddleware middleware={routeMiddleware || child.props.routeMiddleware}>
+                              <WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>
+                            </RouteMiddleware>
                           </RequireAuth>
                         }
                       />
@@ -202,7 +217,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         path=":id/show"
                         element={
                           <RequireAuth skip={!authProvider}>
-                            <WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>
+                            <RouteMiddleware middleware={routeMiddleware || child.props.routeMiddleware}>
+                              <WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>
+                            </RouteMiddleware>
                           </RequireAuth>
                         }
                       />
