@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.0.2-dev.21
+
+### Patch Changes
+
+- fix: auth management on route change
+
 ## 0.0.2-dev.20
 
 ### Patch Changes

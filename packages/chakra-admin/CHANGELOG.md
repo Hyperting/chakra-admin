@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.0.2-dev.21
+
+### Patch Changes
+
+- fix: auth management on route change
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.21
+  - ca-theme@0.0.2-dev.21
+  - ca-system@0.0.2-dev.21
+
 ## 0.0.2-dev.20
 
 ### Patch Changes
