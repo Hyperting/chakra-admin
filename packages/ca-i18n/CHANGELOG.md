@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.0.2-dev.23
+
+### Patch Changes
+
+- feat: add routeMiddleware
+
 ## 0.0.2-dev.22
 
 ### Patch Changes

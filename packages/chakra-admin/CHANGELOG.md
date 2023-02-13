@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.0.2-dev.23
+
+### Patch Changes
+
+- feat: add routeMiddleware
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.23
+  - ca-theme@0.0.2-dev.23
+  - ca-system@0.0.2-dev.23
+
 ## 0.0.2-dev.22
 
 ### Patch Changes
