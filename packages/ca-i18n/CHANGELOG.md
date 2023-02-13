@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.0.2-dev.22
+
+### Patch Changes
+
+- [`794cb39`](https://github.com/it-nalon/chakra-admin/commit/794cb399fa63f469ee987ab9ee404e4154cebfb7) Thanks [@it-nalon](https://github.com/it-nalon)! - chore: export RequireAuth component
+
 ## 0.0.2-dev.21
 
 ### Patch Changes
