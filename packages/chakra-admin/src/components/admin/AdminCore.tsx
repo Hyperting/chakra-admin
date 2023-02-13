@@ -10,6 +10,7 @@ import { Loading } from './Loading'
 import { RouteAvailability } from '../../core/admin/RouteAvailability.js'
 import { GlobalStrategy } from '../../core/admin/Strategy'
 import { ModalRouteLayout } from '../modal/ModalRouteLayout'
+import { RequireAuth } from './RequireAuth'
 
 export type AdminCoreProps = {
   layoutComponent?: React.ReactNode
@@ -33,6 +34,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
     layoutComponent = <RouteLayout />,
     modalComponent = <ModalRouteLayout />,
     strategy,
+    authProvider,
   } = props
 
   if (Children.count(props.children) === 0) {
@@ -84,20 +86,44 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
               if (crud.hasList) {
                 return (
                   <Route path={child.props.overrideName || child.props.name}>
-                    {crud.hasList && <Route index element={createElement(child.props.list, { ...resourceProps })} />}
+                    {crud.hasList && (
+                      <Route
+                        index
+                        element={
+                          <RequireAuth skip={!authProvider}>
+                            {createElement(child.props.list, { ...resourceProps })}
+                          </RequireAuth>
+                        }
+                      />
+                    )}
                     {crud.hasCreate && (
-                      <Route path="create/*" element={createElement(child.props.create, { ...resourceProps })} />
+                      <Route
+                        path="create/*"
+                        element={
+                          <RequireAuth skip={!authProvider}>
+                            {createElement(child.props.create, { ...resourceProps })}
+                          </RequireAuth>
+                        }
+                      />
                     )}
                     {crud.hasEdit && (
                       <Route
                         path=":id/*"
-                        element={<WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>}
+                        element={
+                          <RequireAuth skip={!authProvider}>
+                            <WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>
+                          </RequireAuth>
+                        }
                       />
                     )}
                     {crud.hasShow && (
                       <Route
                         path=":id/show/*"
-                        element={<WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>}
+                        element={
+                          <RequireAuth skip={!authProvider}>
+                            <WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>
+                          </RequireAuth>
+                        }
                       />
                     )}
                   </Route>
@@ -152,18 +178,33 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                 return (
                   <Route path={child.props.overrideName || child.props.name} element={modalComponent}>
                     {crud.hasCreate && (
-                      <Route path="create" element={createElement(child.props.create, { ...resourceProps })} />
+                      <Route
+                        path="create"
+                        element={
+                          <RequireAuth skip={!authProvider}>
+                            {createElement(child.props.create, { ...resourceProps })}
+                          </RequireAuth>
+                        }
+                      />
                     )}
                     {crud.hasEdit && (
                       <Route
                         path=":id"
-                        element={<WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>}
+                        element={
+                          <RequireAuth skip={!authProvider}>
+                            <WithIdParam>{createElement(child.props.edit, { ...resourceProps })}</WithIdParam>
+                          </RequireAuth>
+                        }
                       />
                     )}
                     {crud.hasShow && (
                       <Route
                         path=":id/show"
-                        element={<WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>}
+                        element={
+                          <RequireAuth skip={!authProvider}>
+                            <WithIdParam>{createElement(child.props.show, { ...resourceProps })}</WithIdParam>
+                          </RequireAuth>
+                        }
                       />
                     )}
                   </Route>

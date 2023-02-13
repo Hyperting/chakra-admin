@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  atom,
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from 'recoil'
+import { atom, useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
 import { RouteAvailability } from './RouteAvailability'
 
 export const ADMIN_STATE_KEY = 'adminState'

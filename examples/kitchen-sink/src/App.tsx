@@ -4,10 +4,11 @@ import { Admin, Resource } from 'chakra-admin'
 import { ExampleStrategy } from './ExampleStrategy'
 import { CursorCompanyList, CursorCompanyWithTotal, OffsetCompanyList } from './resources/Company'
 import { client } from './apolloClient'
+import { ExampleAuthProvider } from './ExampleAuth'
 
 export const App = () => (
   <ChakraProvider theme={theme}>
-    <Admin client={client} strategy={ExampleStrategy}>
+    <Admin client={client} strategy={ExampleStrategy} authProvider={ExampleAuthProvider}>
       <Resource {...(OffsetCompanyList as any)} />
       <Resource {...(CursorCompanyList as any)} />
       <Resource {...(CursorCompanyWithTotal as any)} />

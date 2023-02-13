@@ -9,10 +9,6 @@ import { useSetGlobalStrategy } from './useGlobalStrategy'
 import { registeredIcons, RegisteredResources, useSetAdminState } from './adminState'
 import { Resource } from '../../components/admin'
 
-type RouteState = {
-  background?: Location
-}
-
 /**
  * This hook initialize the Admin App.
  * IMPORTANT! Don't use this hook more than once
@@ -104,21 +100,21 @@ export const useAdminCore = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    if (initialized && authProvider && navigate && authProviderInstance) {
-      authProviderInstance
-        .checkAuth()
-        .then(() => {
-          // nothing to do
-        })
-        .catch(() => {
-          setTimeout(() => {
-            navigate('/login', { replace: true })
-          }, 400)
-        })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialized, authProviderInstance, navigate])
+  // useEffect(() => {
+  //   if (initialized && authProvider && navigate && authProviderInstance) {
+  //     authProviderInstance
+  //       .checkAuth()
+  //       .then(() => {
+  //         // nothing to do
+  //       })
+  //       .catch(() => {
+  //         setTimeout(() => {
+  //           navigate('/login', { replace: true })
+  //         }, 400)
+  //       })
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [initialized, authProviderInstance, navigate])
 
   return { childrenCount, initialized, location, background }
 }
