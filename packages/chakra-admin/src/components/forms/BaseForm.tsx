@@ -31,22 +31,6 @@ export const BaseForm: FC<BaseFormProps> = ({
 
   const onSubmit = useCallback(
     (values) => {
-      // const foundedFields = deepFilter(children, (child: any) => {
-      //   if (child.props.source) {
-      //     return true
-      //   }
-
-      //   return false
-      // })
-      //   ?.map((item) => item && (item as any)?.props && (item as any).props.source)
-      //   ?.filter((item) => !!item)
-      // console.log('values', foundedFields, values)
-      // const finalData = foundedFields?.reduce((acc, item) => {
-      //   return {
-      //     ...acc,
-      //     [item]: values[item],
-      //   }
-      // }, {})
       onSubmitProp({ __typename: resource, ...values })
     },
     [onSubmitProp, resource]
@@ -55,59 +39,6 @@ export const BaseForm: FC<BaseFormProps> = ({
   return (
     <chakra.form onSubmit={handleSubmit(onSubmit)}>
       <chakra.div mb={renderingInModal ? '76px' : 0}>
-        {/* {deepMap(children, (child: any, index) => {
-          const isLayout =
-            child?.type?.displayName &&
-            Object.keys(CALayoutComponents).includes(child?.type?.displayName)
-
-          if (isLayout) {
-            return React.createElement(
-              ca[child.type.displayName],
-              {
-                ...{
-                  ...child.props,
-                  // onSubmit,
-                  executeMutation,
-                  mutationResult,
-                  register: methods.register,
-                  unregister: methods.unregister,
-                  setValue: methods.setValue,
-                  control: methods.control,
-                  ...filterChakraProps(rest),
-                  resource,
-                  key: `${child?.type?.displayName || 'FI'}-${index}`,
-                },
-              },
-              child.props?.children
-            )
-          } else {
-            const { ...restProps } = child.props
-            return React.createElement(child.type, {
-              ...{
-                ...restProps,
-                ...filterChakraProps(rest),
-                setValue: methods.setValue,
-                register: methods.register,
-                unregister: methods.unregister,
-                control: methods.control,
-                name: child.props.source,
-                resource,
-                key: `${child?.type?.displayName || 'FI'}-${child.props.source}-${index}`,
-              },
-            })
-            // return child.props.source
-            //   ? React.createElement(child.type, {
-            //       ...{
-            //         ...restProps,
-            //         register: methods.register,
-            //         control: methods.control,
-            //         name: child.props.source,
-            //         key: child.props.source,
-            //       },
-            //     })
-            //   : child
-          }
-        })} */}
         <TreeRenderer
           children={children}
           propsOverride={{

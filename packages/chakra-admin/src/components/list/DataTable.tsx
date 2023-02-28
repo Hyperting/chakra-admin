@@ -2,7 +2,20 @@
 /* eslint-disable react/jsx-key */
 import React, { cloneElement, isValidElement, useCallback } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { chakra, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import {
+  chakra,
+  Table,
+  TableBodyProps,
+  TableCellProps,
+  TableHeadProps,
+  TableProps,
+  TableRowProps,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
 import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
 import { ListProps } from '../../core/list/ListProps'
@@ -26,6 +39,11 @@ export type DataTableProps<TItem> = Partial<UseListReturn> &
     moreMenuComponent?: Renderer<CellProps<any, any>>
     expandComponent?: React.ReactNode
     rowClick?: RowClick<TItem> | RowClickObject<TItem>
+    tableProps: Omit<TableProps, 'children'>
+    theadProps: Omit<TableHeadProps, 'children'>
+    tbodyProps: Omit<TableBodyProps, 'children'>
+    trProps: Omit<TableRowProps, 'children'>
+    tdProps: Omit<TableCellProps, 'children'>
   }
 
 function getRowClickRedirect<T>(
@@ -43,7 +61,21 @@ function getRowClickRedirect<T>(
 }
 
 export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
-  const { loading, filtersComponent, total, resource, expandComponent, hasEdit, hasShow, rowClick = 'edit' } = props
+  const {
+    loading,
+    filtersComponent,
+    total,
+    resource,
+    expandComponent,
+    hasEdit,
+    hasShow,
+    rowClick = 'edit',
+    tableProps = {},
+    theadProps = {},
+    tbodyProps = {},
+    trProps = {},
+    tdProps = {},
+  } = props
 
   // useRegisterLayoutComponent(DataTable as any)
 
@@ -143,23 +175,12 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
         />
       </chakra.div>
       <chakra.div maxW="100%" overflowX="auto">
-        <Table
-          w="100%"
-          __css={{
-            borderCollapse: 'separate',
-            borderSpacing: '0 10px',
-          }}
-          {...getTableProps()}
-        >
-          <Thead>
+        <Table w="100%" {...tableProps} {...getTableProps()}>
+          <Thead {...theadProps}>
             {headerGroups.map((headerGroup, index) => (
-              <Tr bgColor="white" my={5} boxShadow="sm" borderRadius="md" {...headerGroup.getHeaderGroupProps()}>
+              <Tr {...trProps} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column, columnIndex) => (
-                  <Th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    isNumeric={(column as any).isNumeric}
-                    borderBottom="none"
-                  >
+                  <Th {...column.getHeaderProps(column.getSortByToggleProps())} isNumeric={(column as any).isNumeric}>
                     {column.render('Header')}
                     <chakra.span pl="4">
                       {column.isSorted ? (
@@ -175,40 +196,23 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
               </Tr>
             ))}
           </Thead>
-          <Tbody {...getTableBodyProps()}>
+          <Tbody {...tbodyProps} {...getTableBodyProps()}>
             {rows.map((row, index) => {
               prepareRow(row)
               const rowProps = row.getRowProps()
               return (
                 <React.Fragment key={rowProps.key}>
-                  <Tr
-                    my={5}
-                    boxShadow="sm"
-                    borderRadius="md"
-                    {...rowProps}
-                    role="group"
-                    bgColor="transparent"
-                    sx={{
-                      'td:first-child': {
-                        borderLeftRadius: 'md',
-                      },
-                      'td:last-child': {
-                        borderRightRadius: 'md',
-                      },
-                    }}
-                  >
+                  <Tr {...trProps} {...rowProps} role="group">
                     {row.cells.map((cell, cellIndex) => (
                       <Td
-                        {...cell.getCellProps()}
                         isNumeric={(cell.column as any).isNumeric}
                         _groupHover={{
                           backgroundColor: 'gray.50',
                           cursor: 'pointer',
                         }}
-                        bgColor="white"
-                        borderBottom="none"
-                        fontSize="sm"
                         onClick={handleRowClick(row)}
+                        {...tdProps}
+                        {...cell.getCellProps()}
                       >
                         {cell.render('Cell')}
                       </Td>

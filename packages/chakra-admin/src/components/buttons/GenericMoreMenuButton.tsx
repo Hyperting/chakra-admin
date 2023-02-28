@@ -89,6 +89,11 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
           ml={3}
           color="blackAlpha.700"
           icon={<Icon as={FiMoreVertical} />}
+          borderRadius="full"
+          fontSize="md"
+          minW="22px"
+          w="22px"
+          h="22px"
           {...props}
         />
         <Portal>

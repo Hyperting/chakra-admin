@@ -484,8 +484,6 @@ export const useList = <
         }
       }, {})
 
-      console.log('newFilters', newFilters)
-
       if (paginationMode === 'offset') {
         setParams(
           ((prevState) => {

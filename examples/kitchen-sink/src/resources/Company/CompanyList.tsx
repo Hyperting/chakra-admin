@@ -10,8 +10,11 @@ import {
   ListToolbar,
   CreateButton,
   AutocompleteInput,
+  GenericMoreMenuButton,
 } from 'chakra-admin'
+import { BsFillEyeFill } from 'react-icons/bs'
 import { gql } from '@apollo/client'
+import { Button, Icon, MenuItem } from '@chakra-ui/react'
 
 const QUERY_GET_COMPANIES = gql`
   query GetCompanies($pagination: PaginationInput, $sort: CompanySortInput, $filters: CompanyFilterInput) {
@@ -74,7 +77,31 @@ export const CompanyList: FC = (props) => {
         </ListToolbar>
       }
     >
-      <DataTable>
+      <DataTable
+        tableProps={{
+          size: 'sm',
+        }}
+        moreMenuComponent={
+          <GenericMoreMenuButton>
+            <Button
+              variant="unstyled"
+              width="100%"
+              pt="1.5"
+              pb="1.5"
+              pl="3"
+              pr="3"
+              borderRadius="none"
+              display="flex"
+              fontWeight="normal"
+              justifyContent="flex-start"
+              _hover={{ bg: 'gray.100' }}
+              leftIcon={<Icon as={BsFillEyeFill} />}
+            >
+              Prova
+            </Button>
+          </GenericMoreMenuButton>
+        }
+      >
         <Field source="id" label="ID" />
         <Field source="name" label="Name" />
       </DataTable>

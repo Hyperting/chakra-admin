@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { CellProps, HeaderProps, Renderer } from 'react-table'
+import React from 'react'
+import { CellProps, Renderer } from 'react-table'
 import { CAFieldProps } from 'ca-system'
 
 export type DataTableValueProps<TItem> = {
