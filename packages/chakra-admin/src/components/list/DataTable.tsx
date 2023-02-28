@@ -39,11 +39,11 @@ export type DataTableProps<TItem> = Partial<UseListReturn> &
     moreMenuComponent?: Renderer<CellProps<any, any>>
     expandComponent?: React.ReactNode
     rowClick?: RowClick<TItem> | RowClickObject<TItem>
-    tableProps: Omit<TableProps, 'children'>
-    theadProps: Omit<TableHeadProps, 'children'>
-    tbodyProps: Omit<TableBodyProps, 'children'>
-    trProps: Omit<TableRowProps, 'children'>
-    tdProps: Omit<TableCellProps, 'children'>
+    tableProps?: Omit<TableProps, 'children'>
+    theadProps?: Omit<TableHeadProps, 'children'>
+    tbodyProps?: Omit<TableBodyProps, 'children'>
+    trProps?: Omit<TableRowProps, 'children'>
+    tdProps?: Omit<TableCellProps, 'children'>
   }
 
 function getRowClickRedirect<T>(

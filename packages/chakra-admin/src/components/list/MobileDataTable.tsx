@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-key */
 import React, { cloneElement, FC, isValidElement } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { chakra } from '@chakra-ui/react'
+import { chakra, TableBodyProps, TableCellProps, TableHeadProps, TableProps, TableRowProps } from '@chakra-ui/react'
 import { CellProps, HeaderProps, Renderer } from 'react-table'
 import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
@@ -16,6 +16,11 @@ export type MobileDataTableProps<TItem> = Partial<UseListReturn> &
     filtersComponent?: React.ReactNode
     moreMenuHeaderComponent?: Renderer<HeaderProps<any>> | string
     moreMenuComponent?: Renderer<CellProps<any, any>>
+    tableProps: Omit<TableProps, 'children'>
+    theadProps: Omit<TableHeadProps, 'children'>
+    tbodyProps: Omit<TableBodyProps, 'children'>
+    trProps: Omit<TableRowProps, 'children'>
+    tdProps: Omit<TableCellProps, 'children'>
   }
 
 export function MobileDataTable<TItem = Record<string, any>>(props: MobileDataTableProps<TItem>) {

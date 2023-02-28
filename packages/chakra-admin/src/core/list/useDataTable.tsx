@@ -52,10 +52,10 @@ export function useDataTable<TItem = Record<string, any>>({
   const cursorHistory = useCursorsHistory({
     resource: resource!,
     paginationMode,
-    first: (rest as CursorPagination)?.first,
-    last: (rest as CursorPagination)?.last,
-    after: (rest as CursorPagination)?.after,
-    before: (rest as CursorPagination)?.before,
+    first: (rest as unknown as CursorPagination)?.first,
+    last: (rest as unknown as CursorPagination)?.last,
+    after: (rest as unknown as CursorPagination)?.after,
+    before: (rest as unknown as CursorPagination)?.before,
   }) // used to go back to previous cursor
 
   const foundedColumns: Column<object>[] = useMemo(
@@ -114,7 +114,7 @@ export function useDataTable<TItem = Record<string, any>>({
       return undefined
     }
 
-    const currentSort = (rest as OffsetPagination)?.currentSort || {}
+    const currentSort = (rest as unknown as OffsetPagination)?.currentSort || {}
     const sortKeys = Object.keys(currentSort)
     if (sortKeys.length > 0) {
       return sortKeys.map((key) => {
@@ -127,7 +127,7 @@ export function useDataTable<TItem = Record<string, any>>({
 
     return []
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationMode, (rest as OffsetPagination)?.currentSort])
+  }, [paginationMode, (rest as unknown as OffsetPagination)?.currentSort])
 
   const transformedOffsetDefaultSorting = useMemo(() => {
     if (paginationMode === 'cursor') {
@@ -164,8 +164,8 @@ export function useDataTable<TItem = Record<string, any>>({
       return undefined
     }
 
-    const currentSortBy = (rest as CursorPagination)?.currentSortBy
-    const revert = (rest as CursorPagination)?.revert
+    const currentSortBy = (rest as unknown as CursorPagination)?.currentSortBy
+    const revert = (rest as unknown as CursorPagination)?.revert
 
     if (currentSortBy) {
       return [
@@ -178,7 +178,11 @@ export function useDataTable<TItem = Record<string, any>>({
 
     return []
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationMode, (rest as CursorPagination)?.currentSortBy, (rest as CursorPagination)?.revert])
+  }, [
+    paginationMode,
+    (rest as unknown as CursorPagination)?.currentSortBy,
+    (rest as unknown as CursorPagination)?.revert,
+  ])
 
   const initialSortBy = useMemo(() => {
     if (paginationMode === 'offset') {
@@ -202,12 +206,18 @@ export function useDataTable<TItem = Record<string, any>>({
       initialState: {
         ...(paginationMode === 'offset'
           ? {
-              pageIndex: (rest as OffsetPagination).page ? (rest as OffsetPagination).page - 1 : 0,
-              pageSize: (rest as OffsetPagination).perPage,
+              pageIndex: (rest as unknown as OffsetPagination).page
+                ? (rest as unknown as OffsetPagination).page - 1
+                : 0,
+              pageSize: (rest as unknown as OffsetPagination).perPage,
             }
           : {
-              pageIndex: typeof (rest as CursorPagination).page === 'number' ? (rest as any).page - 1 : undefined,
-              pageSize: (rest as CursorPagination).first || (rest as CursorPagination).last || defaultPerPage,
+              pageIndex:
+                typeof (rest as unknown as CursorPagination).page === 'number' ? (rest as any).page - 1 : undefined,
+              pageSize:
+                (rest as unknown as CursorPagination).first ||
+                (rest as unknown as CursorPagination).last ||
+                defaultPerPage,
             }),
         sortBy: initialSortBy,
       },
@@ -290,11 +300,11 @@ export function useDataTable<TItem = Record<string, any>>({
   }, [pageSize, pageIndex])
 
   useEffect(() => {
-    if (paginationMode === 'offset' && (rest as OffsetPagination).page !== pageIndex + 1) {
+    if (paginationMode === 'offset' && (rest as unknown as OffsetPagination).page !== pageIndex + 1) {
       tableInstance.gotoPage(0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [(rest as OffsetPagination)?.page])
+  }, [(rest as unknown as OffsetPagination)?.page])
 
   const __bad_dirty_please_change_me_sort_initialized_ref__ = useRef(false)
   useEffect(() => {
@@ -335,7 +345,7 @@ export function useDataTable<TItem = Record<string, any>>({
   }, [sortBy])
 
   const revert = useMemo(() => {
-    return (rest as CursorPagination)?.revert
+    return (rest as unknown as CursorPagination)?.revert
   }, [rest])
 
   const additonalProps = useMemo(() => {
@@ -345,17 +355,18 @@ export function useDataTable<TItem = Record<string, any>>({
 
     console.log(
       'pageIndex',
-      !(rest as CursorPagination)?.page && total
+      !(rest as unknown as CursorPagination)?.page && total
         ? 0
-        : (rest as CursorPagination)?.page
-        ? ((rest as CursorPagination)?.page || 1) - 1
+        : (rest as unknown as CursorPagination)?.page
+        ? ((rest as unknown as CursorPagination)?.page || 1) - 1
         : undefined,
       cursorHistory.length
     )
 
     return {
       showBackToTop:
-        ((rest as CursorPagination)?.after || (rest as CursorPagination)?.before) && cursorHistory.length <= 0,
+        ((rest as unknown as CursorPagination)?.after || (rest as unknown as CursorPagination)?.before) &&
+        cursorHistory.length <= 0,
       canNextPage: pageInfo?.hasNextPage,
       canPreviousPage: pageInfo?.hasPreviousPage || cursorHistory.length > 0,
       previousPage: () => {
