@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.0.2-dev.24
+
+### Patch Changes
+
+- [`f2157e5`](https://github.com/it-nalon/chakra-admin/commit/f2157e51d077eb0bee535dc26f7d27f886d60eff) Thanks [@it-nalon](https://github.com/it-nalon)! - Feat: add DataTable props
+
 ## 0.0.2-dev.23
 
 ### Patch Changes
