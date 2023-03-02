@@ -1,5 +1,5 @@
-import React, { Children, cloneElement, createElement, FC, isValidElement, useMemo } from 'react'
-import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import React, { Children, cloneElement, createElement, FC, isValidElement, ReactElement, useMemo } from 'react'
+import { Navigate, Routes, useParams, Route as ReactRouterRoute } from 'react-router-dom'
 import { AuthProvider } from '../../core/auth/AuthProvider'
 import { ClassType } from '../../core/ClassType'
 import { RouteLayout } from '../layout/RouteLayout'
@@ -12,6 +12,7 @@ import { GlobalStrategy } from '../../core/admin/Strategy'
 import { ModalRouteLayout } from '../modal/ModalRouteLayout'
 import { RequireAuth } from './RequireAuth'
 import { Middleware, RouteMiddleware } from './RouteMiddleware'
+import { Route } from './Route'
 
 export type AdminCoreProps = {
   layoutComponent?: React.ReactNode
@@ -53,6 +54,22 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
     [props.children]
   )
 
+  const insideAdminRoutes = useMemo(() => {
+    return Children.toArray(props.children).filter(
+      (r) =>
+        ((r as ReactElement).type === Route || (r as ReactElement).type === ReactRouterRoute) &&
+        !!(r as ReactElement).props?.useAdminLayout
+    )
+  }, [props.children])
+
+  const outsideAdminRoutes = useMemo(() => {
+    return Children.toArray(props.children).filter(
+      (r) =>
+        ((r as ReactElement).type === Route || (r as ReactElement).type === ReactRouterRoute) &&
+        !(r as ReactElement).props?.useAdminLayout
+    )
+  }, [props.children])
+
   if (!initialized) {
     return <Loading />
   }
@@ -60,18 +77,34 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
   return (
     <>
       <Routes location={background || location}>
-        {isValidElement(loginComponent) && <Route path="login" element={cloneElement(loginComponent, {})} />}
+        {isValidElement(loginComponent) && <ReactRouterRoute path="login" element={cloneElement(loginComponent, {})} />}
 
-        {Children.map(props.children, (child: React.ReactNode, index) => {
-          if (isValidElement(child) && child.type === Route) {
-            return cloneElement(child, {
-              key: `route-${index}`,
+        {Children.map(outsideAdminRoutes, (child: React.ReactNode, index) => {
+          if (isValidElement(child)) {
+            const { useAdminLayout, ...rest } = child.props
+            return createElement(ReactRouterRoute, {
+              key: `outer-route-${index}`,
+              ...rest,
             })
           }
           return null
         })}
 
-        <Route path="" element={layoutComponent}>
+        <ReactRouterRoute path="" element={layoutComponent}>
+          {Children.map(insideAdminRoutes, (child: React.ReactNode, index) => {
+            if (isValidElement(child)) {
+              const { useAdminLayout, ...rest } = child.props
+              return createElement(ReactRouterRoute, {
+                key: `inner-route-${index}`,
+                ...rest,
+              })
+              // return cloneElement(child, {
+              //   key: `inner-route-${index}`,
+              // })
+            }
+            return null
+          })}
+
           {Children.map(props.children, (child: React.ReactNode, index) => {
             if (isValidElement(child) && child.type === Resource && child.props.name) {
               const crud: RouteAvailability = {
@@ -88,9 +121,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
 
               if (crud.hasList) {
                 return (
-                  <Route path={child.props.overrideName || child.props.name}>
+                  <ReactRouterRoute path={child.props.overrideName || child.props.name}>
                     {crud.hasList && (
-                      <Route
+                      <ReactRouterRoute
                         index
                         element={
                           <RequireAuth skip={!authProvider}>
@@ -102,7 +135,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                       />
                     )}
                     {crud.hasCreate && (
-                      <Route
+                      <ReactRouterRoute
                         path="create/*"
                         element={
                           <RequireAuth skip={!authProvider}>
@@ -114,7 +147,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                       />
                     )}
                     {crud.hasEdit && (
-                      <Route
+                      <ReactRouterRoute
                         path=":id/*"
                         element={
                           <RequireAuth skip={!authProvider}>
@@ -126,7 +159,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                       />
                     )}
                     {crud.hasShow && (
-                      <Route
+                      <ReactRouterRoute
                         path=":id/show/*"
                         element={
                           <RequireAuth skip={!authProvider}>
@@ -137,13 +170,13 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         }
                       />
                     )}
-                  </Route>
+                  </ReactRouterRoute>
                 )
               }
             }
           })}
           {!hasIndex && (
-            <Route
+            <ReactRouterRoute
               index
               element={
                 <Navigate
@@ -156,14 +189,19 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
               }
             />
           )}
-        </Route>
+        </ReactRouterRoute>
       </Routes>
 
       {background && (
         <Routes>
           {Children.map(props.children, (child: React.ReactNode, index) => {
             if (isValidElement(child) && child.type === Route) {
-              return cloneElement(child, {
+              // return cloneElement(child, {
+              //   key: `route-${index}`,
+              // })
+
+              return createElement(child.type, {
+                ...child.props,
                 key: `route-${index}`,
               })
             }
@@ -187,9 +225,9 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
 
               if (crud.hasCreate || crud.hasEdit || crud.hasShow) {
                 return (
-                  <Route path={child.props.overrideName || child.props.name} element={modalComponent}>
+                  <ReactRouterRoute path={child.props.overrideName || child.props.name} element={modalComponent}>
                     {crud.hasCreate && (
-                      <Route
+                      <ReactRouterRoute
                         path="create"
                         element={
                           <RequireAuth skip={!authProvider}>
@@ -201,7 +239,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                       />
                     )}
                     {crud.hasEdit && (
-                      <Route
+                      <ReactRouterRoute
                         path=":id"
                         element={
                           <RequireAuth skip={!authProvider}>
@@ -213,7 +251,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                       />
                     )}
                     {crud.hasShow && (
-                      <Route
+                      <ReactRouterRoute
                         path=":id/show"
                         element={
                           <RequireAuth skip={!authProvider}>
@@ -224,7 +262,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
                         }
                       />
                     )}
-                  </Route>
+                  </ReactRouterRoute>
                 )
               }
             }
