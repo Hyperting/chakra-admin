@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.0.2-dev.25
+
+### Patch Changes
+
+- Feat: Route can use admin layout
+
 ## 0.0.2-dev.24
 
 ### Patch Changes

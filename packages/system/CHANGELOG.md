@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.0.2-dev.25
+
+### Patch Changes
+
+- Feat: Route can use admin layout
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.25
+
 ## 0.0.2-dev.24
 
 ### Patch Changes
