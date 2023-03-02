@@ -15,12 +15,11 @@ export const useCheckAuth = (props?: UseCheckAuthProps) => {
   const authProvider = useAuthProvider()
   const [initialized, setInitialized] = useState<boolean>(false)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-  const location = useLocation()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const init = async (): Promise<void> => {
       try {
-        setInitialized(false)
         await authProvider?.checkAuth()
         setIsAuthenticated(true)
         if (props?.onAuthCheck) {
@@ -38,7 +37,7 @@ export const useCheckAuth = (props?: UseCheckAuthProps) => {
 
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location])
+  }, [pathname])
 
   return {
     initialized,
