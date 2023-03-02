@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.0.2-dev.26
+
+### Patch Changes
+
+- Fix: checkAuth() shouldn't trigger on search params change
+
+- Updated dependencies []:
+  - ca-i18n@0.0.2-dev.26
+  - ca-theme@0.0.2-dev.26
+  - ca-system@0.0.2-dev.26
+
 ## 0.0.2-dev.25
 
 ### Patch Changes

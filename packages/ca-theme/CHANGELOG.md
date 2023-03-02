@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.0.2-dev.26
+
+### Patch Changes
+
+- Fix: checkAuth() shouldn't trigger on search params change
+
 ## 0.0.2-dev.25
 
 ### Patch Changes
