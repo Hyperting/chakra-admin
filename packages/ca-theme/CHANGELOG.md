@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.0.2-dev.27
+
+### Patch Changes
+
+- Fix: modal details with custom routes
+
 ## 0.0.2-dev.26
 
 ### Patch Changes
