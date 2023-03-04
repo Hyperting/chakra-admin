@@ -194,15 +194,22 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
 
       {background && (
         <Routes>
-          {Children.map(props.children, (child: React.ReactNode, index) => {
-            if (isValidElement(child) && child.type === Route) {
-              // return cloneElement(child, {
-              //   key: `route-${index}`,
-              // })
-
-              return createElement(child.type, {
-                ...child.props,
-                key: `route-${index}`,
+          {Children.map(outsideAdminRoutes, (child: React.ReactNode, index) => {
+            if (isValidElement(child)) {
+              const { useAdminLayout, ...rest } = child.props
+              return createElement(ReactRouterRoute, {
+                key: `outer-route-${index}`,
+                ...rest,
+              })
+            }
+            return null
+          })}
+          {Children.map(insideAdminRoutes, (child: React.ReactNode, index) => {
+            if (isValidElement(child)) {
+              const { useAdminLayout, ...rest } = child.props
+              return createElement(ReactRouterRoute, {
+                key: `outer-route-${index}`,
+                ...rest,
               })
             }
             return null
