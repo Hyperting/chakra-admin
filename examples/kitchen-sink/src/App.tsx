@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ChakraProvider, theme } from '@chakra-ui/react'
+import { Button, ChakraProvider, theme, useToast } from '@chakra-ui/react'
 import { Admin, Resource, Route } from 'chakra-admin'
 import { ExampleStrategy } from './ExampleStrategy'
 import { CursorCompanyList, CursorCompanyWithTotal, OffsetCompanyList } from './resources/Company'
@@ -10,13 +10,16 @@ import { ExampleAuthProvider } from './ExampleAuth'
 //   return '/onboarding'
 // }
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Admin client={client} strategy={ExampleStrategy} authProvider={ExampleAuthProvider}>
-      <Resource {...(OffsetCompanyList as any)} />
-      <Resource {...(CursorCompanyList as any)} /* routeMiddleware={routeMiddleware} */ />
-      <Resource {...(CursorCompanyWithTotal as any)} />
-      <Route useAdminLayout path="onboarding" element={<div>Onboarding Page!</div>} />
-    </Admin>
-  </ChakraProvider>
-)
+export const App = () => {
+  const toast = useToast()
+  return (
+    <ChakraProvider theme={theme}>
+      <Admin client={client} strategy={ExampleStrategy} authProvider={ExampleAuthProvider}>
+        <Resource {...(OffsetCompanyList as any)} />
+        <Resource {...(CursorCompanyList as any)} /* routeMiddleware={routeMiddleware} */ />
+        <Resource {...(CursorCompanyWithTotal as any)} />
+        <Route useAdminLayout path="onboarding" element={<div>Onboarding Page!</div>} />
+      </Admin>
+    </ChakraProvider>
+  )
+}

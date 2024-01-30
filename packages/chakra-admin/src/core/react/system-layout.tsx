@@ -148,7 +148,7 @@ export const useRegisterLayoutComponent = (component: React.ReactElement) => {
   }, [component])
 }
 
-export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string]: any }> {
+export function caLayout<P = {}, T = As>(component: T): FC<P & { [x: string]: any }> {
   const CALayoutImpl = ({ children, record, ...props }) => {
     useRegisterLayoutComponent(CALayoutImpl as any)
     return createElement(
@@ -166,12 +166,12 @@ export function caLayout<P = {}, T = As<any>>(component: T): FC<P & { [x: string
     )
   }
 
-  ;((CALayoutImpl as unknown) as FC<P & { [x: string]: any }>).displayName = `CA${
+  ;(CALayoutImpl as unknown as FC<P & { [x: string]: any }>).displayName = `CA${
     (component as any).displayName || (component as any).name
   }`
 
   // console.log(registeredLayoutComponents, 'register vediamo')
   // registerLayoutComponent(CALayoutImpl as any)
 
-  return (CALayoutImpl as unknown) as FC<P & { [x: string]: any }>
+  return CALayoutImpl as unknown as FC<P & { [x: string]: any }>
 }

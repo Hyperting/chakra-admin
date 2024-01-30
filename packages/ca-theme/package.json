@@ -24,21 +24,21 @@
     "@chakra-ui/react": ">= 2"
   },
   "dependencies": {
-    "@uselessdev/datepicker": "^2.0.0"
+    "@uselessdev/datepicker": "^2.7.0"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
     "tsup-config": "workspace:*",
-    "typescript": "^4.5.2",
-    "@chakra-ui/react": "^2.3.6",
+    "typescript": "^5.0.4",
+    "@chakra-ui/react": "^2.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "framer-motion": "^6.5.1",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
+    "framer-motion": "^10.12.16",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@babel/core": "^7.15.5",
-    "eslint": "^8.25.0",
+    "eslint": "^8.41.0",
     "tsup": "^6.2.3"
   },
   "publishConfig": {

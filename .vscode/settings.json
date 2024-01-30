@@ -25,7 +25,7 @@
     "editor.formatOnSave": true
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.workingDirectories": [
     { "pattern": "apps/*" },
@@ -33,4 +33,5 @@
     { "pattern": "tooling/*" },
     { "pattern": "examples/*" }
   ],
+  "ansible.python.interpreterPath": "/opt/homebrew/bin/python3.11",
 }

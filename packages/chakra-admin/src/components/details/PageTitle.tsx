@@ -5,7 +5,7 @@ import { ShadowedBox } from '../layout/ShadowedBox'
 export type PageTitleProps = {
   label?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon?: As<any> | undefined
+  icon?: As | undefined
   boxComponent?: React.ReactNode
   renderingInModal?: boolean
   loading?: boolean

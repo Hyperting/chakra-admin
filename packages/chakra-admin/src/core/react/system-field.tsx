@@ -76,7 +76,7 @@ export type CAFieldProps<P = {}, TItem extends object = Record<string, any>> = {
   additionalFields?: string[]
 }
 
-export function caField<P = {}, TItem extends object = Record<string, any>, T = As<any>>(
+export function caField<P = {}, TItem extends object = Record<string, any>, T = As>(
   component: T,
   options: CAFieldOptions<P> = { target: 'children' as any, type: 'simple' }
 ) {

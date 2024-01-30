@@ -105,7 +105,7 @@ export type CAInputProps<TItem extends FieldValues = Record<string, any>> = {
   resource?: string
 } & RegisterOptions<TItem>
 
-export function caFormInput<P = {}, TItem extends FieldValues = Record<string, any>, T = As<any>>(
+export function caFormInput<P = {}, TItem extends FieldValues = Record<string, any>, T = As>(
   component: T,
   options: CAInputOptions<P> = {
     type: 'ref',

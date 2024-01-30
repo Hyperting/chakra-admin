@@ -9,6 +9,8 @@ import { DetailsPageTitle } from './DetailsPageTitle'
 import { PageLayout, PageLayoutProps } from './PageLayout'
 import { useAdminStateValue, registeredIcons } from '../../core/admin/adminState'
 import { NavigateBehavior } from '../../core'
+import { Button, useToast } from '@chakra-ui/react'
+// import { createStandaloneToast } from '@chakra-ui/react'
 
 export type CreateProps<TData = any, TVariables = OperationVariables> = {
   resource?: string
@@ -34,6 +36,7 @@ export const Create: FC<CreateProps> = (props) => {
   const { registeredResources, initialized } = useAdminStateValue()
   const t = useTranslate()
   const getResourceLabel = useGetResourceLabel()
+  const toast = useToast()
 
   return cloneElement(
     Layout,
@@ -58,6 +61,21 @@ export const Create: FC<CreateProps> = (props) => {
     },
 
     <>
+      <Button
+        onClick={() => {
+          console.log('toast changed', toast)
+          const id = toast({
+            title: 'Account created.',
+            description: "We've created your account for you.",
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+          })
+          console.log('id', id)
+        }}
+      >
+        Click me
+      </Button>
       {deepMap(children, (child: any) => {
         return React.cloneElement(
           child,

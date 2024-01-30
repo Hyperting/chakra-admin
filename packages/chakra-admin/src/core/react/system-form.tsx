@@ -42,9 +42,7 @@ export const CAFormControlComponents = {
   FormLabel: CAFormLabel,
 }
 
-export function CAFormControl<TItem = Record<string, any>>(
-  props: CAInputProps<TItem> & FormControlProps
-) {
+export function CAFormControl<TItem = Record<string, any>>(props: CAInputProps<TItem> & FormControlProps) {
   const { source, control, children, ...filteredProps } = props as any
 
   const { errors } = useFormState<TItem>({ control, name: source })
@@ -74,9 +72,7 @@ export function CAFormErrorMessage<TItem = Record<string, any>>(
 }
 CAFormErrorMessage.displayName = 'CAFormErrorMessage'
 
-export function CAFormLabel<TItem = Record<string, any>>(
-  props: Partial<CAInputProps<TItem>> & FormLabelProps
-) {
+export function CAFormLabel<TItem = Record<string, any>>(props: Partial<CAInputProps<TItem>> & FormLabelProps) {
   const { source, control, resource, children, ...filteredProps } = props as any
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
   const label = useMemo(
@@ -105,7 +101,7 @@ export type CAInputProps<TItem = Record<string, any>> = {
   resource?: string
 } & RegisterOptions<TItem>
 
-export function caFormInput<P = {}, TItem = Record<string, any>, T = As<any>>(
+export function caFormInput<P = {}, TItem = Record<string, any>, T = As>(
   component: T,
   options: CAInputOptions<P> = {
     type: 'ref',
@@ -121,15 +117,7 @@ export function caFormInput<P = {}, TItem = Record<string, any>, T = As<any>>(
       )
     }
 
-    const {
-      source,
-      register,
-      unregister,
-      control,
-      children,
-      label,
-      ...filteredProps
-    } = props as any
+    const { source, register, unregister, control, children, label, ...filteredProps } = props as any
     const tAll = useTranslate()
     const t = useTranslate({ keyPrefix: `resources.${props.resource}.fields` })
     const labelProps = useMemo(() => {
