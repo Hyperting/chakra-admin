@@ -1,5 +1,13 @@
 # kitchen-sink
 
+## 0.0.1-dev.16
+
+### Patch Changes
+
+- Updated dependencies [[`a5e6910`](https://github.com/it-nalon/chakra-admin/commit/a5e6910ba536063e9fca92531efa2ec70597f78b)]:
+  - chakra-admin@0.1.0-dev.29
+  - ca-theme@0.1.0-dev.29
+
 ## 0.0.1-dev.15
 
 ### Patch Changes

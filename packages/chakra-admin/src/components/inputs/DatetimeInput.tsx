@@ -1,9 +1,7 @@
 import React, { FC, useCallback } from 'react'
 import { Box, Input, InputProps } from '@chakra-ui/react'
-import { DatetimepickerProps } from 'react-datetime'
+import Datetime, { DatetimepickerProps } from 'react-datetime'
 import { ca } from 'ca-system'
-
-const Datetime = require('react-datetime').default
 
 export type DatetimeInputProps = {
   inputProps?: InputProps
@@ -240,7 +238,7 @@ export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
         },
       }}
     >
-      <Datetime renderInput={renderInput} {...props} />
+      <Datetime renderInput={renderInput} {...(props as any)} />
     </Box>
   )
 }

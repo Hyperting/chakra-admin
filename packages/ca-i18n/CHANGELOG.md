@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.1.0-dev.29
+
+### Minor Changes
+
+- [`a5e6910`](https://github.com/it-nalon/chakra-admin/commit/a5e6910ba536063e9fca92531efa2ec70597f78b) Thanks [@it-nalon](https://github.com/it-nalon)! - chore: updated versions
+
 ## 0.0.2-dev.27
 
 ### Patch Changes
