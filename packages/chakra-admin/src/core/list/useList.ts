@@ -53,7 +53,7 @@ export type OnPageChangeParams = OffsetOnPageChangeParams | CursorOnPageChangePa
 export type OnPageChange = OffsetOnPageChange | CursorOnPageChange
 
 export type OffsetOnSortChange<TItem extends Record<string, any> = Record<string, any>> = (
-  sort: OffsetSortType<TItem>
+  sort: OffsetSortType<TItem>,
 ) => void
 
 export type CursorsOnSortChangeParams<TItem extends Record<string, any> = Record<string, any>> = {
@@ -63,7 +63,7 @@ export type CursorsOnSortChangeParams<TItem extends Record<string, any> = Record
   last?: number
 }
 export type CursorOnSortChange<TItem extends Record<string, any> = Record<string, any>> = (
-  sort: CursorsOnSortChangeParams<TItem>
+  sort: CursorsOnSortChangeParams<TItem>,
 ) => void
 
 export type OnSortChange = OffsetOnSortChange | CursorOnSortChange
@@ -101,7 +101,7 @@ export type UseListParams<
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
-  DeleteTVariables = OperationVariables
+  DeleteTVariables = OperationVariables,
 > = ListProps<TQuery, TItem, ListTData, ListTVariables, DeleteTData, DeleteTVariables> & {}
 
 export type UseListReturn<TItem = Record<string, any>, TData = any, TVariables = OperationVariables> = {
@@ -125,7 +125,7 @@ export const useList = <
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
-  DeleteTVariables = OperationVariables
+  DeleteTVariables = OperationVariables,
 >({
   paginationMode = 'offset',
   defaultPerPage = DEFAULT_PER_PAGE,
@@ -403,7 +403,7 @@ export const useList = <
         })
       }
     },
-    [paginationMode, params, setParams]
+    [paginationMode, params, setParams],
   )
 
   const onSortChange = useCallback<OnSortChange>(
@@ -466,7 +466,7 @@ export const useList = <
         setParams(newParams)
       }
     },
-    [paginationMode, params, setParams]
+    [paginationMode, params, setParams],
   )
 
   const onFiltersChange = useCallback(
@@ -502,7 +502,7 @@ export const useList = <
               return { ...filteredPrevState, ...newFilters, [QP_PAGE]: '1' }
             }
             return { ...newFilters, [QP_PAGE]: '1' }
-          })(params)
+          })(params),
         )
       } else {
         const paramsKeys = Object.keys(params || {})
@@ -529,7 +529,7 @@ export const useList = <
         })
       }
     },
-    [paginationMode, setParams, params]
+    [paginationMode, setParams, params],
   )
 
   useEffect(() => {

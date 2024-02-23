@@ -58,7 +58,8 @@ export interface ListStrategy<TData = any, TVariables = OperationVariables, TIte
     resource: string,
     operation: string,
     variables?: OperationVariables,
-    fields?: string[]
+    fields?: string[],
+    paginationMode?: PaginationMode,
   ): DocumentNode | TypedDocumentNode<TData, TVariables>
   // TODO: add support for cursor based pagination
   /* type: 'offset' | 'cursor' */
@@ -72,14 +73,14 @@ export interface ShowStrategy<
   TData = any,
   TFormValues = Record<string, any>,
   TVariables = OperationVariables,
-  TItem = Record<string, any>
+  TItem = Record<string, any>,
 > {
   getId: (item: TItem) => string
   getQuery?(
     resource: string,
     operation: string,
     variables?: OperationVariables,
-    fields?: string[]
+    fields?: string[],
   ): DocumentNode | TypedDocumentNode<TData, TVariables>
   getItem: (queryResult: QueryResult<TData, TVariables>) => TItem
   getItemVariables: (id: string) => TVariables
@@ -94,7 +95,7 @@ export interface EditStrategy<
   TData = any,
   TFormValues = Record<string, any>,
   TVariables = OperationVariables,
-  TItem = Record<string, any>
+  TItem = Record<string, any>,
 > {
   getId: (item: TItem) => string
   getItem: (queryResult: QueryResult<TData, TVariables>) => TItem
@@ -128,7 +129,7 @@ export class DefaultListStrategy implements ListStrategy {
     resource: string,
     operation: string,
     variables?: OperationVariables,
-    fields?: string[]
+    fields?: string[],
   ): DocumentNode | TypedDocumentNode<any, OperationVariables> {
     const result = query({
       operation,
@@ -167,7 +168,7 @@ export class DefaultShowStrategy implements ShowStrategy {
     resource: string,
     operation: string,
     variables?: OperationVariables,
-    fields?: string[]
+    fields?: string[],
   ): DocumentNode | TypedDocumentNode<any, OperationVariables> {
     const result = query({
       operation,

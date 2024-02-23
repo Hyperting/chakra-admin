@@ -23,7 +23,8 @@ const defaultResolver = (
   resource: string,
   operation: string,
   variables?: OperationVariables,
-  fields?: string[]
+  fields?: string[],
+  paginationMode?: PaginationMode,
 ): DocumentNode | TypedDocumentNode<any, OperationVariables> => {
   const result = query({
     operation,
@@ -48,12 +49,12 @@ export function Query<TQuery = Record<string, any>, TData = any, TVariables = Op
   const generateGql = useCallback(
     (resource: string, operation: string, variables?: OperationVariables, fields?: string[]) => {
       return type === 'list'
-        ? strategy?.list?.getQuery!(resource, operation, variables, fields) ||
+        ? strategy?.list?.getQuery!(resource, operation, variables, fields, paginationMode) ||
             defaultResolver(resource, operation, variables, fields)
         : strategy?.show?.getQuery!(resource, operation, variables, fields) ||
             defaultResolver(resource, operation, variables, fields)
     },
-    [strategy?.list?.getQuery, strategy?.show?.getQuery, type]
+    [strategy?.list?.getQuery, strategy?.show?.getQuery, type],
   )
 
   const { operation } = useGqlBuilder({
@@ -61,6 +62,7 @@ export function Query<TQuery = Record<string, any>, TData = any, TVariables = Op
     generateGql,
     operation: query,
     additionalFields: fields,
+    paginationMode,
     ...props,
   })
 
@@ -75,9 +77,9 @@ export function Query<TQuery = Record<string, any>, TData = any, TVariables = Op
           ? strategy?.list.getList(queryResult as any, paginationMode || 'offset')
           : strategy?.show.getItem(queryResult as any)
         : type === 'list'
-        ? []
-        : {},
-    [paginationMode, queryResult, strategy?.list, strategy?.show, type]
+          ? []
+          : {},
+    [paginationMode, queryResult, strategy?.list, strategy?.show, type],
   )
 
   const childrenProps = useMemo(() => {

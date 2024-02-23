@@ -14,7 +14,7 @@ export type ListProps<
   ListTData = any,
   ListTVariables = OperationVariables,
   DeleteTData = any,
-  DeleteTVariables = OperationVariables
+  DeleteTVariables = OperationVariables,
 > = {
   paginationMode?: PaginationMode
   resource?: string

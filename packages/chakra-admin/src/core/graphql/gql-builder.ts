@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { DocumentNode, gql, OperationVariables, TypedDocumentNode } from '@apollo/client'
 import Fields from 'gql-query-builder/build/Fields'
-import { GQLOperation, GqlGenerator, OperationType } from './types'
+import { GQLOperation, GqlGenerator, OperationType, PaginationMode } from './types'
 import { deepForEach } from 'ca-system'
 
 export const EMPTY_QUERY = gql`
@@ -16,7 +16,7 @@ const getDefaultAdditionalFields: GetAdditionalFields = () => ['id']
 
 export function generateFields(
   fields?: string[],
-  getAdditionalFields: GetAdditionalFields = getDefaultAdditionalFields
+  getAdditionalFields: GetAdditionalFields = getDefaultAdditionalFields,
 ) {
   const newFields: Fields = [...getDefaultAdditionalFields()]
   const deepMappedFields = {}
@@ -68,7 +68,7 @@ export function generateFields(
   newFields.push(
     ...Object.keys(deepMappedFields).map((key) => {
       return { [key]: deepMappedFields[key] }
-    })
+    }),
   )
 
   return newFields
@@ -83,6 +83,8 @@ export type UseGQLBuilderParams<TOperations = Record<string, any>, TData = any, 
   generateGql: GqlGenerator<TData, TVariables>
   children?: React.ReactNode
   additionalFields?: string[]
+  // parameter set only when type is 'list'
+  paginationMode?: PaginationMode
 }
 
 export type UseGQLBuilderResult<TData = any, TVariables = OperationVariables> = {
@@ -100,6 +102,7 @@ export function useGqlBuilder<TOperations = Record<string, any>, TData = any, TV
   type,
   children,
   additionalFields,
+  paginationMode,
 }: UseGQLBuilderParams<TOperations, TData, TVariables>): UseGQLBuilderResult<TData, TVariables> {
   const [initialized, setInitialized] = useState(false)
   const [selectionSet, setSelectionSet] = useState<string[]>([])
@@ -107,7 +110,7 @@ export function useGqlBuilder<TOperations = Record<string, any>, TData = any, TV
   const finalOperation = useMemo<DocumentNode | TypedDocumentNode<TData, TVariables> | undefined>(() => {
     if (typeof operation === 'string' && !generateGql) {
       throw new Error(
-        'You must provide a getQuery function in your strategy if you want to generate the query from a string'
+        'You must provide a getQuery function in your strategy if you want to generate the query from a string',
       )
     }
 
@@ -116,7 +119,8 @@ export function useGqlBuilder<TOperations = Record<string, any>, TData = any, TV
         resource!,
         operation,
         variables as any,
-        Array.from(new Set([...(selectionSet || []), ...(additionalFields || [])]))
+        Array.from(new Set([...(selectionSet || []), ...(additionalFields || [])])),
+        paginationMode,
       )
     }
 
