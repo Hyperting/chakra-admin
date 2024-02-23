@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.1.0-dev.31
+
+### Patch Changes
+
+- fix: SelectInput paginationMode
+
 ## 0.1.0-dev.29
 
 ### Minor Changes

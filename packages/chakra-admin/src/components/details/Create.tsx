@@ -61,21 +61,6 @@ export const Create: FC<CreateProps> = (props) => {
     },
 
     <>
-      <Button
-        onClick={() => {
-          console.log('toast changed', toast)
-          const id = toast({
-            title: 'Account created.',
-            description: "We've created your account for you.",
-            status: 'success',
-            duration: 9000,
-            isClosable: true,
-          })
-          console.log('id', id)
-        }}
-      >
-        Click me
-      </Button>
       {deepMap(children, (child: any) => {
         return React.cloneElement(
           child,
@@ -91,9 +76,9 @@ export const Create: FC<CreateProps> = (props) => {
               ...child.props,
             },
           },
-          child.props?.children
+          child.props?.children,
         )
       })}
-    </>
+    </>,
   )
 }

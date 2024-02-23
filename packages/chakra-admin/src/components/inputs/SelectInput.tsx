@@ -10,7 +10,7 @@ export type SelectInputProps<
   TQuery = Record<string, any>,
   TData extends FieldValues = any,
   TQueryData = any,
-  TQueryVariables = OperationVariables
+  TQueryVariables = OperationVariables,
 > = FilterInputProps &
   CAInputProps<TData> &
   SelectProps &
@@ -24,7 +24,7 @@ export function SelectInput<
   TQuery = Record<string, any>,
   TData extends FieldValues = any,
   TQueryData = any,
-  TQueryVariables = OperationVariables
+  TQueryVariables = OperationVariables,
 >({
   onChange: onChangeProp,
   source,
@@ -52,6 +52,7 @@ export function SelectInput<
   showEmpty = true,
   emptyLabel = '',
   control,
+  paginationMode,
   ...rest
 }: SelectInputProps<TQuery, TData, TQueryData, TQueryVariables> & Record<string, any>) {
   // const {
@@ -71,7 +72,7 @@ export function SelectInput<
         onChangeProp(event.target.value)
       }
     },
-    [onChangeProp]
+    [onChangeProp],
   )
 
   if (query) {
@@ -104,6 +105,7 @@ export function SelectInput<
                   query={query}
                   variables={variables}
                   operationName={operationName}
+                  paginationMode={paginationMode}
                 >
                   <SelectWithEntries
                     {...rest}

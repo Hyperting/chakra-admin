@@ -18,7 +18,6 @@ export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
         /* !
          * https://github.com/arqex/react-datetime
          */
-
         '.rdt': {
           position: 'relative',
         },

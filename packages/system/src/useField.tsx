@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import get from 'lodash.get'
 import { CAFieldProps } from './system-field'
 

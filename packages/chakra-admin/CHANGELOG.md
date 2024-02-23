@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.31
+
+### Patch Changes
+
+- fix: SelectInput paginationMode
+
+- Updated dependencies []:
+  - ca-theme@0.1.0-dev.31
+  - ca-i18n@0.1.0-dev.31
+  - ca-system@0.1.0-dev.31
+
 ## 0.1.0-dev.29
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "ca-i18n",
-  "version": "0.1.0-dev.29",
+  "version": "0.1.0-dev.31",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.mjs",

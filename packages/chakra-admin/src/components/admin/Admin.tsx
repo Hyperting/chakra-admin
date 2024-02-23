@@ -20,7 +20,7 @@ const RouteAdapter: FC<{ children?: React.ReactNode }> = ({ children }) => {
         navigate(location, { replace: false, state: location.state })
       },
     }),
-    [navigate]
+    [navigate],
   )
   return (children as any)({ history: adaptedHistory, location })
 }

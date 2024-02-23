@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { atom, useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
 
 export const VERSION_STATE_KEY = 'versionState'
