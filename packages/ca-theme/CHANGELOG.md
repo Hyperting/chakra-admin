@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.1.0-dev.32
+
+### Patch Changes
+
+- Fix: SelectInput Query
+
 ## 0.1.0-dev.31
 
 ### Patch Changes

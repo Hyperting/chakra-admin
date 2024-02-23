@@ -128,6 +128,7 @@ export function SelectInput<
             query={query}
             variables={variables}
             operationName={operationName}
+            paginationMode={paginationMode}
           >
             <SelectWithEntries
               {...rest}

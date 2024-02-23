@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.1.0-dev.32
+
+### Patch Changes
+
+- Fix: SelectInput Query
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.32
+
 ## 0.1.0-dev.31
 
 ### Patch Changes

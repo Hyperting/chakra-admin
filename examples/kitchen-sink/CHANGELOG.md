@@ -1,5 +1,13 @@
 # kitchen-sink
 
+## 0.0.1-dev.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - chakra-admin@0.1.0-dev.32
+  - ca-theme@0.1.0-dev.32
+
 ## 0.0.1-dev.17
 
 ### Patch Changes
