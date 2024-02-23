@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.1.0-dev.33
+
+### Patch Changes
+
+- Feat: paginationMode in gql-builder
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.33
+
 ## 0.1.0-dev.32
 
 ### Patch Changes
