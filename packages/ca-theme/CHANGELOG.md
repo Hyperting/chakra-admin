@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.1.0-dev.34
+
+### Patch Changes
+
+- feat (wip): dynamic pagination component
+
 ## 0.1.0-dev.33
 
 ### Patch Changes

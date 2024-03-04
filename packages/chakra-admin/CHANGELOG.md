@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.34
+
+### Patch Changes
+
+- feat (wip): dynamic pagination component
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.34
+  - ca-theme@0.1.0-dev.34
+  - ca-system@0.1.0-dev.34
+
 ## 0.1.0-dev.33
 
 ### Patch Changes
