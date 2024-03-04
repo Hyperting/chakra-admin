@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.35
+
+### Patch Changes
+
+- feat: new modal layout
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.35
+  - ca-theme@0.1.0-dev.35
+  - ca-system@0.1.0-dev.35
+
 ## 0.1.0-dev.34
 
 ### Patch Changes

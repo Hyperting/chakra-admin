@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.1.0-dev.35
+
+### Patch Changes
+
+- feat: new modal layout
+
 ## 0.1.0-dev.34
 
 ### Patch Changes
