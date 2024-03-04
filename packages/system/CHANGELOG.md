@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.1.0-dev.36
+
+### Patch Changes
+
+- fix: wrong toast on correct creation
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.36
+
 ## 0.1.0-dev.35
 
 ### Patch Changes
