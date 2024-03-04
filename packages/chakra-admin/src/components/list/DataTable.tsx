@@ -20,7 +20,7 @@ import { CellProps, HeaderProps, Renderer } from 'react-table'
 import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
 import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
-import { Pagination } from './Pagination'
+import { Pagination, PaginationProps } from './Pagination'
 import { useDataTable } from '../../core/list/useDataTable'
 import { DataTableValueProps } from './DataTableValue'
 
@@ -38,6 +38,7 @@ export type DataTableProps<TItem> = Partial<UseListReturn> &
     moreMenuHeaderComponent?: Renderer<HeaderProps<any>> | string
     moreMenuComponent?: Renderer<CellProps<any, any>>
     expandComponent?: React.ReactNode
+    paginationComponent?: React.ReactNode
     rowClick?: RowClick<TItem> | RowClickObject<TItem>
     tableProps?: Omit<TableProps, 'children'>
     theadProps?: Omit<TableHeadProps, 'children'>
@@ -49,7 +50,7 @@ export type DataTableProps<TItem> = Partial<UseListReturn> &
 function getRowClickRedirect<T>(
   rowClick: RowClick<T> | RowClickObject<T>,
   item: T,
-  navigate: ReturnType<typeof useNavigate>
+  navigate: ReturnType<typeof useNavigate>,
 ) {
   if (typeof rowClick === 'function') {
     return rowClick(item)
@@ -64,6 +65,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
   const {
     loading,
     filtersComponent,
+    paginationComponent = <Pagination {...({} as any)} />,
     total,
     resource,
     expandComponent,
@@ -132,7 +134,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
 
       navigate(redirectUrl, navigateOptions)
     },
-    [hasEdit, hasShow, location, navigate, resource, rowClick]
+    [hasEdit, hasShow, location, navigate, resource, rowClick],
   )
 
   return (
@@ -155,7 +157,29 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           cloneElement(filtersComponent, {
             ...props,
           })}
-        <Pagination
+
+        {paginationComponent &&
+          isValidElement(paginationComponent) &&
+          typeof paginationComponent !== 'string' &&
+          cloneElement<PaginationProps>(paginationComponent as any, {
+            page,
+            paginationMode: props.paginationMode!,
+            fetching: loading,
+            canPreviousPage,
+            canNextPage,
+            pageOptions,
+            pageCount,
+            gotoPage,
+            nextPage,
+            previousPage,
+            setPageSize,
+            pageIndex,
+            pageSize,
+            totalRows: total,
+            showBackToTop,
+            backToTop,
+          })}
+        {/* <Pagination
           page={page}
           paginationMode={props.paginationMode!}
           fetching={loading}
@@ -172,7 +196,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           totalRows={total}
           showBackToTop={showBackToTop}
           backToTop={backToTop}
-        />
+        /> */}
       </chakra.div>
       <chakra.div maxW="100%" overflowX="auto">
         <Table w="100%" {...tableProps} {...getTableProps()}>
@@ -235,7 +259,28 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
         </Table>
       </chakra.div>
       <chakra.div display="flex" justifyContent="flex-end" py={5}>
-        <Pagination
+        {paginationComponent &&
+          isValidElement(paginationComponent) &&
+          typeof paginationComponent !== 'string' &&
+          cloneElement<PaginationProps>(paginationComponent as any, {
+            page,
+            paginationMode: props.paginationMode!,
+            fetching: loading,
+            canPreviousPage,
+            canNextPage,
+            pageOptions,
+            pageCount,
+            gotoPage,
+            nextPage,
+            previousPage,
+            setPageSize,
+            pageIndex,
+            pageSize,
+            totalRows: total,
+            showBackToTop,
+            backToTop,
+          })}
+        {/* <Pagination
           page={page}
           paginationMode={props.paginationMode!}
           fetching={loading}
@@ -252,7 +297,7 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
           totalRows={total}
           showBackToTop={showBackToTop}
           backToTop={backToTop}
-        />
+        /> */}
       </chakra.div>
     </chakra.div>
   )

@@ -6,7 +6,7 @@ import { Trans, useTranslate } from 'ca-i18n'
 import { Row } from 'react-table'
 import { PaginationMode } from '../../core'
 
-type Props = {
+export type PaginationProps = {
   page: Row<object>[]
   paginationMode: PaginationMode
   showBackToTop?: boolean
@@ -25,7 +25,7 @@ type Props = {
   totalRows?: number
 }
 
-export const Pagination: FC<Props> = ({
+export const Pagination: FC<PaginationProps> = ({
   paginationMode,
   showBackToTop,
   backToTop,
@@ -47,9 +47,9 @@ export const Pagination: FC<Props> = ({
       pageSize === 0
         ? totalRows || page.length
         : paginationMode === 'offset'
-        ? Math.min(totalRows || 0, (pageIndex + 1) * pageSize)
-        : (pageIndex + 1) * pageSize,
-    [page.length, pageIndex, pageSize, paginationMode, totalRows]
+          ? Math.min(totalRows || 0, (pageIndex + 1) * pageSize)
+          : (pageIndex + 1) * pageSize,
+    [page.length, pageIndex, pageSize, paginationMode, totalRows],
   )
 
   const total = useMemo(() => (typeof totalRows === 'number' ? totalRows : t('ca.pagination.many')), [t, totalRows])

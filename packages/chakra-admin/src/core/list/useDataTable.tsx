@@ -72,11 +72,11 @@ export function useDataTable<TItem = Record<string, any>>({
             Header: childProps.label
               ? tAll(childProps.label, { smart_count: 1 })
               : typeof childProps.source === 'string'
-              ? t(`${childProps.source}`, {
-                  defaultValue: humanize(childProps.source),
-                  smart_count: 1,
-                })
-              : '',
+                ? t(`${childProps.source}`, {
+                    defaultValue: humanize(childProps.source),
+                    smart_count: 1,
+                  })
+                : '',
             accessor: typeof childProps?.source === 'string' ? childProps?.source : undefined,
             isNumeric: childProps?.isNumeric,
             disableSortBy: typeof childProps.sortable === 'boolean' ? !childProps.sortable : false,
@@ -106,7 +106,7 @@ export function useDataTable<TItem = Record<string, any>>({
         return undefined
       })?.filter((item) => !!item) || [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [children]
+    [children],
   )
 
   const transformedOffsetSort = useMemo(() => {
@@ -279,7 +279,7 @@ export function useDataTable<TItem = Record<string, any>>({
           },
         },
       ])
-    }
+    },
   )
 
   const {
@@ -321,7 +321,7 @@ export function useDataTable<TItem = Record<string, any>>({
               ...acc,
               [item.id]: item.desc ? OffsetSortDirection.DESC : OffsetSortDirection.ASC,
             }
-          }, {})
+          }, {}),
         )
       } else if (paginationMode === 'cursor') {
         if (sortBy.length) {
@@ -352,16 +352,6 @@ export function useDataTable<TItem = Record<string, any>>({
     if (paginationMode === 'offset') {
       return {}
     }
-
-    console.log(
-      'pageIndex',
-      !(rest as unknown as CursorPagination)?.page && total
-        ? 0
-        : (rest as unknown as CursorPagination)?.page
-        ? ((rest as unknown as CursorPagination)?.page || 1) - 1
-        : undefined,
-      cursorHistory.length
-    )
 
     return {
       showBackToTop:
@@ -417,7 +407,6 @@ export function useDataTable<TItem = Record<string, any>>({
         //     ? ((rest as CursorPagination)?.page || 1) - 1
         //     : undefined,
         pageIndex: cursorHistory.length,
-        ciao: 'Prova',
       },
       pageCount,
     }
@@ -437,16 +426,6 @@ export function useDataTable<TItem = Record<string, any>>({
     revert,
     pageSize,
   ])
-
-  console.log(
-    'state',
-    {
-      foundedColumns,
-      ...tableInstance,
-      ...additonalProps,
-    },
-    cursorHistory.length
-  )
 
   return {
     foundedColumns,
