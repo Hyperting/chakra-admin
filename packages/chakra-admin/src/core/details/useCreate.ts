@@ -19,10 +19,10 @@ export type UseCreateResult<
   TData = any,
   TVariables = OperationVariables,
   TContext = DefaultContext,
-  TCache extends ApolloCache<any> = ApolloCache<any>
+  TCache extends ApolloCache<any> = ApolloCache<any>,
 > = {
   executeMutation: (
-    options?: MutationFunctionOptions<TData, TVariables, TContext, TCache>
+    options?: MutationFunctionOptions<TData, TVariables, TContext, TCache>,
   ) => Promise<FetchResult<TData>>
   mutationResult?: MutationResult<TData>
   onSubmit: (values: any) => Promise<MutationResult<TData>>
@@ -33,7 +33,7 @@ export const useCreate = <
   TData = any,
   TVariables = OperationVariables,
   TContext = DefaultContext,
-  TCache extends ApolloCache<any> = ApolloCache<any>
+  TCache extends ApolloCache<any> = ApolloCache<any>,
 >({
   mutation,
   resource,
@@ -49,22 +49,12 @@ export const useCreate = <
 
   const defaultValues = useMemo(
     () => (location?.state as { defaultValues?: Location })?.defaultValues || {},
-    [location?.state]
+    [location?.state],
   )
 
   const onSubmit = useCallback(
     async (values: any): Promise<any> => {
       try {
-        console.log('Error During Creation submit111', toast)
-        toast({
-          status: 'error',
-          title: `Errore durante la creazione della risorsa ${resource}`,
-          description: 'Error During Creation submit',
-          isClosable: true,
-          duration: 5000,
-        })
-
-        console.log('Error During Creation submit222', toast)
         const variables = strategy?.create.getMutationVariables(values)
         if (!variables) {
           throw new Error('No variables found in CreateStrategy')
@@ -93,7 +83,7 @@ export const useCreate = <
 
         return result
       } catch (error: any) {
-        console.log('Error During Creation submit222', error, toast)
+        console.log('Error During Creation submit', error, toast)
         toast({
           status: 'error',
           title: `Errore durante la creazione della risorsa ${resource}`,
@@ -104,7 +94,7 @@ export const useCreate = <
         // console.error('Error During Creation submit', error)
       }
     },
-    [executeMutation, navigate, nextVersion, toast, onSuccess, redirect, resource, strategy?.create]
+    [executeMutation, navigate, nextVersion, toast, onSuccess, redirect, resource, strategy?.create],
   )
 
   return {
