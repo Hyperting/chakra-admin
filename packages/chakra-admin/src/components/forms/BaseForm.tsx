@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import { chakra, ChakraProps, Box } from '@chakra-ui/react'
+import { chakra, ChakraProps, Box, ModalBody, ModalFooter } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { UseCreateResult } from '../../core/details/useCreate'
 import { UseEditResult } from '../../core/details/useEdit'
@@ -30,15 +30,15 @@ export const BaseForm: FC<BaseFormProps> = ({
   const { handleSubmit } = methods
 
   const onSubmit = useCallback(
-    (values) => {
+    (values: any) => {
       onSubmitProp({ __typename: resource, ...values })
     },
-    [onSubmitProp, resource]
+    [onSubmitProp, resource],
   )
 
   return (
     <chakra.form onSubmit={handleSubmit(onSubmit)}>
-      <chakra.div mb={renderingInModal ? '76px' : 0}>
+      <BaseFormBody renderingInModal={renderingInModal}>
         <TreeRenderer
           children={children}
           propsOverride={{
@@ -50,19 +50,10 @@ export const BaseForm: FC<BaseFormProps> = ({
             resource,
           }}
         />
-      </chakra.div>
+      </BaseFormBody>
 
-      <Box
-        zIndex="1"
-        position={renderingInModal ? 'fixed' : 'relative'}
-        bottom="0px"
-        w="100%"
-        right="0px"
-        boxShadow={renderingInModal ? 'main' : 'none'}
-        bg={renderingInModal ? 'white' : 'transparent'}
-        p={renderingInModal ? 4 : 0}
-      >
-        <chakra.div display="flex" justifyContent="end" marginBottom={renderingInModal ? 0 : 5}>
+      <BaseFormFooter renderingInModal={renderingInModal}>
+        <chakra.div display="flex" justifyContent="end">
           <CancelButton />
           <SubmitButton
             disabled={mutationResult?.loading}
@@ -73,7 +64,32 @@ export const BaseForm: FC<BaseFormProps> = ({
             ml={5}
           />
         </chakra.div>
-      </Box>
+      </BaseFormFooter>
     </chakra.form>
+  )
+}
+
+export type BaseFormPartProps = {
+  children: React.ReactNode
+  renderingInModal?: boolean
+}
+
+function BaseFormBody({ children, renderingInModal }: BaseFormPartProps) {
+  if (renderingInModal) {
+    return <ModalBody>{children}</ModalBody>
+  }
+
+  return <Box>{children}</Box>
+}
+
+function BaseFormFooter({ renderingInModal, children }: BaseFormPartProps) {
+  if (renderingInModal) {
+    return <ModalFooter>{children}</ModalFooter>
+  }
+
+  return (
+    <Box zIndex="1" bottom="0px" w="100%" right="0px">
+      {children}
+    </Box>
   )
 }

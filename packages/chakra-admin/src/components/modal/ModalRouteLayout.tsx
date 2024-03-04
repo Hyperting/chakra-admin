@@ -1,5 +1,5 @@
-import React, { FC, useCallback } from 'react'
-import { Drawer, DrawerContent, DrawerOverlay } from '@chakra-ui/react'
+import { FC, useCallback } from 'react'
+import { Modal, ModalCloseButton, ModalContent, ModalOverlay } from '@chakra-ui/react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 export type ModalRouteLayoutProps = {}
@@ -12,11 +12,12 @@ export const ModalRouteLayout: FC<ModalRouteLayoutProps> = () => {
   }, [navigate])
 
   return (
-    <Drawer isOpen placement="right" size="lg" onClose={handleClose}>
-      <DrawerOverlay />
-      <DrawerContent>
+    <Modal isOpen onClose={handleClose} size="xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalCloseButton />
         <Outlet />
-      </DrawerContent>
-    </Drawer>
+      </ModalContent>
+    </Modal>
   )
 }
