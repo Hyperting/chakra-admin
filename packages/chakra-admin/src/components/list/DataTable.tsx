@@ -179,24 +179,6 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
             showBackToTop,
             backToTop,
           })}
-        {/* <Pagination
-          page={page}
-          paginationMode={props.paginationMode!}
-          fetching={loading}
-          canPreviousPage={canPreviousPage}
-          canNextPage={canNextPage}
-          pageOptions={pageOptions}
-          pageCount={pageCount}
-          gotoPage={gotoPage}
-          nextPage={nextPage}
-          previousPage={previousPage}
-          setPageSize={setPageSize}
-          pageIndex={pageIndex}
-          pageSize={pageSize}
-          totalRows={total}
-          showBackToTop={showBackToTop}
-          backToTop={backToTop}
-        /> */}
       </chakra.div>
       <chakra.div maxW="100%" overflowX="auto">
         <Table w="100%" {...tableProps} {...getTableProps()}>
@@ -280,24 +262,6 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
             showBackToTop,
             backToTop,
           })}
-        {/* <Pagination
-          page={page}
-          paginationMode={props.paginationMode!}
-          fetching={loading}
-          canPreviousPage={canPreviousPage}
-          canNextPage={canNextPage}
-          pageOptions={pageOptions}
-          pageCount={pageCount}
-          gotoPage={gotoPage}
-          nextPage={nextPage}
-          previousPage={previousPage}
-          setPageSize={setPageSize}
-          pageIndex={pageIndex}
-          pageSize={pageSize}
-          totalRows={total}
-          showBackToTop={showBackToTop}
-          backToTop={backToTop}
-        /> */}
       </chakra.div>
     </chakra.div>
   )

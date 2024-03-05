@@ -1,17 +1,12 @@
-import * as React from 'react'
-import { Button, ChakraProvider, theme, useToast } from '@chakra-ui/react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ChakraProvider, theme } from '@chakra-ui/react'
 import { Admin, Resource, Route } from 'chakra-admin'
 import { ExampleStrategy } from './ExampleStrategy'
 import { CursorCompanyList, CursorCompanyWithTotal, OffsetCompanyList } from './resources/Company'
 import { client } from './apolloClient'
 import { ExampleAuthProvider } from './ExampleAuth'
 
-// const routeMiddleware = (client: ApolloClient<any>) => {
-//   return '/onboarding'
-// }
-
 export const App = () => {
-  const toast = useToast()
   return (
     <ChakraProvider theme={theme}>
       <Admin client={client} strategy={ExampleStrategy} authProvider={ExampleAuthProvider}>

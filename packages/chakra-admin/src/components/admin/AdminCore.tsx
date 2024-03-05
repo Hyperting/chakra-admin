@@ -51,14 +51,14 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
     () =>
       Children.toArray(props.children).filter((c: any) => c.type === Route && (c.props?.index || c.props?.path === '/'))
         .length > 0,
-    [props.children]
+    [props.children],
   )
 
   const insideAdminRoutes = useMemo(() => {
     return Children.toArray(props.children).filter(
       (r) =>
         ((r as ReactElement).type === Route || (r as ReactElement).type === ReactRouterRoute) &&
-        !!(r as ReactElement).props?.useAdminLayout
+        !!(r as ReactElement).props?.useAdminLayout,
     )
   }, [props.children])
 
@@ -66,7 +66,7 @@ export const AdminCore: FC<AdminCoreProps> = (props) => {
     return Children.toArray(props.children).filter(
       (r) =>
         ((r as ReactElement).type === Route || (r as ReactElement).type === ReactRouterRoute) &&
-        !(r as ReactElement).props?.useAdminLayout
+        !(r as ReactElement).props?.useAdminLayout,
     )
   }, [props.children])
 

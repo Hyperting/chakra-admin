@@ -578,7 +578,6 @@ export const useList = <
       currentSort: currentSort as OffsetSortType<any>,
     }
   } else {
-    console.log('newPage', total && !page ? 1 : page, pageCount)
     return {
       ...baseReturn,
       paginationMode: 'cursor',

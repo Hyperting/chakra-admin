@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Edit, BaseForm, Input, ca } from 'chakra-admin'
 import { gql } from '@apollo/client'
 import {
@@ -36,17 +36,17 @@ const MUTATION_UPDATE_COMPANY = gql`
 const CAText = ca.field<TextProps>(Text)
 const CAAvatar = ca.field<AvatarProps>(Avatar, { target: 'name' })
 
-const TestAvatar: FC = ({ ...props }) => {
-  return (
-    <Flex mb={4}>
-      <CAAvatar source="id" {...props} />
-      <Box ml={4}>
-        <CAText source="name" {...props} />
-        <CAText {...props} color="gray.600" fontSize="sm" source="industry" />
-      </Box>
-    </Flex>
-  )
-}
+// const TestAvatar: FC = ({ ...props }) => {
+//   return (
+//     <Flex mb={4}>
+//       <CAAvatar source="id" {...props} />
+//       <Box ml={4}>
+//         <CAText source="name" {...props} />
+//         <CAText {...props} color="gray.600" fontSize="sm" source="industry" />
+//       </Box>
+//     </Flex>
+//   )
+// }
 
 export const CompanyEdit: FC = (props) => {
   return (

@@ -44,7 +44,7 @@
     "typescript": "^5.0.4",
     "tsup": "^6.2.3",
     "@types/luxon": "^2.0.2",
-    "@types/react": "^18.2.7"
+    "@types/react": "^18.2.62"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

@@ -1,7 +1,7 @@
-import { AuthProvider, DefaultUserIdentity } from 'chakra-admin'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { AuthProvider, DefaultUserIdentity } from 'chakra-admin/lib'
 
 export class ExampleAuthProvider implements AuthProvider {
-
   init() {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,10 +46,10 @@ export class ExampleAuthProvider implements AuthProvider {
 
     if (auth) {
       return {
-        id: "1",
-        username: "admin@admin.it",
+        id: '1',
+        username: 'admin@admin.it',
         // fullName: `${result.data.adminMe.firstName || ''} ${result.data.adminMe.lastName}`,
-        fullName: "Admin",
+        fullName: 'Admin',
         // todo avatarUrl
         avatarUrl: 'https://pbs.twimg.com/profile_images/745236379228069888/5Zre6uSy_400x400.jpg',
         // avatarUrl: result?.data?.adminMe?.picture?.urlSmall,

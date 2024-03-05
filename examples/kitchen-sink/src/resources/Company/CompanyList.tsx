@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-key */
-import React, { FC } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FC } from 'react'
 import {
   DataTable,
   Filters,
@@ -14,7 +14,7 @@ import {
 } from 'chakra-admin'
 import { BsFillEyeFill } from 'react-icons/bs'
 import { gql } from '@apollo/client'
-import { Button, Icon, MenuItem } from '@chakra-ui/react'
+import { Button, Icon } from '@chakra-ui/react'
 
 const QUERY_GET_COMPANIES = gql`
   query GetCompanies($pagination: PaginationInput, $sort: CompanySortInput, $filters: CompanyFilterInput) {

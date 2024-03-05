@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
-import { Input, Show, ca } from 'chakra-admin'
+import { FC } from 'react'
+import { Show, ca } from 'chakra-admin/'
 import { gql } from '@apollo/client'
-import { Avatar, AvatarProps, Box, Text, TextProps } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 
 const QUERY_GET_COMPANY = gql`
   query GetCompany($id: ID!) {

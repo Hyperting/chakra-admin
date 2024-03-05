@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Create, BaseForm, Input } from 'chakra-admin'
 import { gql } from '@apollo/client'
 import { Button, FormControl, FormHelperText, FormLabel, HStack, useToast } from '@chakra-ui/react'

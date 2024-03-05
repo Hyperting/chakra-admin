@@ -60,7 +60,7 @@ export function useDataTable<TItem = Record<string, any>>({
 
   const foundedColumns: Column<object>[] = useMemo(
     () =>
-      Children.map(children, (child: React.ReactNode, index) => {
+      Children.map(children as any, (child: React.ReactNode, index) => {
         if (
           child &&
           (child as any).type &&
