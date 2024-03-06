@@ -118,7 +118,7 @@ export class ExampleEditStrategy extends DefaultEditStrategy {
   getQuery(
     resource: string,
     operation: string,
-    variables?: OperationVariables,
+    _variables?: OperationVariables,
     fields?: string[],
   ): DocumentNode | TypedDocumentNode<any, OperationVariables> {
     const result = query({

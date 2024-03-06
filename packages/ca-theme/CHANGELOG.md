@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.1.0-dev.37
+
+### Patch Changes
+
+- Feat: new DataTable
+
 ## 0.1.0-dev.36
 
 ### Patch Changes

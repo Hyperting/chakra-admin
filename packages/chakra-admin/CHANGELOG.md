@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.37
+
+### Patch Changes
+
+- Feat: new DataTable
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.37
+  - ca-theme@0.1.0-dev.37
+  - ca-system@0.1.0-dev.37
+
 ## 0.1.0-dev.36
 
 ### Patch Changes
