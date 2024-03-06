@@ -17,12 +17,11 @@ import {
   BoxProps,
   Box,
 } from '@chakra-ui/react'
-import { FaArrowRight } from 'react-icons/fa'
 import { MdFilterList } from 'react-icons/md'
 import { ListProps } from '../../core/list/ListProps'
 import { UseListReturn } from '../../core/list/useList'
 import { DrawerHeader } from '../modal/DrawerHeader'
-import { Input, InputProps } from '../inputs/Input'
+import { InputProps } from '../inputs/Input'
 
 export type FiltersProps = Partial<UseListReturn & ListProps> & {
   children?: React.ReactNode
@@ -71,7 +70,7 @@ export const Filters: FC<FiltersProps> = ({
           onFiltersChange({ ...currentFilters, [source]: parse ? parse(value) : value })
         }
       },
-    [currentFilters, onFiltersChange]
+    [currentFilters, onFiltersChange],
   )
 
   const handleClearFilters = useCallback(() => {
@@ -82,17 +81,17 @@ export const Filters: FC<FiltersProps> = ({
 
   const activeFiltersCount = useMemo<number>(
     () => (currentFilters ? Object.keys(currentFilters || {}).length - Object.keys(defaultFilters || {}).length : 0),
-    [currentFilters, defaultFilters]
+    [currentFilters, defaultFilters],
   )
 
   const alwaysOnFilters = useMemo(
     () => Children.toArray(children).filter((child) => !!(child as any).props.alwaysOn),
-    [children]
+    [children],
   )
 
   const hiddenFilters = useMemo(
     () => Children.toArray(children).filter((child) => !(child as any).props.alwaysOn),
-    [children]
+    [children],
   )
 
   const handleRemoveFiltersFromDrawer = useCallback(() => {

@@ -66,7 +66,7 @@ function defaultOptionFilterFunc<T>(items: T[], inputValue: string) {
 }
 
 export const CUIAutoComplete = <T extends Item>(
-  props: CUIAutoCompleteProps<T>
+  props: CUIAutoCompleteProps<T>,
 ): React.ReactElement<CUIAutoCompleteProps<T>> => {
   const itemToString = (item?: T | null) => (item ? item.label : '')
   const {
@@ -199,7 +199,7 @@ export const CUIAutoComplete = <T extends Item>(
 
   return (
     <FormControl>
-      <FormLabel {...{ ...getLabelProps({}), ...labelStyleProps }}>{label}</FormLabel>
+      {label && <FormLabel {...{ ...getLabelProps({}), ...labelStyleProps }}>{label}</FormLabel>}
       {/* -----------Section that renders the input element ----------------- */}
       <Box {...getComboboxProps()}>
         <InputGroup>

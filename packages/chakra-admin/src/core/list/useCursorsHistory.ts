@@ -77,7 +77,7 @@ export function useCursorsHistory<TItem = string>({
 
       setLength(stack.current.length)
     },
-    [resource]
+    [resource],
   )
 
   const pop = useCallback(() => {
@@ -156,8 +156,6 @@ export function useCursorsHistory<TItem = string>({
       ignore = true
     }
   }, [])
-
-  console.log('history lenght', length)
 
   return {
     length,

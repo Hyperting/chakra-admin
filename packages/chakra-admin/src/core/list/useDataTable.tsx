@@ -1,21 +1,55 @@
-import React, { Children, cloneElement, ReactElement, useCallback, useEffect, useMemo, useRef } from 'react'
-import { Column, TableInstance, usePagination, useSortBy, useTable, useExpanded } from 'react-table'
+import React, { Children, cloneElement, ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  Column,
+  ColumnDef,
+  ColumnDefTemplate,
+  getCoreRowModel,
+  PaginationState,
+  SortingState,
+  StringOrTemplateHeader,
+  Table,
+  useReactTable,
+} from '@tanstack/react-table'
 import { humanize } from 'inflection'
-import { Icon, IconButton } from '@chakra-ui/react'
 import { useTranslate } from 'ca-i18n'
-import { BsChevronUp, BsChevronDown } from 'react-icons/bs'
-import { DataTableProps } from '../../components/list/DataTable'
 import { OffsetSortDirection } from './SortType'
 import { MoreMenuHeader } from '../../components/list/MoreMenuHeader'
 import { GenericMoreMenuButton } from '../../components/buttons/GenericMoreMenuButton'
-import { DataTableValue } from '../../components/list/DataTableValue'
-import { CursorOnPageChange, CursorPagination, OffsetPagination } from './useList'
+import { DataTableValue, DataTableValueProps } from '../../components/list/DataTableValue'
+import { CursorOnPageChange, CursorPagination, OffsetOnPageChange, OffsetPagination, UseListReturn } from './useList'
 import { useCursorsHistory } from './useCursorsHistory'
+import { ListProps } from './ListProps'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-export type UseDataTableReturn = {
-  foundedColumns: Column<object>[]
+export type RowClickObject<T> = {
+  redirect?: RowClick<T>
+  asModal?: boolean
+}
+
+export type RowClick<T> = 'show' | 'edit' | false | ((item: T) => string)
+
+export type UseDataTableProps<TItem = Record<string, any>> = Partial<UseListReturn> &
+  Partial<Omit<ListProps, 'layout'>> & {
+    children?: React.ReactElement<DataTableValueProps<TItem>>[] | React.ReactElement<DataTableValueProps<TItem>>
+    filtersComponent?: React.ReactNode
+    moreMenuHeaderComponent?: StringOrTemplateHeader<TItem, any>
+    moreMenuComponent?: React.ReactNode
+    expandComponent?: React.ReactNode
+    paginationComponent?: React.ReactNode
+    rowClick?: RowClick<TItem> | RowClickObject<TItem>
+  }
+
+export type UseDataTableReturn<TItem = Record<string, any>> = {
+  foundedColumns: Column<TItem>[]
   showBackToTop: boolean
-} & TableInstance<object>
+  backToTop: () => void
+  canPreviousPage: boolean
+  canNextPage: boolean
+  pageSize: number
+  pageOptions: number[]
+  pageCount: number
+  pageIndex: number
+} & Table<TItem>
 
 export function useDataTable<TItem = Record<string, any>>({
   data,
@@ -44,9 +78,11 @@ export function useDataTable<TItem = Record<string, any>>({
   expandComponent,
   paginationMode = 'offset',
   pageInfo,
-  defaultPerPage,
+  defaultPerPage = 20,
   ...rest
-}: DataTableProps<TItem>): UseDataTableReturn {
+}: UseDataTableProps<TItem>): UseDataTableReturn<TItem> {
+  const location = useLocation()
+  const navigate = useNavigate()
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
   const tAll = useTranslate()
   const cursorHistory = useCursorsHistory({
@@ -58,9 +94,9 @@ export function useDataTable<TItem = Record<string, any>>({
     before: (rest as unknown as CursorPagination)?.before,
   }) // used to go back to previous cursor
 
-  const foundedColumns: Column<object>[] = useMemo(
-    () =>
-      Children.map(children as any, (child: React.ReactNode, index) => {
+  const foundedColumns: Column<TItem, any>[] = useMemo(
+    () => [
+      ...(Children.map(children as any, (child: React.ReactNode, index) => {
         if (
           child &&
           (child as any).type &&
@@ -68,8 +104,8 @@ export function useDataTable<TItem = Record<string, any>>({
           ((child as any).props.source || (child as any).props.sources)
         ) {
           const childProps = (child as any).props
-          const newColumn: any = {
-            Header: childProps.label
+          let newColumn: ColumnDef<TItem, any> = {
+            header: childProps.label
               ? tAll(childProps.label, { smart_count: 1 })
               : typeof childProps.source === 'string'
                 ? t(`${childProps.source}`, {
@@ -77,22 +113,25 @@ export function useDataTable<TItem = Record<string, any>>({
                     smart_count: 1,
                   })
                 : '',
-            accessor: typeof childProps?.source === 'string' ? childProps?.source : undefined,
-            isNumeric: childProps?.isNumeric,
-            disableSortBy: typeof childProps.sortable === 'boolean' ? !childProps.sortable : false,
+            accessorKey: typeof childProps?.source === 'string' ? childProps?.source : undefined,
+            enableSorting: typeof childProps.sortable === 'boolean' ? childProps.sortable : true,
             id:
               !childProps?.source || typeof childProps.source !== 'string'
                 ? `data-table-column-${childProps?.source || ''}${index}`
                 : undefined,
           }
 
+          if (childProps.isNumeric) {
+            newColumn.meta = { isNumeric: true }
+          }
+
           if ((child as ReactElement).type === DataTableValue) {
             if (childProps.render) {
-              newColumn.Cell = (cellData: any) =>
+              newColumn.cell = (cellData: any) =>
                 childProps.render({ ...data, ...childProps, record: cellData?.cell?.row?.original })
             }
           } else {
-            newColumn.Cell = (cellData: any) => {
+            newColumn.cell = (cellData: any) => {
               return cloneElement(child as any, {
                 ...data,
                 ...childProps,
@@ -101,12 +140,102 @@ export function useDataTable<TItem = Record<string, any>>({
               })
             }
           }
-          return newColumn
+          return newColumn as any
         }
         return undefined
-      })?.filter((item) => !!item) || [],
+      })?.filter((item) => !!item) || []),
+      {
+        id: 'actions',
+        header: moreMenuHeaderComponent,
+        cell: (cellData) => {
+          console.log('cellData', cellData.row.original)
+          return cloneElement(moreMenuComponent as any, {
+            id: (cellData.row.original as any).id,
+            record: cellData.row.original,
+            deleteItemMutation,
+            onDeleteCompleted: () => refetch!(),
+            hasEdit,
+            hasCreate,
+            hasDelete,
+            hasShow,
+            resource,
+          })
+        },
+      } as ColumnDef<TItem, any>,
+    ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [children],
+  )
+
+  const pagination: PaginationState = useMemo(() => {
+    if (paginationMode === 'offset') {
+      return {
+        pageIndex: (rest as unknown as OffsetPagination).page ? (rest as unknown as OffsetPagination).page - 1 : 0,
+        pageSize: (rest as unknown as OffsetPagination).perPage || defaultPerPage,
+      }
+    } else {
+      return {
+        pageIndex: typeof (rest as unknown as CursorPagination).page === 'number' ? (rest as any).page - 1 : 0,
+        pageSize:
+          (rest as unknown as CursorPagination).first || (rest as unknown as CursorPagination).last || defaultPerPage,
+      }
+    }
+  }, [paginationMode, rest, defaultPerPage])
+
+  const revert = useMemo(() => {
+    return (rest as unknown as CursorPagination)?.revert
+  }, [rest])
+
+  const onPaginationChange = useCallback(
+    (page) => {
+      const result = page(pagination)
+
+      if (paginationMode === 'offset') {
+        ;(onPageChange as OffsetOnPageChange)({
+          page: result.pageIndex + 1,
+          perPage: result.pageSize,
+        })
+      } else {
+        // can't skip pages in cursor pagination
+        if (result.pageIndex > pagination.pageIndex + 1 && result.pageIndex > 0) {
+          throw new Error('Can not skip pages in cursor pagination')
+        }
+
+        const isPaginatingForward = result.pageIndex > pagination.pageIndex
+
+        if (isPaginatingForward) {
+          if (onPageChange && pageInfo?.hasNextPage) {
+            cursorHistory.push(pageInfo?.endCursor as any)
+            ;(onPageChange as CursorOnPageChange)({
+              [revert ? 'last' : 'first']: result.pageSize,
+              [revert ? 'before' : 'after']: pageInfo?.endCursor as string,
+            })
+          }
+        } else {
+          if (onPageChange && pageInfo?.hasPreviousPage) {
+            ;(onPageChange as CursorOnPageChange)({
+              [revert ? 'first' : 'last']: result.pageSize,
+              [revert ? 'after' : 'before']: pageInfo?.startCursor as string,
+            })
+          } else if (onPageChange && cursorHistory.length > 0) {
+            cursorHistory.pop()
+            const prevCursor = cursorHistory.getLast()
+
+            if (prevCursor) {
+              ;(onPageChange as CursorOnPageChange)({
+                [revert ? 'last' : 'first']: result.pageSize,
+                [revert ? 'before' : 'after']: prevCursor,
+              })
+            } else {
+              ;(onPageChange as CursorOnPageChange)({
+                [revert ? 'last' : 'first']: result.pageSize,
+              })
+            }
+          }
+        }
+      }
+    },
+    [pagination, onPageChange, paginationMode, pageInfo, cursorHistory, revert],
   )
 
   const transformedOffsetSort = useMemo(() => {
@@ -120,7 +249,7 @@ export function useDataTable<TItem = Record<string, any>>({
       return sortKeys.map((key) => {
         return {
           id: key,
-          desc: currentSort![key] !== OffsetSortDirection.ASC,
+          desc: currentSort?.[key] !== OffsetSortDirection.ASC,
         }
       })
     }
@@ -129,9 +258,9 @@ export function useDataTable<TItem = Record<string, any>>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationMode, (rest as unknown as OffsetPagination)?.currentSort])
 
-  const transformedOffsetDefaultSorting = useMemo(() => {
+  const transformedOffsetDefaultSorting: SortingState = useMemo(() => {
     if (paginationMode === 'cursor') {
-      return undefined
+      return []
     }
 
     if (transformedOffsetSort?.length === 0) {
@@ -141,7 +270,7 @@ export function useDataTable<TItem = Record<string, any>>({
         return sortKeys.map((key) => {
           return {
             id: key,
-            desc: finalDefaultSort![key] !== OffsetSortDirection.ASC,
+            desc: finalDefaultSort?.[key] !== OffsetSortDirection.ASC,
           }
         })
       }
@@ -151,17 +280,17 @@ export function useDataTable<TItem = Record<string, any>>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultSort, defaultSorting, paginationMode])
 
-  const finalTransformedOffsetSort = useMemo(() => {
+  const finalTransformedOffsetSort: SortingState = useMemo(() => {
     if (paginationMode === 'cursor') {
-      return undefined
+      return []
     }
 
     return [...(transformedOffsetDefaultSorting || []), ...(transformedOffsetSort || [])]
   }, [paginationMode, transformedOffsetDefaultSorting, transformedOffsetSort])
 
-  const transformedCursorSortBy = useMemo(() => {
+  const transformedCursorSortBy: SortingState = useMemo(() => {
     if (paginationMode === 'offset') {
-      return undefined
+      return []
     }
 
     const currentSortBy = (rest as unknown as CursorPagination)?.currentSortBy
@@ -171,7 +300,7 @@ export function useDataTable<TItem = Record<string, any>>({
       return [
         {
           id: currentSortBy,
-          desc: revert,
+          desc: !!revert,
         },
       ]
     }
@@ -184,252 +313,100 @@ export function useDataTable<TItem = Record<string, any>>({
     (rest as unknown as CursorPagination)?.revert,
   ])
 
-  const initialSortBy = useMemo(() => {
+  const sorting: SortingState = useMemo(() => {
     if (paginationMode === 'offset') {
       return finalTransformedOffsetSort
     }
 
     return transformedCursorSortBy
-  }, [finalTransformedOffsetSort, paginationMode, transformedCursorSortBy])
+  }, [paginationMode, finalTransformedOffsetSort, transformedCursorSortBy])
 
-  const getSubRows = useCallback((row: any, relativeIndex: number) => {
-    return []
-  }, [])
+  const onSortingChange = useCallback(
+    (sort) => {
+      const result = sort(sorting)
+      console.log('sort', sort, result)
 
-  const tableInstance = useTable(
-    {
-      columns: foundedColumns,
-      manualPagination: true,
-      manualSortBy: true,
-      autoResetExpanded: false,
-      getSubRows,
-      initialState: {
-        ...(paginationMode === 'offset'
-          ? {
-              pageIndex: (rest as unknown as OffsetPagination).page
-                ? (rest as unknown as OffsetPagination).page - 1
-                : 0,
-              pageSize: (rest as unknown as OffsetPagination).perPage,
-            }
-          : {
-              pageIndex:
-                typeof (rest as unknown as CursorPagination).page === 'number' ? (rest as any).page - 1 : undefined,
-              pageSize:
-                (rest as unknown as CursorPagination).first ||
-                (rest as unknown as CursorPagination).last ||
-                defaultPerPage,
-            }),
-        sortBy: initialSortBy,
-      },
-      pageCount,
-      // disableSortBy: false,
-      data: list || [],
-    },
-    useSortBy,
-    useExpanded,
-    usePagination,
-    (hooks) => {
-      if (expandComponent) {
-        hooks.visibleColumns.push((columns) => [
-          ...columns,
-          {
-            // Make an expander cell
-            Header: () => null, // No header
-            id: 'expander', // It needs an ID
-            Cell: ({ row }) => (
-              // Use Cell to render an expander for each row.
-              // We can use the getToggleRowExpandedProps prop-getter
-              // to build the expander.
-              // <chakra.span {...row.getToggleRowExpandedProps()} p={4}>
-              //   {row.isExpanded ? <Icon as={BsChevronUp} /> : <Icon as={BsChevronDown} />}
-              // </chakra.span>
-              <IconButton
-                aria-label="Expand"
-                variant="ghost"
-                icon={<Icon as={row.isExpanded ? BsChevronUp : BsChevronDown} />}
-                {...row.getToggleRowExpandedProps()}
-              />
-            ),
-          },
-        ])
+      if (!onSortChange) {
+        return
       }
 
-      hooks.visibleColumns.push((columns) => [
-        ...columns,
-        // MoreMenu Column
-        {
-          id: 'moreMenu',
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: moreMenuHeaderComponent,
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => {
-            return cloneElement(moreMenuComponent as any, {
-              id: (row.original as any).id,
-              record: row.original,
-              deleteItemMutation,
-              onDeleteCompleted: () => refetch!(),
-              hasEdit,
-              hasCreate,
-              hasDelete,
-              hasShow,
-              resource,
-            })
-          },
-        },
-      ])
-    },
-  )
-
-  const {
-    state: { pageIndex, pageSize, sortBy },
-  } = tableInstance
-
-  useEffect(() => {
-    if (!loading && onPageChange && paginationMode === 'offset') {
-      if (paginationMode === 'offset') {
-        onPageChange({
-          perPage: pageSize,
-          page: (pageIndex >= 0 ? pageIndex : 0) + 1,
-        })
-      } else {
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageSize, pageIndex])
-
-  useEffect(() => {
-    if (paginationMode === 'offset' && (rest as unknown as OffsetPagination).page !== pageIndex + 1) {
-      tableInstance.gotoPage(0)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [(rest as unknown as OffsetPagination)?.page])
-
-  const __bad_dirty_please_change_me_sort_initialized_ref__ = useRef(false)
-  useEffect(() => {
-    if (!__bad_dirty_please_change_me_sort_initialized_ref__.current) {
-      __bad_dirty_please_change_me_sort_initialized_ref__.current = true
-      return
-    }
-
-    if (onSortChange) {
       if (paginationMode === 'offset') {
         onSortChange(
-          sortBy.reduce((acc, item) => {
+          result.reduce((acc, item) => {
             return {
               ...acc,
               [item.id]: item.desc ? OffsetSortDirection.DESC : OffsetSortDirection.ASC,
             }
           }, {}),
         )
-      } else if (paginationMode === 'cursor') {
-        if (sortBy.length) {
-          const currentSortBy = sortBy[0]?.id
-          const revert = !!sortBy[0]?.desc
+      } else {
+        const newSortBy = result?.[0]?.id
+        const revert = !!result?.[0]?.desc
 
-          if (currentSortBy) {
-            onSortChange({
-              sortBy: currentSortBy,
-              [revert ? 'last' : 'first']: pageSize,
-              revert,
-            })
-          }
+        if (newSortBy) {
+          onSortChange({
+            sortBy: newSortBy,
+            [revert ? 'last' : 'first']: pagination.pageSize,
+            revert,
+          } as any)
         } else {
           onSortChange({})
         }
+
         cursorHistory.reset()
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy])
+    },
+    [sorting, onSortChange, paginationMode, pagination.pageSize, cursorHistory],
+  )
 
-  const revert = useMemo(() => {
-    return (rest as unknown as CursorPagination)?.revert
-  }, [rest])
-
-  const additonalProps = useMemo(() => {
-    if (paginationMode === 'offset') {
-      return {}
-    }
-
-    return {
-      showBackToTop:
-        ((rest as unknown as CursorPagination)?.after || (rest as unknown as CursorPagination)?.before) &&
-        cursorHistory.length <= 0,
-      canNextPage: pageInfo?.hasNextPage,
-      canPreviousPage: pageInfo?.hasPreviousPage || cursorHistory.length > 0,
-      previousPage: () => {
-        if (onPageChange && pageInfo?.hasPreviousPage) {
-          ;(onPageChange as CursorOnPageChange)({
-            [revert ? 'first' : 'last']: pageSize,
-            [revert ? 'after' : 'before']: pageInfo?.startCursor as string,
-          })
-        } else if (onPageChange && cursorHistory.length > 0) {
-          cursorHistory.pop()
-          const prevCursor = cursorHistory.getLast()
-
-          if (prevCursor) {
-            ;(onPageChange as CursorOnPageChange)({
-              [revert ? 'last' : 'first']: pageSize,
-              [revert ? 'before' : 'after']: prevCursor,
-            })
-          } else {
-            ;(onPageChange as CursorOnPageChange)({
-              [revert ? 'last' : 'first']: pageSize,
-            })
-          }
-        }
-      },
-      nextPage: () => {
-        if (onPageChange && pageInfo?.hasNextPage) {
-          cursorHistory.push(pageInfo?.endCursor as any)
-          ;(onPageChange as CursorOnPageChange)({
-            [revert ? 'last' : 'first']: pageSize,
-            [revert ? 'before' : 'after']: pageInfo?.endCursor as string,
-          })
-        }
-      },
-      backToTop: () => {
-        if (onPageChange) {
-          cursorHistory.reset()
-          ;(onPageChange as CursorOnPageChange)({
-            [revert ? 'last' : 'first']: pageSize,
-          })
-        }
-      },
-      state: {
-        ...tableInstance.state,
-        // pageIndex:
-        //   !(rest as CursorPagination)?.page && total
-        //     ? 0
-        //     : (rest as CursorPagination)?.page
-        //     ? ((rest as CursorPagination)?.page || 1) - 1
-        //     : undefined,
-        pageIndex: cursorHistory.length,
-      },
-      pageCount,
-    }
-    // Re-enable this rule when you need to check for new dependencies
-  }, [
-    paginationMode,
-    rest,
-    total,
-    cursorHistory,
-    pageInfo?.hasNextPage,
-    pageInfo?.hasPreviousPage,
-    pageInfo?.startCursor,
-    pageInfo?.endCursor,
-    tableInstance.state,
+  const defaultData = useMemo(() => [], [])
+  const tableInstance = useReactTable<TItem>({
+    columns: foundedColumns,
+    data: (list ?? defaultData) as TItem[],
+    getCoreRowModel: getCoreRowModel(),
+    state: {
+      pagination,
+      sorting,
+    },
+    onPaginationChange,
+    onSortingChange,
     pageCount,
-    onPageChange,
-    revert,
-    pageSize,
-  ])
+    manualPagination: true,
+    manualSorting: true,
+  })
+
+  const showBackToTop = useMemo(
+    () =>
+      !!(
+        ((rest as unknown as CursorPagination)?.after || (rest as unknown as CursorPagination)?.before) &&
+        cursorHistory.length <= 0
+      ),
+    [rest, cursorHistory],
+  )
+
+  const backToTop = useCallback(() => {
+    if (paginationMode === 'offset') {
+      throw new Error('backToTop is not supported in offset pagination mode')
+    }
+
+    if (onPageChange) {
+      cursorHistory.reset()
+      ;(onPageChange as CursorOnPageChange)({
+        [revert ? 'last' : 'first']: pagination.pageSize,
+      })
+    }
+  }, [pagination.pageSize, onPageChange, revert, cursorHistory, paginationMode])
 
   return {
-    foundedColumns,
     ...tableInstance,
-    ...additonalProps,
+    foundedColumns,
+    showBackToTop,
+    backToTop,
+    canPreviousPage: tableInstance.getCanPreviousPage(),
+    canNextPage: tableInstance.getCanNextPage(),
+    pageOptions: tableInstance.getPageOptions(),
+    pageSize: tableInstance.getState().pagination.pageSize,
+    pageCount: tableInstance.getPageCount(),
+    pageIndex: tableInstance.getState().pagination.pageIndex,
   }
 }

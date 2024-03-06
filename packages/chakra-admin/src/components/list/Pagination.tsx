@@ -7,7 +7,6 @@ import { Row } from 'react-table'
 import { PaginationMode } from '../../core'
 
 export type PaginationProps = {
-  page: Row<object>[]
   paginationMode: PaginationMode
   showBackToTop?: boolean
   pageCount: number
@@ -16,7 +15,7 @@ export type PaginationProps = {
   pageOptions: number[]
   canPreviousPage: boolean
   canNextPage: boolean
-  gotoPage: (updater: ((pageIndex: number) => number) | number) => void
+  setPageIndex: (updater: ((pageIndex: number) => number) | number) => void
   previousPage: () => void
   nextPage: () => void
   setPageSize: (pageSize: number) => void
@@ -38,18 +37,17 @@ export const Pagination: FC<PaginationProps> = ({
   canPreviousPage,
   previousPage,
   totalRows,
-  page,
 }) => {
   const t = useTranslate()
   const from = useMemo(() => (totalRows === 0 ? 0 : pageIndex * pageSize + 1), [pageIndex, pageSize, totalRows])
   const to = useMemo(
     () =>
       pageSize === 0
-        ? totalRows || page.length
+        ? totalRows || 0
         : paginationMode === 'offset'
           ? Math.min(totalRows || 0, (pageIndex + 1) * pageSize)
           : (pageIndex + 1) * pageSize,
-    [page.length, pageIndex, pageSize, paginationMode, totalRows],
+    [pageIndex, pageSize, paginationMode, totalRows],
   )
 
   const total = useMemo(() => (typeof totalRows === 'number' ? totalRows : t('ca.pagination.many')), [t, totalRows])

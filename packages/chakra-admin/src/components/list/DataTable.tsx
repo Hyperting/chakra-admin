@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-key */
 import React, { cloneElement, isValidElement, useCallback } from 'react'
-import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import {
-  chakra,
   Table,
   TableBodyProps,
   TableCellProps,
+  TableContainer,
   TableHeadProps,
   TableProps,
   TableRowProps,
@@ -15,39 +14,16 @@ import {
   Th,
   Thead,
   Tr,
+  chakra,
 } from '@chakra-ui/react'
-import { CellProps, HeaderProps, Renderer } from 'react-table'
 import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom'
-import { ListProps } from '../../core/list/ListProps'
-import { UseListReturn } from '../../core/list/useList'
 import { Pagination, PaginationProps } from './Pagination'
-import { useDataTable } from '../../core/list/useDataTable'
-import { DataTableValueProps } from './DataTableValue'
+import { RowClick, RowClickObject, UseDataTableProps, useDataTable } from '../../core/list/useDataTable'
+import { flexRender } from '@tanstack/react-table'
+import { DataTableLayout, DataTableLayoutProps } from './DataTableLayout'
+import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 
-export type RowClickObject<T> = {
-  redirect?: RowClick<T>
-  asModal?: boolean
-}
-
-export type RowClick<T> = 'show' | 'edit' | false | ((item: T) => string)
-
-export type DataTableProps<TItem> = Partial<UseListReturn> &
-  Partial<ListProps> & {
-    children?: React.ReactElement<DataTableValueProps<TItem>>[] | React.ReactElement<DataTableValueProps<TItem>>
-    filtersComponent?: React.ReactNode
-    moreMenuHeaderComponent?: Renderer<HeaderProps<any>> | string
-    moreMenuComponent?: Renderer<CellProps<any, any>>
-    expandComponent?: React.ReactNode
-    paginationComponent?: React.ReactNode
-    rowClick?: RowClick<TItem> | RowClickObject<TItem>
-    tableProps?: Omit<TableProps, 'children'>
-    theadProps?: Omit<TableHeadProps, 'children'>
-    tbodyProps?: Omit<TableBodyProps, 'children'>
-    trProps?: Omit<TableRowProps, 'children'>
-    tdProps?: Omit<TableCellProps, 'children'>
-  }
-
-function getRowClickRedirect<T>(
+export function getRowClickRedirect<T>(
   rowClick: RowClick<T> | RowClickObject<T>,
   item: T,
   navigate: ReturnType<typeof useNavigate>,
@@ -61,7 +37,25 @@ function getRowClickRedirect<T>(
   return rowClick
 }
 
-export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TItem>) {
+export type DataTableProps<TItem = Record<string, any>> = UseDataTableProps<TItem> & {
+  layoutComponent?: React.ReactNode
+
+  tableProps?: Omit<TableProps, 'children'>
+  theadProps?: Omit<TableHeadProps, 'children'>
+  tbodyProps?: Omit<TableBodyProps, 'children'>
+  trProps?: Omit<TableRowProps, 'children'>
+  tdProps?: Omit<TableCellProps, 'children'>
+}
+
+export function DataTable<TItem = Record<string, any>>({
+  layoutComponent = <DataTableLayout />,
+  tableProps = {},
+  theadProps = {},
+  tbodyProps = {},
+  trProps = {},
+  tdProps = {},
+  ...props
+}: DataTableProps<TItem>) {
   const {
     loading,
     filtersComponent,
@@ -72,39 +66,28 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
     hasEdit,
     hasShow,
     rowClick = 'edit',
-    tableProps = {},
-    theadProps = {},
-    tbodyProps = {},
-    trProps = {},
-    tdProps = {},
   } = props
 
-  // useRegisterLayoutComponent(DataTable as any)
-
   const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    visibleColumns,
     showBackToTop,
     backToTop,
-    state: { pageIndex, pageSize },
+    canPreviousPage,
+    previousPage,
+    canNextPage,
+    nextPage,
+    setPageSize,
+    pageOptions,
+    pageCount,
+    pageSize,
+    getHeaderGroups,
+    getRowModel,
+    pageIndex,
+    setPageIndex,
   } = useDataTable<TItem>(props)
   const location = useLocation()
   const navigate = useNavigate()
-  //   const isMobile = useBreakpointValue({ base: true, md: false })
 
+  // PLEASE MOVE ME TO THE `useDataTable` HOOK
   const handleRowClick = useCallback(
     (row: any) => (event: React.MouseEventHandler<HTMLTableRowElement>) => {
       if ((event as any).target !== (event as any).currentTarget) {
@@ -138,132 +121,103 @@ export function DataTable<TItem = Record<string, any>>(props: DataTableProps<TIt
   )
 
   return (
-    <chakra.div w="100%">
-      <chakra.div
-        display="flex"
-        w="100%"
-        mb={5}
-        pl={{ base: 5, lg: 0 }}
-        pr={{ base: 5, lg: 0 }}
-        justifyContent="space-between"
-        position="sticky"
-        top={0}
-        // top={isMobile ? '25px' : '80px'}
-        // top={props && props.expandComponent === false ? '57px' : '90px'}
-        bgColor="gray.50"
-      >
-        {filtersComponent &&
-          isValidElement(filtersComponent) &&
-          cloneElement(filtersComponent, {
-            ...props,
-          })}
+    <>
+      {isValidElement(layoutComponent) &&
+        cloneElement(
+          layoutComponent,
+          {
+            paginationComponent:
+              paginationComponent &&
+              isValidElement(paginationComponent) &&
+              typeof paginationComponent !== 'string' &&
+              cloneElement<PaginationProps>(paginationComponent as any, {
+                paginationMode: props.paginationMode!,
+                fetching: loading,
+                canPreviousPage,
+                canNextPage,
+                pageOptions,
+                pageCount,
+                setPageIndex,
+                nextPage,
+                previousPage,
+                setPageSize,
+                pageIndex,
+                pageSize,
+                totalRows: total,
+                showBackToTop,
+                backToTop,
+              }),
+            filtersComponent:
+              filtersComponent &&
+              isValidElement(filtersComponent) &&
+              cloneElement(filtersComponent, {
+                ...props,
+              }),
+          } as DataTableLayoutProps,
+          [
+            <TableContainer>
+              <Table variant="simple" {...tableProps}>
+                <Thead {...theadProps}>
+                  {getHeaderGroups().map((headerGroup) => (
+                    <Tr {...trProps} key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
+                        const meta: any = header.column.columnDef.meta as any
+                        return (
+                          <Th
+                            key={header.id}
+                            colSpan={header.colSpan}
+                            isNumeric={meta?.isNumeric}
+                            onClick={header.column.getToggleSortingHandler()}
+                          >
+                            {header.isPlaceholder ? null : (
+                              <div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
+                            )}
 
-        {paginationComponent &&
-          isValidElement(paginationComponent) &&
-          typeof paginationComponent !== 'string' &&
-          cloneElement<PaginationProps>(paginationComponent as any, {
-            page,
-            paginationMode: props.paginationMode!,
-            fetching: loading,
-            canPreviousPage,
-            canNextPage,
-            pageOptions,
-            pageCount,
-            gotoPage,
-            nextPage,
-            previousPage,
-            setPageSize,
-            pageIndex,
-            pageSize,
-            totalRows: total,
-            showBackToTop,
-            backToTop,
-          })}
-      </chakra.div>
-      <chakra.div maxW="100%" overflowX="auto">
-        <Table w="100%" {...tableProps} {...getTableProps()}>
-          <Thead {...theadProps}>
-            {headerGroups.map((headerGroup, index) => (
-              <Tr {...trProps} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, columnIndex) => (
-                  <Th {...column.getHeaderProps(column.getSortByToggleProps())} isNumeric={(column as any).isNumeric}>
-                    {column.render('Header')}
-                    <chakra.span pl="4">
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <TriangleDownIcon aria-label="sorted descending" />
-                        ) : (
-                          <TriangleUpIcon aria-label="sorted ascending" />
+                            <chakra.span pl="4">
+                              {header.column.getIsSorted() ? (
+                                header.column.getIsSorted() === 'desc' ? (
+                                  <TriangleDownIcon aria-label="sorted descending" />
+                                ) : (
+                                  <TriangleUpIcon aria-label="sorted ascending" />
+                                )
+                              ) : null}
+                            </chakra.span>
+                          </Th>
                         )
-                      ) : null}
-                    </chakra.span>
-                  </Th>
-                ))}
-              </Tr>
-            ))}
-          </Thead>
-          <Tbody {...tbodyProps} {...getTableBodyProps()}>
-            {rows.map((row, index) => {
-              prepareRow(row)
-              const rowProps = row.getRowProps()
-              return (
-                <React.Fragment key={rowProps.key}>
-                  <Tr {...trProps} {...rowProps} role="group">
-                    {row.cells.map((cell, cellIndex) => (
-                      <Td
-                        isNumeric={(cell.column as any).isNumeric}
-                        _groupHover={{
-                          backgroundColor: 'gray.50',
-                          cursor: 'pointer',
-                        }}
-                        onClick={handleRowClick(row)}
-                        {...tdProps}
-                        {...cell.getCellProps()}
-                      >
-                        {cell.render('Cell')}
-                      </Td>
-                    ))}
-                  </Tr>
-
-                  {row.isExpanded &&
-                    expandComponent &&
-                    React.cloneElement(expandComponent as React.ReactElement, {
-                      record: row.original,
-                      rowProps,
-                      row,
-                      visibleColumns,
-                      resource,
-                    })}
-                </React.Fragment>
-              )
-            })}
-          </Tbody>
-        </Table>
-      </chakra.div>
-      <chakra.div display="flex" justifyContent="flex-end" py={5}>
-        {paginationComponent &&
-          isValidElement(paginationComponent) &&
-          typeof paginationComponent !== 'string' &&
-          cloneElement<PaginationProps>(paginationComponent as any, {
-            page,
-            paginationMode: props.paginationMode!,
-            fetching: loading,
-            canPreviousPage,
-            canNextPage,
-            pageOptions,
-            pageCount,
-            gotoPage,
-            nextPage,
-            previousPage,
-            setPageSize,
-            pageIndex,
-            pageSize,
-            totalRows: total,
-            showBackToTop,
-            backToTop,
-          })}
-      </chakra.div>
-    </chakra.div>
+                      })}
+                    </Tr>
+                  ))}
+                </Thead>
+                <Tbody {...tbodyProps}>
+                  {getRowModel().rows.map((row) => {
+                    return (
+                      <Tr key={row.id} role="group" {...trProps}>
+                        {row.getVisibleCells().map((cell) => {
+                          const meta: any = cell.column.columnDef.meta as any
+                          return (
+                            <Td
+                              key={cell.id}
+                              _groupHover={{
+                                backgroundColor: 'gray.50',
+                                cursor: 'pointer',
+                              }}
+                              onClick={handleRowClick(row) as any}
+                              isNumeric={meta?.isNumeric}
+                              {...tdProps}
+                            >
+                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </Td>
+                          )
+                        })}
+                      </Tr>
+                    )
+                  })}
+                </Tbody>
+              </Table>
+            </TableContainer>,
+          ],
+        )}
+    </>
   )
 }
 
