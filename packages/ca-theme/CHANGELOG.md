@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.1.0-dev.38
+
+### Patch Changes
+
+- fix: restore renderRecoilRoot
+
 ## 0.1.0-dev.37
 
 ### Patch Changes

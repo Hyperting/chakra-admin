@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.1.0-dev.38
+
+### Patch Changes
+
+- fix: restore renderRecoilRoot
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.38
+
 ## 0.1.0-dev.37
 
 ### Patch Changes
