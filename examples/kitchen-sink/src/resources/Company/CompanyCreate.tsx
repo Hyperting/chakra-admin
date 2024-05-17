@@ -27,6 +27,10 @@ export const CompanyCreate: FC = (props) => {
             <Input id="industry" type="text" source="industry" />
             <FormHelperText>We'll never share your industry name.</FormHelperText>
           </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="date">Date</FormLabel>
+            {/* <DatetimeInput id="date" source="date" /> */}
+          </FormControl>
         </VStack>
       </BaseForm>
     </Create>

@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.1.0-dev.39
+
+### Patch Changes
+
+- fix: AutocompleteInput
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.39
+
 ## 0.1.0-dev.38
 
 ### Patch Changes
