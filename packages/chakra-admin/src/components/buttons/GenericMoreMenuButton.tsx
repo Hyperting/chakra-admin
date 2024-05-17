@@ -62,7 +62,6 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
   children,
   ...props
 }) => {
-  // const { isOpen, onClose, onOpen } = useDisclosure()
   const { deleting, onDeleteItem, isOpen, onClose, onOpen } = useDeleteWithConfirm({
     deleteItemMutation,
     onDelete,
@@ -108,6 +107,7 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
                 {t('ca.action.show')}
               </MenuItem>
             )}
+
             {hasEdit && !hideEdit && (
               <MenuItem
                 as={Link}
@@ -118,6 +118,7 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
                 {t('ca.action.edit')}
               </MenuItem>
             )}
+
             {deleteItemMutation && !hideDelete && (
               <MenuItem
                 onClick={handleMenuItemDeleteClick}

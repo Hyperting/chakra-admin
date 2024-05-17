@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { Box, Input, InputProps } from '@chakra-ui/react'
 import Datetime, { DatetimepickerProps } from 'react-datetime'
 import { ca } from 'ca-system'
@@ -7,9 +7,9 @@ export type DatetimeInputProps = {
   inputProps?: InputProps
 } & Omit<DatetimepickerProps, 'inputProps'>
 
-export const DatetimeInputBase: FC<DatetimeInputProps> = (props) => {
+export const DatetimeInputBase: FC<DatetimeInputProps> = ({ inputProps, ...props }) => {
   const renderInput = useCallback((props: any, openCalendar: Function, closeCalendar: Function) => {
-    return <Input {...props} />
+    return <Input {...(inputProps || {})} {...props} />
   }, [])
 
   return (

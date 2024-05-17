@@ -96,6 +96,7 @@ export function ColorInput<TItem extends FieldValues = Record<string, any>>({
               ref={ref}
               value={(value as string) || ''}
               onChange={onChange}
+              autoComplete="off"
             />
             <InputRightElement cursor="pointer" children={<Icon as={BsChevronDown} />} />
           </InputGroup>
