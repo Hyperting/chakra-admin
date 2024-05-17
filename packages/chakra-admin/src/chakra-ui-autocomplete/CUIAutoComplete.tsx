@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useCombobox, UseComboboxProps, UseComboboxGetInputPropsOptions } from 'downshift'
 import { matchSorter } from 'match-sorter'
 import Highlighter from 'react-highlight-words'
-import useDeepCompareEffect from 'react-use/lib/useDeepCompareEffect'
+import { useDeepCompareEffect } from 'react-use'
 import {
   InputGroup,
   InputRightElement,
