@@ -6,9 +6,9 @@ We're so glad you want to help! 💖
 
 ## Project Overview
 
-This project is a monorepo managed with `lerna`.
+This project is a monorepo managed with `turborepo`.
 
-It uses `yarn` to manage dependecies.
+It uses `pnpm` to manage dependecies.
 
 ## Setup the Project
 
@@ -20,25 +20,22 @@ git clone https://github.com/<your_github_username>/chakra-admin.git
 cd chakra-admin
 ```
 
-3. Install and Bootstrap all dependencies and cross dependencies by running:
+3. Install all dependencies and cross dependencies by running:
 
 ```bash
-yarn
-yarn bootstrap
+pnpm i
 ```
 
 4. Build the project:
 
 ```bash
-yarn build
-yarn bootstrap
+pnpm build
 ```
 
 5. Start the example project:
 
 ```bash
-cd example
-yarn start:all
+pnpm dev --filter=kitchen-sink...
 ```
 
 ## Update chakra-admin in the example project
@@ -50,10 +47,7 @@ In order to show the changes made in the `packages` directory inside the example
 cd chakra-admin
 
 # build all packages
-yarn build
-
-# install updated packages
-yarn bootstrap
+pnpm build
 ```
 
 You can now use your new or changed components in the example project.
@@ -62,11 +56,9 @@ You can now use your new or changed components in the example project.
 
 Here's a list of the commands provided by this project:
 
-`yarn bootstrap`: install all the cross dependencies
+`pnpm build`: build all the packages
 
-`yarn build`: build all the packages
-
-`yarn storybook`: run Storybook for components development (WIP: currently not working)
+`pnpm storybook`: run Storybook for components development (WIP: currently not working)
 
 ## Commit convention
 
@@ -75,7 +67,9 @@ Chakra Admin follows the [Convential Commits specification](https://www.conventi
 Write the commit like this:
 
 ```
+
 category(scope or module): your commit message
+
 ```
 
 Where category is one of:
@@ -89,3 +83,7 @@ Where category is one of:
 `docs:` changing existing or creating new documentation (README.md, etc.)
 
 `chore`: all changes to the repository that do not fit into any of the above categories.
+
+```
+
+```
