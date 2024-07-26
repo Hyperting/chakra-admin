@@ -21,7 +21,7 @@ export type ListProps<
   basePath?: string
   /**
    * @deprecated
-   * use defaultSort instead
+   * use defaultSortBy instead
    */
   defaultSorting?: OffsetSortType<TItem>
   /**

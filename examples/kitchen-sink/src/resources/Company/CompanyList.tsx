@@ -39,6 +39,9 @@ const CompanyFilters: FC = (props) => (
     <Input source="name" label="name" alwaysOn />
     <AutocompleteInput
       alwaysOn
+      formControlProps={{
+        maxW: '300px',
+      }}
       emptyLabel="Tutti i clienti"
       showEmptyState
       query={QUERY_GET_COMPANIES as any}

@@ -21,6 +21,7 @@ import {
   List,
   ListItem,
   ListIcon,
+  FormControlProps,
 } from '@chakra-ui/react'
 import { IconProps, CheckCircleIcon, ArrowDownIcon } from '@chakra-ui/icons'
 
@@ -59,6 +60,7 @@ export interface CUIAutoCompleteProps<T extends Item> extends UseComboboxProps<T
   hideToggleButton?: boolean
   createItemRenderer?: (value: string) => string | JSX.Element
   disableCreateItem?: boolean
+  formControlProps?: FormControlProps
 }
 
 function defaultOptionFilterFunc<T>(items: T[], inputValue: string) {
@@ -87,6 +89,7 @@ export const CUIAutoComplete = <T extends Item>(
     hideToggleButton = false,
     disableCreateItem = false,
     createItemRenderer = defaultCreateItemRenderer,
+    formControlProps = {},
     ...downshiftProps
   } = props
 
@@ -198,7 +201,7 @@ export const CUIAutoComplete = <T extends Item>(
   }
 
   return (
-    <FormControl>
+    <FormControl {...formControlProps}>
       {label && <FormLabel {...{ ...getLabelProps({}), ...labelStyleProps }}>{label}</FormLabel>}
       {/* -----------Section that renders the input element ----------------- */}
       <Box {...getComboboxProps()}>
