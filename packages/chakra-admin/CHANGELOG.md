@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.40
+
+### Patch Changes
+
+- feat: added formControlProps to <AutocompleteInput />
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.40
+  - ca-theme@0.1.0-dev.40
+  - ca-system@0.1.0-dev.40
+
 ## 0.1.0-dev.39
 
 ### Patch Changes
