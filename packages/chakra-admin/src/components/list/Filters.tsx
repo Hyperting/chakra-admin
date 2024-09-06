@@ -110,9 +110,11 @@ export const Filters: FC<FiltersProps> = ({
               return cloneElement(child, {
                 onChange: handleFilterChange(child.props.source, child.props.parse) as unknown as any,
                 value:
-                  child.props.format && currentFilters && currentFilters[child.props.source]
+                  child.props.format && currentFilters && typeof currentFilters[child.props.source] !== 'undefined'
                     ? child.props.format(currentFilters[child.props.source])
-                    : (currentFilters || {})[child.props.source] || undefined,
+                    : typeof (currentFilters || {})[child.props.source] !== 'undefined'
+                      ? (currentFilters || {})[child.props.source]
+                      : undefined,
                 w: '300px',
                 mr: 4,
                 key: `filter-input-${index}`,
