@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.42
+
+### Patch Changes
+
+- Fix: filters not accept boolean false value
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.42
+  - ca-theme@0.1.0-dev.42
+  - ca-system@0.1.0-dev.42
+
 ## 0.1.0-dev.41
 
 ### Patch Changes
