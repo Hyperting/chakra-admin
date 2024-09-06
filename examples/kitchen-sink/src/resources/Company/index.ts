@@ -30,8 +30,4 @@ const CursorCompanyWithTotal = {
   list: CompanyCursorWithTotalList,
 }
 
-export {
-  CursorCompanyList,
-  OffsetCompanyList,
-  CursorCompanyWithTotal
-}
+export { CursorCompanyList, OffsetCompanyList, CursorCompanyWithTotal }
