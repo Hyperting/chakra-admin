@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.1.0-dev.41
+
+### Patch Changes
+
+- Fix: cursor pagination page is not visible and not copiable
+
 ## 0.1.0-dev.40
 
 ### Patch Changes
