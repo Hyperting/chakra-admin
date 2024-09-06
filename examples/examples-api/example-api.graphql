@@ -88,8 +88,8 @@ type CompanyEdge {
 
 type CompanyConnection {
   pageInfo: PageInfo!
-  edges: [CompanyEdge!]!
-  nodes: [Company!]!
+  edges: [CompanyEdge!]! @listLength(min: 5, max: 5)
+  nodes: [Company!]! @listLength(min: 5, max: 5)
 }
 
 type Query {

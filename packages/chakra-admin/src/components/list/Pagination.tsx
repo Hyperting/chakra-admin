@@ -41,12 +41,7 @@ export const Pagination: FC<PaginationProps> = ({
   const t = useTranslate()
   const from = useMemo(() => (totalRows === 0 ? 0 : pageIndex * pageSize + 1), [pageIndex, pageSize, totalRows])
   const to = useMemo(
-    () =>
-      pageSize === 0
-        ? totalRows || 0
-        : paginationMode === 'offset'
-          ? Math.min(totalRows || 0, (pageIndex + 1) * pageSize)
-          : (pageIndex + 1) * pageSize,
+    () => (pageSize === 0 ? totalRows || 0 : Math.min(totalRows || 0, (pageIndex + 1) * pageSize)),
     [pageIndex, pageSize, paginationMode, totalRows],
   )
 

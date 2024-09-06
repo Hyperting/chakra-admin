@@ -175,7 +175,7 @@ export function useDataTable<TItem = Record<string, any>>({
       }
     } else {
       return {
-        pageIndex: typeof (rest as unknown as CursorPagination).page === 'number' ? (rest as any).page - 1 : 0,
+        pageIndex: (rest as unknown as CursorPagination).page ? (rest as any).page - 1 : 0,
         pageSize:
           (rest as unknown as CursorPagination).first || (rest as unknown as CursorPagination).last || defaultPerPage,
       }
@@ -206,25 +206,30 @@ export function useDataTable<TItem = Record<string, any>>({
         if (isPaginatingForward) {
           if (onPageChange && pageInfo?.hasNextPage) {
             cursorHistory.push(pageInfo?.endCursor as any)
-            ;(onPageChange as CursorOnPageChange)({
+            ;(onPageChange as any)({
               [revert ? 'last' : 'first']: result.pageSize,
               [revert ? 'before' : 'after']: pageInfo?.endCursor as string,
+              page: result.pageIndex + 1,
+              perPage: result.pageSize,
             })
           }
         } else {
           if (onPageChange && pageInfo?.hasPreviousPage) {
-            ;(onPageChange as CursorOnPageChange)({
+            ;(onPageChange as any)({
               [revert ? 'first' : 'last']: result.pageSize,
               [revert ? 'after' : 'before']: pageInfo?.startCursor as string,
+              page: result.pageIndex + 1,
+              perPage: result.pageSize,
             })
           } else if (onPageChange && cursorHistory.length > 0) {
             cursorHistory.pop()
             const prevCursor = cursorHistory.getLast()
 
             if (prevCursor) {
-              ;(onPageChange as CursorOnPageChange)({
+              ;(onPageChange as any)({
                 [revert ? 'last' : 'first']: result.pageSize,
                 [revert ? 'before' : 'after']: prevCursor,
+                page: result.pageIndex + 1,
               })
             } else {
               ;(onPageChange as CursorOnPageChange)({
