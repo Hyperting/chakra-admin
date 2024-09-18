@@ -1,5 +1,12 @@
 # ca-theme
 
+## 0.1.0-dev.43
+
+### Patch Changes
+
+- fix: memoized input
+  fix: Generic more menu additional items positon
+
 ## 0.1.0-dev.42
 
 ### Patch Changes
