@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.1.0-dev.44
+
+### Patch Changes
+
+- fix: simple SelectInput is not accepting children
+  fix: GenericMoreMenuButton does not accept MenuButtonProps props
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.44
+
 ## 0.1.0-dev.43
 
 ### Patch Changes

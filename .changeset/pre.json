@@ -17,6 +17,7 @@
     "kitchen-sink": "0.0.0"
   },
   "changesets": [
+    "angry-turkeys-destroy",
     "cuddly-cats-teach",
     "eight-kiwis-fail",
     "five-adults-beam",
