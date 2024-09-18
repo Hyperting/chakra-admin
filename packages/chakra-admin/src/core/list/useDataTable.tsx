@@ -148,7 +148,6 @@ export function useDataTable<TItem = Record<string, any>>({
         id: 'actions',
         header: moreMenuHeaderComponent,
         cell: (cellData) => {
-          console.log('cellData', cellData.row.original)
           return cloneElement(moreMenuComponent as any, {
             id: (cellData.row.original as any).id,
             record: cellData.row.original,

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { CAFieldProps } from '../react/system-field'
 
 export function useField<TItem = Record<string, any>>(props: CAFieldProps<TItem>) {
-  const value = useMemo(() => {
+  const value = () => {
     if (typeof props.source === 'string') {
       return get(props.record || {}, props.source, undefined)
     } else if (typeof props.source === 'function') {
@@ -11,7 +11,7 @@ export function useField<TItem = Record<string, any>>(props: CAFieldProps<TItem>
     }
 
     return undefined
-  }, [props])
+  }
 
   return value
 }

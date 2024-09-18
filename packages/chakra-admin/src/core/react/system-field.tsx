@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, createElement } from 'react'
+import React, { Children, cloneElement, createElement, memo } from 'react'
 import {
   AlertDescription,
   AlertDescriptionProps,
@@ -78,7 +78,7 @@ export type CAFieldProps<P = {}, TItem extends object = Record<string, any>> = {
 
 export function caField<P = {}, TItem extends object = Record<string, any>, T = As>(
   component: T,
-  options: CAFieldOptions<P> = { target: 'children' as any, type: 'simple' }
+  options: CAFieldOptions<P> = { target: 'children' as any, type: 'simple' },
 ) {
   const target = options?.target || 'children'
   const type = options?.type || 'simple'
@@ -106,7 +106,7 @@ export function caField<P = {}, TItem extends object = Record<string, any>, T = 
                 record,
               })
             })
-          : [])
+          : []),
       )
     } else {
       return createElement(
@@ -120,8 +120,8 @@ export function caField<P = {}, TItem extends object = Record<string, any>, T = 
                 typeof sources[item] === 'string'
                   ? get(record || {}, (sources || ({} as any))[item], undefined)
                   : typeof sources[item] === 'function'
-                  ? sources[item](record || {})
-                  : undefined,
+                    ? sources[item](record || {})
+                    : undefined,
             }
           }, {}),
         },
@@ -134,13 +134,15 @@ export function caField<P = {}, TItem extends object = Record<string, any>, T = 
               })
             })
           : sources.children
-          ? undefined
-          : children
+            ? undefined
+            : children,
       )
     }
   }
 
   CAFieldImpl.displayName = `CA${(component as any).displayName || (component as any).name}`
 
-  return CAFieldImpl
+  return memo(CAFieldImpl, (prev, next) => {
+    return prev.source === next.source && prev.sources === next.sources && prev.record === next.record
+  })
 }

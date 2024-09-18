@@ -9,6 +9,7 @@ import {
   Portal,
   ButtonProps,
   MenuButtonProps,
+  MenuDivider,
 } from '@chakra-ui/react'
 import { useTranslate } from 'ca-i18n'
 import { DocumentNode } from 'graphql'
@@ -78,6 +79,8 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
     }
   }, [onDeleteItem, id, onOpen, showConfirmDialogOnDelete])
 
+  const hasChildren = React.Children.count(children) > 0
+
   return (
     <>
       <Menu isLazy>
@@ -119,15 +122,7 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
               </MenuItem>
             )}
 
-            {deleteItemMutation && !hideDelete && (
-              <MenuItem
-                onClick={handleMenuItemDeleteClick}
-                color="red.500"
-                icon={<Icon color="red.400" as={FaTrash} />}
-              >
-                {t('ca.action.delete')}
-              </MenuItem>
-            )}
+            {hasChildren && <MenuDivider />}
 
             {React.Children.map(children, (child) => {
               return React.cloneElement(child as React.ReactElement<ButtonProps>, {
@@ -137,6 +132,18 @@ export const GenericMoreMenuButton: FC<GenericMoreMenuButtonProps> = ({
                 },
               })
             })}
+
+            {hasChildren && <MenuDivider />}
+
+            {deleteItemMutation && !hideDelete && (
+              <MenuItem
+                onClick={handleMenuItemDeleteClick}
+                color="red.500"
+                icon={<Icon color="red.400" as={FaTrash} />}
+              >
+                {t('ca.action.delete')}
+              </MenuItem>
+            )}
           </MenuList>
         </Portal>
       </Menu>
