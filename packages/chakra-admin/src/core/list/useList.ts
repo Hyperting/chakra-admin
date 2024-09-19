@@ -210,7 +210,7 @@ export const useList = <
       const foundedSortingKeys = qpKeys.filter((item) => item.startsWith(QP_SORT_PREFIX))
       if (foundedSortingKeys.length > 0) {
         return {
-          ...(defaultSort || defaultSorting || {}),
+          // ...(defaultSort || defaultSorting || {}),
           ...(foundedSortingKeys || []).reduce((acc, item) => {
             return {
               ...acc,
