@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.45
+
+### Patch Changes
+
+- fix: offset sorting removes other search params from url in list
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.45
+  - ca-theme@0.1.0-dev.45
+  - ca-system@0.1.0-dev.45
+
 ## 0.1.0-dev.44
 
 ### Patch Changes
