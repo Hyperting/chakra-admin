@@ -415,23 +415,40 @@ export const useList = <
             [QP_SORT_PREFIX + key]: sort[key],
           }
         }, {})
-        setParams((prevState) => {
-          const prevStateKeys = Object.keys(prevState)
-          if (prevStateKeys.length > 0) {
-            const filteredPrevState = prevStateKeys.reduce((acc, item) => {
-              if (item.startsWith(QP_SORT_PREFIX)) {
-                return { ...acc }
-              }
-              return {
-                ...acc,
-                [item]: prevState[item],
-              }
-            }, {})
 
-            return { ...filteredPrevState, ...newSort }
-          }
-          return { ...newSort }
-        })
+        // setParams((prevState) => {
+        //   const prevStateKeys = Object.keys(prevState)
+        //   console.log('prevState', prevStateKeys)
+        //   if (prevStateKeys.length > 0) {
+        //     const filteredPrevState = prevStateKeys.reduce((acc, item) => {
+        //       if (item.startsWith(QP_SORT_PREFIX)) {
+        //         return { ...acc }
+        //       }
+        //       return {
+        //         ...acc,
+        //         [item]: prevState[item],
+        //       }
+        //     }, {})
+
+        //     return { ...filteredPrevState, ...newSort }
+        //   }
+        //   return { ...newSort }
+        // })
+        const newParams = {
+          ...Object.keys(params).reduce((acc, item) => {
+            if (item.startsWith(QP_SORT_PREFIX)) {
+              return acc
+            }
+
+            return {
+              ...acc,
+              [item]: params[item],
+            }
+          }, {}),
+          ...newSort,
+        }
+
+        setParams(newParams)
       } else {
         const newParams = {
           ...params,
