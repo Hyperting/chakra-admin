@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.1.0-dev.46
+
+### Patch Changes
+
+- fix: allow to change default sort
+
 ## 0.1.0-dev.45
 
 ### Patch Changes

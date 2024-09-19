@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.1.0-dev.46
+
+### Patch Changes
+
+- fix: allow to change default sort
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.46
+
 ## 0.1.0-dev.45
 
 ### Patch Changes

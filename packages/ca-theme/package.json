@@ -1,6 +1,6 @@
 {
   "name": "ca-theme",
-  "version": "0.1.0-dev.45",
+  "version": "0.1.0-dev.46",
   "description": "",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
