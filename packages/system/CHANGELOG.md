@@ -1,5 +1,14 @@
 # ca-system
 
+## 0.1.0-dev.48
+
+### Patch Changes
+
+- added selectable rows for DataTable
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.48
+
 ## 0.1.0-dev.47
 
 ### Patch Changes

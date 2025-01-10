@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.1.0-dev.48
+
+### Patch Changes
+
+- added selectable rows for DataTable
+
 ## 0.1.0-dev.47
 
 ### Patch Changes

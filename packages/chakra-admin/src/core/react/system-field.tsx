@@ -4,7 +4,6 @@ import {
   AlertDescriptionProps,
   AlertTitle,
   AlertTitleProps,
-  As,
   Avatar,
   AvatarProps,
   Badge,
@@ -76,7 +75,7 @@ export type CAFieldProps<P = {}, TItem extends object = Record<string, any>> = {
   additionalFields?: string[]
 }
 
-export function caField<P = {}, TItem extends object = Record<string, any>, T = As>(
+export function caField<P = {}, TItem extends object = Record<string, any>, T = any>(
   component: T,
   options: CAFieldOptions<P> = { target: 'children' as any, type: 'simple' },
 ) {

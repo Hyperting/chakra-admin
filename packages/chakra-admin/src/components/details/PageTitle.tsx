@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
-import { As, Heading, Icon, Center, Flex, Box, BoxProps, ModalHeader } from '@chakra-ui/react'
+import { Heading, Icon, Center, Flex, Box, BoxProps, ModalHeader } from '@chakra-ui/react'
 import { ShadowedBox } from '../layout/ShadowedBox'
 
 export type PageTitleProps = {
   label?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon?: As | undefined
+  icon?: any | undefined
   boxComponent?: React.ReactNode
   renderingInModal?: boolean
   loading?: boolean

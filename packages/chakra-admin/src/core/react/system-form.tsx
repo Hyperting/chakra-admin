@@ -1,6 +1,5 @@
 import React, { Children, cloneElement, createElement, useMemo } from 'react'
 import {
-  As,
   Checkbox,
   CheckboxProps,
   Editable,
@@ -63,7 +62,7 @@ export function CAFormControl<TItem = Record<string, any>>(props: CAInputProps<T
 CAFormControl.displayName = 'CAFormControl'
 
 export function CAFormErrorMessage<TItem = Record<string, any>>(
-  props: Partial<CAInputProps<TItem>> & FormErrorMessageProps
+  props: Partial<CAInputProps<TItem>> & FormErrorMessageProps,
 ) {
   const { source, control, children, ...filteredProps } = props as any
   const { errors } = useFormState<TItem>({ control, name: source })
@@ -80,7 +79,7 @@ export function CAFormLabel<TItem = Record<string, any>>(props: Partial<CAInputP
       t(`${source}`, {
         defaultValue: source ? humanize(source) : '',
       }),
-    [source, t]
+    [source, t],
   )
 
   return <CUIFormLabel htmlFor={source} children={children || label} {...filteredProps} />
@@ -101,11 +100,11 @@ export type CAInputProps<TItem = Record<string, any>> = {
   resource?: string
 } & RegisterOptions<TItem>
 
-export function caFormInput<P = {}, TItem = Record<string, any>, T = As>(
+export function caFormInput<P = {}, TItem = Record<string, any>, T = any>(
   component: T,
   options: CAInputOptions<P> = {
     type: 'ref',
-  }
+  },
 ) {
   const type = options?.type || 'ref'
   const labelTarget = options?.labelTarget
@@ -113,7 +112,7 @@ export function caFormInput<P = {}, TItem = Record<string, any>, T = As>(
   function CAFormInputImpl<TItemField = TItem>(props: P & CAInputProps<TItemField>) {
     if (!type?.includes('ref') && !type?.includes('control')) {
       throw new Error(
-        'Type not recognized, please use one of the following: ref, control, ref-mixed-layout, control-mixed-layout'
+        'Type not recognized, please use one of the following: ref, control, ref-mixed-layout, control-mixed-layout',
       )
     }
 
@@ -156,7 +155,7 @@ export function caFormInput<P = {}, TItem = Record<string, any>, T = As>(
                 ...acc,
                 [key]: filteredProps[key],
               }
-            }, {})
+            }, {}),
           ),
         },
         ...(type?.includes('mixed-layout')
@@ -166,7 +165,7 @@ export function caFormInput<P = {}, TItem = Record<string, any>, T = As>(
                 ...filterChakraProps(filteredProps || {}),
               })
             })
-          : Children.toArray(children || []))
+          : Children.toArray(children || [])),
       )
     } else {
       return (
@@ -188,7 +187,7 @@ export function caFormInput<P = {}, TItem = Record<string, any>, T = As>(
                         ...filterChakraProps(filteredProps || {}),
                       })
                     })
-                  : [])
+                  : []),
               )}
             </>
           )}
