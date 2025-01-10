@@ -4,7 +4,6 @@ import {
   AlertDescriptionProps,
   AlertTitle,
   AlertTitleProps,
-  As,
   Avatar,
   AvatarProps,
   Badge,
@@ -75,9 +74,9 @@ export type CAFieldProps<P = {}, TItem extends object = Record<string, any>> = {
   additionalFields?: string[]
 }
 
-export function caField<P = {}, TItem extends object = Record<string, any>, T = As>(
+export function caField<P = {}, TItem extends object = Record<string, any>, T = any>(
   component: T,
-  options: CAFieldOptions<P> = { target: 'children' as any, type: 'simple' }
+  options: CAFieldOptions<P> = { target: 'children' as any, type: 'simple' },
 ) {
   const target = options?.target || 'children'
   const type = options?.type || 'simple'
@@ -105,7 +104,7 @@ export function caField<P = {}, TItem extends object = Record<string, any>, T = 
                 record,
               })
             })
-          : [])
+          : []),
       )
     } else {
       return createElement(
@@ -119,8 +118,8 @@ export function caField<P = {}, TItem extends object = Record<string, any>, T = 
                 typeof sources[item] === 'string'
                   ? get(record || {}, (sources || ({} as any))[item], undefined)
                   : typeof sources[item] === 'function'
-                  ? sources[item](record || {})
-                  : undefined,
+                    ? sources[item](record || {})
+                    : undefined,
             }
           }, {}),
         },
@@ -133,8 +132,8 @@ export function caField<P = {}, TItem extends object = Record<string, any>, T = 
               })
             })
           : sources.children
-          ? undefined
-          : children
+            ? undefined
+            : children,
       )
     }
   }

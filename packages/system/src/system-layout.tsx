@@ -1,7 +1,6 @@
 import { Children, cloneElement, createElement, FC, useEffect } from 'react'
 import {
   Alert as CUIAlert,
-  As,
   Box,
   Center,
   Container,
@@ -146,7 +145,7 @@ export const useRegisterLayoutComponent = (component: React.ReactElement) => {
   }, [component])
 }
 
-export function caLayout<P = {}, T = As>(component: T): FC<P & { [x: string]: any }> {
+export function caLayout<P = {}, T = any>(component: T): FC<P & { [x: string]: any }> {
   const CALayoutImpl = ({ children, record, ...props }: any) => {
     useRegisterLayoutComponent(CALayoutImpl as any)
     return createElement(
@@ -160,7 +159,7 @@ export function caLayout<P = {}, T = As>(component: T): FC<P & { [x: string]: an
               record,
             })
           })
-        : children
+        : children,
     )
   }
 

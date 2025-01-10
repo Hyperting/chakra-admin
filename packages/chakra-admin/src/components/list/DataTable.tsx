@@ -22,6 +22,8 @@ import { RowClick, RowClickObject, UseDataTableProps, useDataTable } from '../..
 import { flexRender } from '@tanstack/react-table'
 import { DataTableLayout, DataTableLayoutProps } from './DataTableLayout'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
+import { useSelectableRowsValue } from '../../core'
+import { SelectedRowsToolbar } from './SelectedRowsToolbar'
 
 export function getRowClickRedirect<T>(
   rowClick: RowClick<T> | RowClickObject<T>,
@@ -39,6 +41,7 @@ export function getRowClickRedirect<T>(
 
 export type DataTableProps<TItem = Record<string, any>> = UseDataTableProps<TItem> & {
   layoutComponent?: React.ReactNode
+  selectedRowsToolbarComponent?: React.ReactNode
 
   tableProps?: Omit<TableProps, 'children'>
   theadProps?: Omit<TableHeadProps, 'children'>
@@ -49,6 +52,7 @@ export type DataTableProps<TItem = Record<string, any>> = UseDataTableProps<TIte
 
 export function DataTable<TItem = Record<string, any>>({
   layoutComponent = <DataTableLayout />,
+  selectedRowsToolbarComponent = <SelectedRowsToolbar />,
   tableProps = {},
   theadProps = {},
   tbodyProps = {},
@@ -86,6 +90,7 @@ export function DataTable<TItem = Record<string, any>>({
   } = useDataTable<TItem>(props)
   const location = useLocation()
   const navigate = useNavigate()
+  const selectedRows = useSelectableRowsValue()
 
   // PLEASE MOVE ME TO THE `useDataTable` HOOK
   const handleRowClick = useCallback(
@@ -155,6 +160,11 @@ export function DataTable<TItem = Record<string, any>>({
               }),
           } as DataTableLayoutProps,
           [
+            selectedRows.length > 0 && isValidElement(selectedRowsToolbarComponent) ? (
+              cloneElement(selectedRowsToolbarComponent, {})
+            ) : (
+              <></>
+            ),
             <TableContainer>
               <Table variant="simple" {...tableProps}>
                 <Thead {...theadProps}>

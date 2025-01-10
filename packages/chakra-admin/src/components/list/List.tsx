@@ -10,7 +10,7 @@ import { ListToolbar } from './ListToolbar'
 import { TreeRenderer } from '../details/TreeRenderer'
 
 export function List<TQuery = Record<string, any>, TItem extends Record<string, any> = Record<string, any>>(
-  props: ListProps<TQuery, TItem>
+  props: ListProps<TQuery, TItem>,
 ) {
   const {
     title = <PageTitle />,
@@ -33,7 +33,7 @@ export function List<TQuery = Record<string, any>, TItem extends Record<string, 
       showMoreMenu,
       ...rest,
     }),
-    [resource, rest, showMoreMenu]
+    [resource, rest, showMoreMenu],
   )
 
   return cloneElement(
@@ -62,7 +62,7 @@ export function List<TQuery = Record<string, any>, TItem extends Record<string, 
             ...childrenProps,
             ...listData,
           },
-          (toolbarComponent as any).props.children
+          (toolbarComponent as any).props.children,
         ),
     },
     <TreeRenderer
@@ -72,7 +72,7 @@ export function List<TQuery = Record<string, any>, TItem extends Record<string, 
         showMoreMenu,
       }}
       children={children}
-    />
+    />,
   )
 }
 

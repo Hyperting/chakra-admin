@@ -20,6 +20,9 @@ import { CursorOnPageChange, CursorPagination, OffsetOnPageChange, OffsetPaginat
 import { useCursorsHistory } from './useCursorsHistory'
 import { ListProps } from './ListProps'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Checkbox } from '@chakra-ui/react'
+import { SelectColumnCheckbox } from '../../components/list/SelectColumnCheckbox'
+import { SelectableHeader } from '../../components/list/SelectableHeader'
 
 export type RowClickObject<T> = {
   redirect?: RowClick<T>
@@ -37,6 +40,9 @@ export type UseDataTableProps<TItem = Record<string, any>> = Partial<UseListRetu
     expandComponent?: React.ReactNode
     paginationComponent?: React.ReactNode
     rowClick?: RowClick<TItem> | RowClickObject<TItem>
+    selectable?: boolean
+    selectRowComponent?: React.ReactNode
+    selectableHeaderComponent?: React.ReactNode
   }
 
 export type UseDataTableReturn<TItem = Record<string, any>> = {
@@ -79,12 +85,16 @@ export function useDataTable<TItem = Record<string, any>>({
   paginationMode = 'offset',
   pageInfo,
   defaultPerPage = 20,
+  selectable,
+  selectRowComponent = <SelectColumnCheckbox />,
+  selectableHeaderComponent = <SelectableHeader />,
   ...rest
 }: UseDataTableProps<TItem>): UseDataTableReturn<TItem> {
   const location = useLocation()
   const navigate = useNavigate()
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
   const tAll = useTranslate()
+
   const cursorHistory = useCursorsHistory({
     resource: resource!,
     paginationMode,
@@ -96,6 +106,23 @@ export function useDataTable<TItem = Record<string, any>>({
 
   const foundedColumns: Column<TItem, any>[] = useMemo(
     () => [
+      ...(selectable
+        ? [
+            {
+              id: 'selection',
+              header: () =>
+                cloneElement(selectableHeaderComponent as any, {
+                  list,
+                }),
+
+              cell: (cellData) => {
+                return cloneElement(selectRowComponent as any, {
+                  rowId: (cellData.row.original as any).id,
+                })
+              },
+            } as ColumnDef<TItem, any>,
+          ]
+        : []),
       ...(Children.map(children as any, (child: React.ReactNode, index) => {
         if (
           child &&

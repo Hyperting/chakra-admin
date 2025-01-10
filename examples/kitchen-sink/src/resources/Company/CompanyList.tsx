@@ -81,6 +81,7 @@ export const CompanyList: FC = (props) => {
       }
     >
       <DataTable
+        selectable
         tableProps={{
           size: 'sm',
         }}

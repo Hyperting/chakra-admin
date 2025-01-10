@@ -1,6 +1,5 @@
 import React, { Children, cloneElement, createElement, useMemo } from 'react'
 import {
-  As,
   Checkbox,
   CheckboxProps,
   Editable,
@@ -43,7 +42,7 @@ export const CAFormControlComponents = {
 }
 
 export function CAFormControl<TItem extends FieldValues = Record<string, any>>(
-  props: CAInputProps<TItem> & FormControlProps
+  props: CAInputProps<TItem> & FormControlProps,
 ) {
   const { source, control, children, ...filteredProps } = props as any
 
@@ -65,7 +64,7 @@ export function CAFormControl<TItem extends FieldValues = Record<string, any>>(
 CAFormControl.displayName = 'CAFormControl'
 
 export function CAFormErrorMessage<TItem extends FieldValues = Record<string, any>>(
-  props: Partial<CAInputProps<TItem>> & FormErrorMessageProps
+  props: Partial<CAInputProps<TItem>> & FormErrorMessageProps,
 ) {
   const { source, control, children, ...filteredProps } = props as any
   const { errors } = useFormState<TItem>({ control, name: source })
@@ -75,7 +74,7 @@ export function CAFormErrorMessage<TItem extends FieldValues = Record<string, an
 CAFormErrorMessage.displayName = 'CAFormErrorMessage'
 
 export function CAFormLabel<TItem extends FieldValues = Record<string, any>>(
-  props: Partial<CAInputProps<TItem>> & FormLabelProps
+  props: Partial<CAInputProps<TItem>> & FormLabelProps,
 ) {
   const { source, control, resource, children, ...filteredProps } = props as any
   const t = useTranslate({ keyPrefix: `resources.${resource}.fields` })
@@ -84,7 +83,7 @@ export function CAFormLabel<TItem extends FieldValues = Record<string, any>>(
       t(`${source}`, {
         defaultValue: source ? (humanize as any)(source) : '',
       }),
-    [source, t]
+    [source, t],
   )
 
   return <CUIFormLabel htmlFor={source} children={children || label} {...filteredProps} />
@@ -105,11 +104,11 @@ export type CAInputProps<TItem extends FieldValues = Record<string, any>> = {
   resource?: string
 } & RegisterOptions<TItem>
 
-export function caFormInput<P = {}, TItem extends FieldValues = Record<string, any>, T = As>(
+export function caFormInput<P = {}, TItem extends FieldValues = Record<string, any>, T = any>(
   component: T,
   options: CAInputOptions<P> = {
     type: 'ref',
-  }
+  },
 ) {
   const type = options?.type || 'ref'
   const labelTarget = options?.labelTarget
@@ -117,7 +116,7 @@ export function caFormInput<P = {}, TItem extends FieldValues = Record<string, a
   function CAFormInputImpl<TItemField extends FieldValues = TItem>(props: P & CAInputProps<TItemField>) {
     if (!type?.includes('ref') && !type?.includes('control')) {
       throw new Error(
-        'Type not recognized, please use one of the following: ref, control, ref-mixed-layout, control-mixed-layout'
+        'Type not recognized, please use one of the following: ref, control, ref-mixed-layout, control-mixed-layout',
       )
     }
 
@@ -160,7 +159,7 @@ export function caFormInput<P = {}, TItem extends FieldValues = Record<string, a
                 ...acc,
                 [key]: filteredProps[key],
               }
-            }, {})
+            }, {}),
           ),
         },
         ...(type?.includes('mixed-layout')
@@ -170,7 +169,7 @@ export function caFormInput<P = {}, TItem extends FieldValues = Record<string, a
                 ...filterChakraProps(filteredProps || {}),
               })
             })
-          : Children.toArray(children || []))
+          : Children.toArray(children || [])),
       )
     } else {
       return (
@@ -192,7 +191,7 @@ export function caFormInput<P = {}, TItem extends FieldValues = Record<string, a
                         ...filterChakraProps(filteredProps || {}),
                       })
                     })
-                  : [])
+                  : []),
               )}
             </>
           )}
