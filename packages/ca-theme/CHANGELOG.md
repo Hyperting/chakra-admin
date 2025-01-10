@@ -1,5 +1,11 @@
 # ca-theme
 
+## 0.1.0-dev.49
+
+### Patch Changes
+
+- fix: export SelectedRowsToolbar
+
 ## 0.1.0-dev.48
 
 ### Patch Changes

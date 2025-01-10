@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.49
+
+### Patch Changes
+
+- fix: export SelectedRowsToolbar
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.49
+  - ca-theme@0.1.0-dev.49
+  - ca-system@0.1.0-dev.49
+
 ## 0.1.0-dev.48
 
 ### Patch Changes
