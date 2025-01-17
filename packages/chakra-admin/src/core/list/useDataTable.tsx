@@ -113,11 +113,13 @@ export function useDataTable<TItem = Record<string, any>>({
               header: () =>
                 cloneElement(selectableHeaderComponent as any, {
                   list,
+                  resource,
                 }),
 
               cell: (cellData) => {
                 return cloneElement(selectRowComponent as any, {
                   rowId: (cellData.row.original as any).id,
+                  resource,
                 })
               },
             } as ColumnDef<TItem, any>,

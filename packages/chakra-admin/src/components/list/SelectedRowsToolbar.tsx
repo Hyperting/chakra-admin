@@ -7,6 +7,7 @@ export type SelectedRowsToolbarProps = Partial<UseListReturn> & {
 } & BoxProps
 
 export function SelectedRowsToolbar({
+  resource,
   called,
   client,
   currentFilters,
@@ -38,7 +39,7 @@ export function SelectedRowsToolbar({
   children,
   ...rest
 }: SelectedRowsToolbarProps) {
-  const selectedRows = useSelectableRowsValue()
+  const selectedRows = useSelectableRowsValue(resource as string)
 
   return (
     <Box

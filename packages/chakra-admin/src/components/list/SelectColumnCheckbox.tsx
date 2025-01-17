@@ -4,10 +4,11 @@ import { useSelectableRows } from '../../core'
 
 export type SelectColumnCheckboxProps = {
   rowId?: string
+  resource?: string
 } & CheckboxProps
 
-export const SelectColumnCheckbox = memo(({ rowId, ...props }: SelectColumnCheckboxProps) => {
-  const [selectedRows, setSelectedRows] = useSelectableRows()
+export const SelectColumnCheckbox = memo(({ rowId, resource, ...props }: SelectColumnCheckboxProps) => {
+  const [selectedRows, setSelectedRows] = useSelectableRows(resource as string)
 
   const isSelected = rowId && selectedRows.includes(rowId)
 

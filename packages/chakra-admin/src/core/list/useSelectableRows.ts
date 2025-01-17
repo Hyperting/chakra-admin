@@ -1,14 +1,14 @@
-import { atom, useRecoilState, useRecoilValue } from 'recoil'
+import { atom, atomFamily, useRecoilState, useRecoilValue } from 'recoil'
 
-export const selectedRowsState = atom<string[]>({
+export const selectedRowsState = atomFamily<string[], string>({
   key: 'selectedRowsState',
   default: [],
 })
 
-export function useSelectableRows() {
-  return useRecoilState(selectedRowsState)
+export function useSelectableRows(resource: string) {
+  return useRecoilState(selectedRowsState(resource))
 }
 
-export function useSelectableRowsValue() {
-  return useRecoilValue(selectedRowsState)
+export function useSelectableRowsValue(resource: string) {
+  return useRecoilValue(selectedRowsState(resource))
 }

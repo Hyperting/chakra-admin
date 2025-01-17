@@ -90,7 +90,7 @@ export function DataTable<TItem = Record<string, any>>({
   } = useDataTable<TItem>(props)
   const location = useLocation()
   const navigate = useNavigate()
-  const selectedRows = useSelectableRowsValue()
+  const selectedRows = useSelectableRowsValue(resource as string)
 
   // PLEASE MOVE ME TO THE `useDataTable` HOOK
   const handleRowClick = useCallback(
