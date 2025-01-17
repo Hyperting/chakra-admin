@@ -161,7 +161,9 @@ export function DataTable<TItem = Record<string, any>>({
           } as DataTableLayoutProps,
           [
             selectedRows.length > 0 && isValidElement(selectedRowsToolbarComponent) ? (
-              cloneElement(selectedRowsToolbarComponent, {})
+              cloneElement(selectedRowsToolbarComponent, {
+                resource,
+              } as any)
             ) : (
               <></>
             ),
