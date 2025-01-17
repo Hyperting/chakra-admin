@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.50
+
+### Patch Changes
+
+- fix: selectable rows
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.50
+  - ca-theme@0.1.0-dev.50
+  - ca-system@0.1.0-dev.50
+
 ## 0.1.0-dev.49
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.1.0-dev.50
+
+### Patch Changes
+
+- fix: selectable rows
+
 ## 0.1.0-dev.49
 
 ### Patch Changes
