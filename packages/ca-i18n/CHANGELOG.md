@@ -1,5 +1,11 @@
 # ca-i18n
 
+## 0.1.0-dev.51
+
+### Patch Changes
+
+- fix: selected rows count
+
 ## 0.1.0-dev.50
 
 ### Patch Changes

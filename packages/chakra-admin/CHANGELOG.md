@@ -1,5 +1,16 @@
 # chakra-admin
 
+## 0.1.0-dev.51
+
+### Patch Changes
+
+- fix: selected rows count
+
+- Updated dependencies []:
+  - ca-i18n@0.1.0-dev.51
+  - ca-theme@0.1.0-dev.51
+  - ca-system@0.1.0-dev.51
+
 ## 0.1.0-dev.50
 
 ### Patch Changes
